@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DG3 · Portfolio PRD · Web</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#F0EFE9;color:#1A1A1A;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.6}
+:root{--pos:#4CAF7D;--neg:#E05C5C;--gold:#CDBD70}
+#sidenav{position:fixed;top:0;left:0;width:218px;height:100vh;background:#0D0D0D;overflow-y:auto;z-index:200;border-right:1px solid rgba(255,255,255,0.06)}
+#sidenav::-webkit-scrollbar{width:2px}
+#sidenav::-webkit-scrollbar-thumb{background:#2a2a2a}
+.snav-logo{padding:16px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.snav-section{padding:14px 16px 4px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#484848}
+.snav-item{display:block;padding:5px 16px;font-size:12px;color:#777;text-decoration:none;border-left:2px solid transparent;transition:all .1s}
+.snav-item:hover{color:#B0A890;background:rgba(255,255,255,0.03)}
+.snav-item.active{color:#CDBD70;border-left-color:#CDBD70;background:rgba(205,189,112,0.07)}
+#main{margin-left:218px;max-width:960px;padding:44px 52px 80px;background:#FAFAF7}
+.cover{border-bottom:3px solid #CDBD70;padding-bottom:28px;margin-bottom:36px}
+.cover-title{font-size:28px;font-weight:800;color:#0D0D0D;margin-bottom:5px;letter-spacing:-.5px}
+.cover-sub{font-size:14px;color:#666;margin-bottom:22px}
+.meta-grid{display:flex;flex-wrap:wrap;border:1px solid #E0DDD5;border-radius:8px;overflow:hidden}
+.meta-cell{padding:10px 18px;font-size:12px;border-right:1px solid #E0DDD5}
+.meta-cell:last-child{border-right:none}
+.meta-lbl{font-size:10px;font-weight:600;color:#AAA;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.meta-val{font-weight:600;color:#222}
+h2{font-size:19px;font-weight:700;color:#111;margin:48px 0 14px;padding-bottom:10px;border-bottom:2px solid #E8E5DC;display:flex;align-items:center;gap:10px}
+.sec-num{font-size:11px;font-weight:800;background:#CDBD70;color:#0D0D0D;padding:2px 7px;border-radius:4px;letter-spacing:.06em}
+h3{font-size:14px;font-weight:700;color:#222;margin:24px 0 10px;display:flex;align-items:center;gap:7px}
+.h3-dot{width:6px;height:6px;border-radius:50%;background:#CDBD70;flex-shrink:0}
+.tbl{overflow-x:auto;margin:10px 0 18px;border-radius:7px;border:1px solid #E2DFD7;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+table th{background:#F4F2EC;padding:9px 14px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#888;border-bottom:1px solid #E2DFD7;white-space:nowrap}
+table td{padding:10px 14px;border-bottom:1px solid #EEECE6;vertical-align:top;color:#333;line-height:1.55}
+table tr:last-child td{border-bottom:none}
+table tr:hover td{background:#F8F7F2}
+code{font-family:"SF Mono","Courier New",monospace;font-size:11.5px;background:#EDECE7;padding:1px 5px;border-radius:3px;color:#1A4A8A;border:1px solid #DDD}
+.callout{border-radius:7px;padding:12px 16px;margin:12px 0 18px;font-size:13px}
+.callout-title{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.callout-gold{background:#FDF8EC;border-left:3px solid #CDBD70}.callout-gold .callout-title{color:#7A6820}
+.callout-grey{background:#F0EFE9;border-left:3px solid #999}.callout-grey .callout-title{color:#555}
+.asset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.asset-card{background:#fff;border:1px solid #E2DFD7;border-radius:7px;overflow:hidden}
+.asset-prev{background:#060604;padding:20px;display:flex;align-items:center;justify-content:center;min-height:72px}
+.asset-meta{padding:10px 12px;border-top:1px solid #E2DFD7}
+.asset-name{font-size:12px;font-weight:700;color:#222;margin-bottom:2px}
+.asset-usage{font-size:11px;color:#888;margin-bottom:6px}
+.asset-dl{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#1A4A8A;text-decoration:none;padding:3px 8px;border:1px solid #B8CDE8;border-radius:4px;background:#EEF3FB}
+.url-pill{display:inline-block;background:#EDECE7;border:1px solid #DDD;border-radius:4px;padding:2px 8px;font-family:"SF Mono",monospace;font-size:11px;color:#333}
+
+.gallery-wrap{background:#fff;border:1px solid #E0DDD5;border-radius:12px;overflow:hidden;margin:0 0 36px;box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.gallery-head{padding:16px 22px;border-bottom:1px solid #E0DDD5;background:#FAFAF7;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.gallery-title{font-size:14px;font-weight:700;color:#111}
+.gallery-meta{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.g-tag{font-size:10px;padding:2px 9px;border-radius:4px;font-weight:600;background:#FDF8EC;color:#7A6820;border:1px solid #E8DCA0}
+.g-preview-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#1A4A8A;font-weight:600;text-decoration:none;padding:3px 10px;border:1px solid #B8CDE8;border-radius:5px;background:#EEF3FB;transition:background .12s}
+.g-preview-link:hover{background:#DDE8F8}
+.g-iframe-wrap iframe{width:100%;height:820px;border:none;display:block}
+
+.platform-divider{margin:56px 0 0;padding:20px 0 0;border-top:3px solid #CDBD70;display:flex;align-items:center;gap:14px}
+.platform-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:4px}
+.pb-web{background:#0D0D0D;color:#CDBD70;border:1px solid #CDBD70}
+.pb-mob{background:#1A2E4A;color:#7CC8F0;border:1px solid #7CC8F0}
+.snav-divider{height:1px;background:rgba(255,255,255,0.1);margin:8px 16px}
+.snav-section-mob{padding:14px 16px 4px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7CC8F0;opacity:.7}
+.callout-blue{background:#EEF3FB;border-left:3px solid #7CC8F0}.callout-blue .callout-title{color:#1A4A8A}
+</style>
+</head>
+<body>
+<nav id="sidenav">
+  <div class="snav-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 64" width="70" height="26">
+      <g font-family="'JetBrains Mono',monospace" font-weight="700">
+        <text x="4" y="34.5" font-size="20" dominant-baseline="central" fill="#CDBD70">&gt;</text>
+        <rect x="18" y="22" width="3" height="25" fill="#CDBD70" rx="0.5"/>
+        <text x="29" y="47" font-size="34" font-weight="700"><tspan fill="#F5F2E8">DG</tspan><tspan font-weight="800" fill="#CDBD70">3</tspan></text>
+      </g>
+    </svg>
+  </div>
+  <div style="padding:10px 16px 6px;display:flex;align-items:center;gap:6px"><div style="font-size:9px;font-weight:800;letter-spacing:.1em;background:#1A1A1A;color:#CDBD70;border:1px solid rgba(205,189,112,.4);border-radius:3px;padding:3px 8px">WEB</div></div>
+  <div class="snav-section">Overview</div>
+  <a href="#cover" class="snav-item">Cover</a>
+  <a href="#s1" class="snav-item">Page Structure</a>
+  <div class="snav-section">Top Controls</div>
+  <a href="#s3" class="snav-item">Breadcrumb Bar</a>
+  <div class="snav-section">Hero</div>
+  <a href="#s4" class="snav-item">Balance Card</a>
+  <a href="#s5" class="snav-item">KPI Strip</a>
+  <a href="#s6" class="snav-item">Exposure by Stream</a>
+  <div class="snav-section">Open Book</div>
+  <a href="#s7" class="snav-item">Positions Table</a>
+  <a href="#s8" class="snav-item">Open Orders Table</a>
+  <div class="snav-section">Analytics</div>
+  <a href="#s9" class="snav-item">Equity Curve</a>
+  <a href="#s10" class="snav-item">Risk Metrics</a>
+  <a href="#s11" class="snav-item">Trade History</a>
+  <div class="snav-section">Overlays</div>
+  <a href="#s12" class="snav-item">Position Drawer</a>
+  <a href="#s13" class="snav-item">Close Position Modal</a>
+  <a href="#s13b" class="snav-item">Post-action Flows</a>
+  <a href="#s13c" class="snav-item">Cancel Order Modal</a>
+  <a href="#s13d" class="snav-item">Modify Order Modal</a>
+  <a href="#s14" class="snav-item">Trade Detail Modal</a>
+  <a href="#s15" class="snav-item">View All Overlay</a>
+  <a href="#s16" class="snav-item">Public Profile</a>
+  <div class="snav-section">Share</div>
+  <a href="#s17" class="snav-item">Share Cards</a>
+  <a href="#s18" class="snav-item">Share Card URLs</a>
+  <div class="snav-section">Reference</div>
+  <a href="#s19" class="snav-item">Assets &amp; Icons</a>
+  <a href="#s20" class="snav-item">Tooltips</a>
+  <a href="#s21" class="snav-item">Metrics &amp; Calculations</a>
+  <div class="snav-divider"></div>
+  <div style="padding:10px 16px 6px;display:flex;align-items:center;gap:6px"><div style="font-size:9px;font-weight:800;letter-spacing:.1em;background:#0A1A2A;color:#7CC8F0;border:1px solid rgba(124,200,240,.3);border-radius:3px;padding:3px 8px">MOBILE</div></div>
+  <div class="snav-section-mob">Layout</div>
+  <a href="#m1" class="snav-item">Layout &amp; Bottom Nav</a>
+  <a href="#m2" class="snav-item">Balance &amp; KPI Strip</a>
+  <div class="snav-section-mob">Sections</div>
+  <a href="#m3" class="snav-item">Equity Curve</a>
+  <a href="#m4" class="snav-item">Web-only note</a>
+  <a href="#m5" class="snav-item">Risk Metrics</a>
+  <a href="#m5" class="snav-item">Open Book</a>
+  <a href="#m6" class="snav-item">Trade History (merged)</a>
+  <div class="snav-section-mob">Sheets</div>
+  <a href="#m7" class="snav-item">Position Detail Sheet</a>
+  <a href="#m8" class="snav-item">Close Position Sheet</a>
+  <a href="#m9" class="snav-item">Limit Order Placed</a>
+  <a href="#m10" class="snav-item">Trade Detail Sheet</a>
+  <a href="#m11" class="snav-item">Cancel Order Sheet</a>
+  <a href="#m11b" class="snav-item">Modify Order Sheet</a>
+  <a href="#m12" class="snav-item">Share Cards</a>
+  <a href="#m13" class="snav-item">Show More</a>
+  <a href="#m14" class="snav-item">Public Profile Overlay</a>
+</nav>
+<main id="main">
+
+<div class="cover" id="cover">
+  <div class="cover-title">Portfolio Page PRD · Web</div>
+  <div class="cover-sub">DG3 Terminal · Web · Component &amp; Interaction Reference</div>
+  <div class="meta-grid">
+    <div class="meta-cell"><div class="meta-lbl">Product</div><div class="meta-val">DG3 Terminal</div></div>
+    <div class="meta-cell"><div class="meta-lbl">Surface</div><div class="meta-val">Portfolio Page</div></div>
+    <div class="meta-cell"><div class="meta-lbl">Version</div><div class="meta-val">Web v3</div></div>
+    <div class="meta-cell"><div class="meta-lbl">Status</div><div class="meta-val">Final</div></div>
+    <div class="meta-cell"><div class="meta-lbl">Route</div><div class="meta-val">dg3.trade/portfolio</div></div>
+    <div class="meta-cell"><div class="meta-lbl">Live preview</div><div class="meta-val"><a href="https://dg3-terminal-screens-host.vercel.app/portfolio_v2/" target="_blank" style="color:#CDBD70;text-decoration:none;font-weight:700">View screen &#x2197;</a></div></div>
+  </div>
+</div>
+
+
+<div class="gallery-wrap">
+  <div class="gallery-head">
+    <div class="gallery-title">Portfolio Page &middot; DG3 Terminal</div>
+    <div class="gallery-meta">
+      <span class="g-tag">Live preview</span>
+      <a class="g-preview-link" href="https://dg3-terminal-screens-host.vercel.app/portfolio_v2/" target="_blank">
+        Open full screen &#x2197;
+      </a>
+    </div>
+  </div>
+  <div class="g-iframe-wrap">
+    <iframe src="https://dg3-terminal-screens-host.vercel.app/portfolio_v2/" title="Portfolio Page Wireframe" loading="lazy"></iframe>
+  </div>
+</div>
+
+<!-- 01 PAGE STRUCTURE -->
+<div class="platform-divider"><div class="platform-badge pb-web">&#x25A0; Web</div><span style="font-size:13px;color:#888;font-weight:500">Desktop terminal at dg3.trade/portfolio</span></div>
+
+<div id="s1">
+<h2><span class="sec-num">01</span>Page Structure</h2>
+<div class="tbl"><table>
+<tr><th style="width:22%">Zone</th><th style="width:30%">Component</th><th>Notes</th></tr>
+<tr><td>Fixed top</td><td>Breadcrumb bar</td><td>Profile path, LISTED toggle, View as public, Share profile.</td></tr>
+<tr><td>Hero row</td><td>Balance card + KPI strip + Exposure panel</td><td>Three-column flex. Balance card left, 6 KPI tiles center, Exposure right.</td></tr>
+<tr><td>Open book</td><td>Tabs + Positions / Orders</td><td>Open Book tab strip, View all link, Live prices indicator.</td></tr>
+<tr><td>Analytics row</td><td>Equity curve + Risk metrics</td><td>60/40 horizontal split. Equity left, Risk metrics right.</td></tr>
+<tr><td>History</td><td>Trade history</td><td>Trades / Activity / Deposits tabs with sort and filter.</td></tr>
+</table></div>
+</div>
+
+<!-- 03 BREADCRUMB BAR -->
+<div id="s3">
+<h2><span class="sec-num">03</span>Breadcrumb Bar</h2>
+<div class="tbl"><table>
+<tr><th style="width:20%">Element</th><th>Behavior</th></tr>
+<tr><td>Profile › Portfolio</td><td>Profile is a link back to profile root. Portfolio is current page (bold).</td></tr>
+<tr><td>LISTED toggle</td><td>Pill toggle switch (on = green fill + "LISTED" label, off = muted + "UNLISTED" label). Switches profile searchability/discoverability only. Does not affect what is visible on the public profile URL.</td></tr>
+<tr><td>View as public</td><td>Opens public profile overlay in preview mode. Does not navigate away.</td></tr>
+<tr><td>Share profile</td><td>Opens profile share card modal.</td></tr>
+</table></div>
+</div>
+
+<!-- 04 BALANCE CARD -->
+<div id="s4">
+<h2><span class="sec-num">04</span>Balance Card</h2>
+<div class="tbl"><table>
+<tr><th style="width:22%">Field</th><th style="width:28%">Format</th><th>Definition</th></tr>
+<tr><td>Balance</td><td><code>$84,210</code> large</td><td>Cash only. Deposits minus deployed capital minus reserved capital, plus realized P&amp;L from settled positions. Does not include unrealized P&amp;L; an open position's paper gain is not spendable until it is closed or settles.</td></tr>
+<tr><td>Today delta</td><td><code>+$2,140 today (+2.6%)</code></td><td>Cash balance change since local midnight (trader's device timezone), not a fixed UTC cutoff. Reflects settled P&amp;L and deposit/withdrawal activity, not unrealized movement. Resets and recomputes at local midnight, not at a single global moment.</td></tr>
+<tr><td>+ Deposit</td><td>Gold primary button</td><td>Opens deposit flow.</td></tr>
+<tr><td>Withdraw</td><td>Ghost button</td><td>Opens withdrawal flow.</td></tr>
+<tr><td>Deployed</td><td><code>$31,640 (38%)</code></td><td>Total cost basis of all open positions. Percentage is of total balance.</td></tr>
+<tr><td>Reserved</td><td><code>$5,730 (7%)</code> gold</td><td>Cash currently locked in open BUY limit orders, not yet filled. Released back to Balance if the order is cancelled or modified to a smaller amount. SELL limit orders reserve shares, not cash, so they do not contribute here.</td></tr>
+<tr><td>Unrealized</td><td><code>+$1,872 (+5.9%)</code></td><td>Mark-to-market gain/loss on open positions, shown for context. Percentage is on deployed capital. Informational only; not part of Balance.</td></tr>
+</table></div>
+<div class="callout callout-gold"><div class="callout-title">Why Balance excludes unrealized P&amp;L</div>Balance is meant to answer "what can I actually deploy right now." Mixing in unrealized gains would overstate spendable capital, since that value isn't liquid until a position closes or the market settles. Unrealized P&amp;L stays visible as its own line and its own KPI tile, just not folded into the headline number.</div>
+</div>
+
+<!-- 05 KPI STRIP -->
+<div id="s5">
+<h2><span class="sec-num">05</span>KPI Strip</h2>
+<div class="tbl"><table>
+<tr><th style="width:22%">Tile</th><th style="width:28%">Value shown</th><th>Definition</th></tr>
+<tr><td>Open Positions</td><td><code>12</code> · "5 orders pending"</td><td>Count of live open positions. Sub-label shows pending limit orders if any.</td></tr>
+<tr><td>Total P&amp;L (Realized)</td><td><code>+$6,420</code> · "42 settled · +28.4% ROI"</td><td>Sum of P&amp;L on all settled (closed) positions. ROI = total P&amp;L / total cost basis across settled trades.</td></tr>
+<tr><td>Win Rate</td><td><code>54.8%</code> · "23 won of 42 settled"</td><td>Settled trades where P&amp;L &gt; 0 / total settled. Sub-label shows raw count.</td></tr>
+<tr><td>Unrealized P&amp;L</td><td><code>+$1,872</code> · "across 12 positions"</td><td>Live mark-to-market gain/loss on all open positions combined.</td></tr>
+<tr><td>Avg CLV</td><td><code>+3.2¢</code> · "42 settled bets"</td><td>Average closing line value in cents. Positive = consistently buying before the market moved in your direction.</td></tr>
+<tr><td>Volume Traded</td><td><code>$142k</code> · "across 42 total trades"</td><td>Sum of cost basis across all trades (open + settled).</td></tr>
+</table></div>
+<div class="callout callout-gold"><div class="callout-title">CLV Note</div>CLV is always expressed in cents (¢), never as a percentage. 1¢ = 0.01 probability. A +3.2¢ average means entries were 3.2 probability points better than closing line on average.</div>
+</div>
+
+<!-- 06 EXPOSURE PANEL -->
+<div id="s6">
+<h2><span class="sec-num">06</span>Exposure by Stream Panel</h2>
+<div class="tbl"><table>
+<tr><th style="width:20%">Element</th><th>Behavior / Definition</th></tr>
+<tr><td>Open / All time toggle</td><td>"Open" = currently deployed capital by stream. "All time" = historical volume by stream.</td></tr>
+<tr><td>Stream row</td><td>Color dot · Substream name · bar · <code>$amount · %share</code>. Each row is a substream (specific event, e.g. "FIFA WC 2026", "UCL 25/26") not a top-level sport. Bar width = % of total exposure.</td></tr>
+<tr><td>Bar fill</td><td>Each substream has a unique color (defined in sport color tokens). Bar is proportional within the panel width.</td></tr>
+</table></div>
+</div>
+
+<!-- 07 POSITIONS TABLE -->
+<div id="s7">
+<h2><span class="sec-num">07</span>Positions Table</h2>
+<h3><div class="h3-dot"></div>Tab strip</h3>
+<div class="tbl"><table>
+<tr><th>Tab</th><th>Content</th><th>Behavior</th></tr>
+<tr><td>Open Book</td><td>Green-colored section label + live dot</td><td>Label only. Not clickable. Rendered in <code>--pos</code> green to visually distinguish the active book section.</td></tr>
+<tr><td>Open positions · 12</td><td>Active positions grid</td><td>Default selected tab.</td></tr>
+<tr><td>Open orders · 5</td><td>Pending limit orders</td><td>Switches table content.</td></tr>
+<tr><td>View all →</td><td>Full overlay</td><td>Opens positions-page overlay showing all 12 positions with expanded table and filters.</td></tr>
+<tr><td>Live prices</td><td>Green dot indicator</td><td>Indicates real-time price feed is active. No click action.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Columns</h3>
+<div class="tbl"><table>
+<tr><th style="width:18%">Column</th><th>Content</th><th>Notes</th></tr>
+<tr><td>Market</td><td>Left accent bar (green=profitable, red=loss) + market name + sport tag</td><td>Accent color reflects current P&amp;L direction.</td></tr>
+<tr><td>Outcome</td><td>Outcome pill (YES / NO / named / O/U label)</td><td>No fill, colored border only. Named outcomes in plain text.</td></tr>
+<tr><td>Avg Entry</td><td><code>0.58</code></td><td>Average price across all fills for this position.</td></tr>
+<tr><td>Mkt Price</td><td><code>0.64 ↑</code> colored</td><td>Current best market price. Arrow indicates direction vs entry. Green if above entry, red if below.</td></tr>
+<tr><td>Shares</td><td><code>8,620</code></td><td>Total shares held.</td></tr>
+<tr><td>Cost</td><td><code>$5,000</code></td><td>Total cost basis = avg entry × shares.</td></tr>
+<tr><td>P&amp;L</td><td><code>+$420</code> stacked above <code>+8.4%</code></td><td>Unrealized. Dollar amount on top, % return below it in a flex column. Both colored green / red. Gives breathing room between Cost and P&amp;L columns.</td></tr>
+<tr><td>Close button</td><td>Ghost red button</td><td>Click → opens Close Position modal for this row.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Row interactions</h3>
+<div class="tbl"><table>
+<tr><th>Action</th><th>Result</th></tr>
+<tr><td>Click row (anywhere except Close)</td><td>Opens Position Drawer on right side.</td></tr>
+<tr><td>Click Close</td><td>Opens Close Position modal. Propagation stopped. Does not trigger drawer.</td></tr>
+</table></div>
+</div>
+
+<!-- 08 OPEN ORDERS TABLE -->
+<div id="s8">
+<h2><span class="sec-num">08</span>Open Orders Table</h2>
+<h3><div class="h3-dot"></div>Columns (single header row, no per-row labels)</h3>
+<div class="tbl"><table>
+<tr><th style="width:18%">Column</th><th>Content</th><th>Notes</th></tr>
+<tr><td>Market</td><td>Market name + sport tag + order type badge</td><td>Order type badge shows direction + type + expiry: <code>BUY · LIMIT · GTC</code> or <code>SELL · LIMIT · GTC</code>. BUY in gold, SELL in red.</td></tr>
+<tr><td>Outcome</td><td>Outcome pill</td><td>Same pill style as positions table.</td></tr>
+<tr><td>Limit</td><td><code>0.48</code></td><td>Target fill price. Plain white (t1), no color coding by direction.</td></tr>
+<tr><td>Mkt price</td><td><code>0.44</code> muted</td><td>Current best market price, for reference. Muted (t3), no color coding by direction. Helps trader see the gap between limit and where the market currently sits.</td></tr>
+<tr><td>Shares</td><td><code>5,000</code></td><td>Shares requested.</td></tr>
+<tr><td>Total</td><td><code>$2,400</code></td><td>Total order value = limit x shares.</td></tr>
+<tr><td>Filled</td><td><code>$864 · 60%</code> or <code>--</code></td><td>Amount filled + % completion. Shows <code>--</code> (muted) when unfilled.</td></tr>
+<tr><td>Placed</td><td><code>2h ago</code> muted</td><td>Relative time since order placement.</td></tr>
+<tr><td>Modify</td><td>Ghost gold button, left of Cancel</td><td>Opens Modify Order modal. Lets trader change limit price and/or shares on the unfilled portion. Does not modify inline.</td></tr>
+<tr><td>Cancel</td><td>Ghost red button</td><td>Opens Cancel Order modal. Does not cancel inline.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Direction badges</h3>
+<div class="tbl"><table>
+<tr><th style="width:30%">Badge prefix</th><th>Color</th><th>When shown</th></tr>
+<tr><td><code>BUY</code></td><td>Gold</td><td>Open buy orders: entering a new position.</td></tr>
+<tr><td><code>SELL</code></td><td>Red</td><td>Open sell orders: limit close placed on an existing position.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Order type badge formats</h3>
+<div class="tbl"><table>
+<tr><th>Badge text</th><th>Meaning</th></tr>
+<tr><td><code>BUY · LIMIT · GTC</code></td><td>Buy limit, Good Till Cancelled.</td></tr>
+<tr><td><code>BUY · LIMIT · GTD · Exp Jun 28</code></td><td>Buy limit, Good Till Date with explicit expiry.</td></tr>
+<tr><td><code>BUY · LIMIT · GTC · Partial fill</code></td><td>GTC buy with at least one partial fill so far.</td></tr>
+<tr><td><code>SELL · LIMIT · GTC</code></td><td>Limit close order. Created when user places a limit close from Close Position modal.</td></tr>
+<tr><td><code>SELL · LIMIT · GTC · Partial fill</code></td><td>Limit close with partial fill. Portion already sold; remainder still open.</td></tr>
+</table></div>
+</div>
+
+<!-- 09 EQUITY CURVE -->
+<div id="s9">
+<h2><span class="sec-num">09</span>Equity Curve</h2>
+<div class="tbl"><table>
+<tr><th style="width:22%">Element</th><th>Format / Behavior</th></tr>
+<tr><td>SVG</td><td><code>viewBox="0 0 580 160"</code>, 210px height, <code>preserveAspectRatio="none"</code>. Data spans x=20 to x=560 (20px padding each side). Line, fill, trade dots, cursor, snap dot all in one SVG.</td></tr>
+<tr><td>Period tabs</td><td>7d / 30d / 90d / All. Default 30d. Each tab calls <code>eqSetPeriod()</code> which redraws line+fill paths, repositions end dot, updates date labels, pct, and re-renders trade dots via <code>eqRenderDots()</code>.</td></tr>
+<tr><td>Trade dots</td><td>Colored circles placed directly ON the line at data vertex coordinates. Position is computed from <code>EQ_TRADE_PTS[period]</code> which maps each trade to a <code>ptIdx</code> in the current period's pts array. <code>vx = 20 + ptIdx * (540/(n-1))</code>, <code>cy = pts[ptIdx].y</code>. Dots are always on the line -- no hardcoded x positions. Green = WON, red = LOST.</td></tr>
+<tr><td>Same-date grouping</td><td>Multiple trades at the same pt index are spread vertically: <code>eqDotOffsets(n)</code> returns evenly spaced y offsets centered on the data point (e.g. 2 trades: -3px and +3px). A thin connector line links them. Hover on any dot in the group shows all trades stacked.</td></tr>
+<tr><td>Hover on dot</td><td>Shows trade card only: market name · WON/LOST badge · side · P&amp;L · CLV. No price data shown on dot hover.</td></tr>
+<tr><td>Hover on line</td><td>Dashed vertical cursor + snap dot on line. Tooltip shows: date · $ balance · % change from period start. No trade section unless cursor is on a dot.</td></tr>
+<tr><td>Date labels</td><td>5–7 short-form labels per period. Container has <code>padding:4px 3.5% 10px</code> to align with SVG 20px data padding. Updated on period switch via <code>appendChild</code>.</td></tr>
+<tr><td>Width</td><td>60% of analytics row (flex:3). Risk metrics 40% (flex:2).</td></tr>
+</table></div>
+</div>
+
+<!-- 10<!-- 10<!-- 10 RISK METRICS -->
+<div id="s10">
+<h2><span class="sec-num">10</span>Risk Metrics</h2>
+<div class="tbl"><table>
+<tr><th style="width:24%">Metric</th><th style="width:22%">Value (demo)</th><th>Definition</th></tr>
+<tr><td>Sharpe (90d)</td><td><code>3.87</code> green</td><td>Risk-adjusted return over 90 days. Above 1 is strong.</td></tr>
+<tr><td>Sortino</td><td><code>23.27</code> green</td><td>Like Sharpe but penalises downside volatility only.</td></tr>
+<tr><td>Max drawdown</td><td><code>-80.1%</code> red</td><td>Largest peak-to-trough decline in portfolio equity.</td></tr>
+<tr><td>VaR (95%)</td><td><code>$23</code> white</td><td>Maximum expected loss in a single day at 95% confidence.</td></tr>
+<tr><td>Largest position</td><td><code>$140,000</code> white</td><td>Cost basis of the largest single open position.</td></tr>
+<tr><td>Corr. cluster</td><td><code>1 watch</code> gold</td><td>Groups of positions with high market correlation. "watch" = review for concentration risk.</td></tr>
+</table></div>
+<p style="font-size:13px;color:#555;margin-top:-8px">All six rows have info (i) tooltips. Width = 40% of the analytics row panel (flex:2).</p>
+</div>
+
+<!-- 11 TRADE HISTORY -->
+<div id="s11">
+<h2><span class="sec-num">11</span>Trade History</h2>
+<div class="callout callout-grey"><div class="callout-title">Section label</div>A red-colored "HISTORY" eyebrow label sits in the same row as the tab strip (Trades / Activity / Deposits), separated by a pipe divider. Mirrors the "Open Book" green label pattern. The HISTORY label uses <code>--neg</code> red; Open Book uses <code>--pos</code> green. Both labels are non-clickable. Filter pills and search bar are only shown on the Trades tab.</div>
+<h3><div class="h3-dot"></div>Tabs</h3>
+<div class="tbl"><table>
+<tr><th>Tab</th><th>Content</th></tr>
+<tr><td>Trades</td><td>All settled positions (won + lost). Default tab. Shows stream filter pills (All / FIFA WC / UCL / NBA / Esports / Tennis) + search input above the table.</td></tr>
+<tr><td>Activity</td><td>All order activity: fills, cancels, deposits. No filter or search controls.</td></tr>
+<tr><td>Deposits</td><td>Deposit and withdrawal history only. No filter or search controls.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Trades columns</h3>
+<div class="tbl"><table>
+<tr><th style="width:20%">Column</th><th>Content</th><th>Notes</th></tr>
+<tr><td>Date</td><td><code>Apr 7</code></td><td>Settlement date.</td></tr>
+<tr><td>Market</td><td>Market name + sport tag</td><td>Full market name, truncates on overflow.</td></tr>
+<tr><td>Outcome</td><td>Named or YES/NO pill</td><td>Side traded. Named outcome shown as plain t1 text. YES/NO as labeled border pill.</td></tr>
+<tr><td>Entry [CLV¢]</td><td><code>0.42</code> stacked with <code>+19.0¢</code></td><td>Avg entry price. CLV in cents below it, colored green/red.</td></tr>
+<tr><td>Avg exit</td><td><code>1.00</code></td><td>Average exit price (0 if lost, 1.00 if won outright).</td></tr>
+<tr><td>Shares</td><td><code>4,762</code></td><td>Total shares traded.</td></tr>
+<tr><td>Cost</td><td><code>$2,000</code></td><td>Total cost basis.</td></tr>
+<tr><td>Result</td><td><code>WON</code> / <code>LOST</code> badge</td><td>WON = white border badge. LOST = red border badge.</td></tr>
+<tr><td>Payout + P&amp;L</td><td><code>$4,762</code> stacked with <code>+$2,762 +138%</code></td><td>Gross payout above. Net P&amp;L + % return below. Colored pos/neg.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Sort options</h3>
+<div class="tbl"><table>
+<tr><th>Sort</th><th>Order</th></tr>
+<tr><td>Date</td><td>Most recent first.</td></tr>
+<tr><td>P&amp;L</td><td>Highest P&amp;L first.</td></tr>
+<tr><td>Cost</td><td>Largest cost basis first.</td></tr>
+<tr><td>CLV</td><td>Highest CLV first.</td></tr>
+<tr><td>Result</td><td>WON rows before LOST rows.</td></tr>
+</table></div>
+</div>
+
+<!-- 12 POSITION DRAWER -->
+<div id="s12">
+<h2><span class="sec-num">12</span>Position Drawer</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Slides in from right (380px). Triggered by clicking any position row. Close via × or clicking outside.</p>
+<h3><div class="h3-dot"></div>Header</h3>
+<div class="tbl"><table>
+<tr><th style="width:24%">Element</th><th>Content / Behavior</th></tr>
+<tr><td>Eyebrow</td><td>League · Platform (e.g. "FIFA WC 2026 · Polymarket")</td></tr>
+<tr><td>Market name</td><td>Full market name, bold.</td></tr>
+<tr><td>Subtitle</td><td>Resolution date or event subtitle.</td></tr>
+<tr><td>Share button</td><td>Top-right. 30×30px, gold border, share icon. Click → opens Position share card modal.</td></tr>
+<tr><td>Close (×)</td><td>Top-right adjacent to share. Click → closes drawer.</td></tr>
+</table></div>
+<h3><div class="h3-dot"></div>Body fields</h3>
+<div class="tbl"><table>
+<tr><th style="width:24%">Field</th><th style="width:28%">Format</th><th>Definition</th></tr>
+<tr><td>Live price</td><td><code>0.64</code> large gold</td><td>Current best market price. Updates live.</td></tr>
+<tr><td>Fair value</td><td><code>0.61 model</code></td><td>Model-derived fair probability. "model" label in muted text.</td></tr>
+<tr><td>Side</td><td>YES / NO / named outcome</td><td>Which side of the market is held.</td></tr>
+<tr><td>Avg entry</td><td><code>0.58</code></td><td>Average fill price.</td></tr>
+<tr><td>Shares</td><td><code>8,620</code></td><td>Total shares held.</td></tr>
+<tr><td>Cost</td><td><code>$5,000</code></td><td>Total cost basis.</td></tr>
+<tr><td>Unrealized P&amp;L</td><td><code>+$520 +10.4%</code></td><td>Mark-to-market. Colored.</td></tr>
+<tr><td>CLV</td><td><code>+6.8¢</code></td><td>Closing line value in cents. Colored.</td></tr>
+<tr><td>Fills</td><td><code>2 orders</code></td><td>Count of fill events.</td></tr>
+<tr><td>Order fills list</td><td>Price · Shares · Time per fill</td><td>Each fill shown as a row below the count.</td></tr>
+</table></div>
+<h3><div class="h3-dot"></div>Bottom actions</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Button</th><th style="width:22%">Style</th><th>Behavior</th></tr>
+<tr><td>Close position</td><td>Gold primary CTA</td><td>Closes drawer, opens Close Position modal for this position.</td></tr>
+<tr><td>Open in terminal →</td><td>Ghost secondary</td><td>Navigates to the market in the terminal intelligence pane. Opens the market's full trading view.</td></tr>
+</table></div>
+</div>
+
+<!-- 13 CLOSE POSITION MODAL -->
+<div id="s13">
+<h2><span class="sec-num">13</span>Close Position Modal</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">385px wide. Triggered from drawer CTA or row Close button.</p>
+<h3><div class="h3-dot"></div>Header</h3>
+<div class="tbl"><table>
+<tr><th>Element</th><th>Content</th></tr>
+<tr><td>Title</td><td>"Close position"</td></tr>
+<tr><td>Subtitle</td><td>Market name · Polymarket</td></tr>
+<tr><td>Outcome pills</td><td>Named outcome pill + YES/NO pill (below subtitle, not in header right). Wraps if long.</td></tr>
+<tr><td>Close (X)</td><td>Top-right. Closes modal.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Mode toggles</h3>
+<div class="tbl"><table>
+<tr><th>Toggle</th><th>Options</th><th>Default</th></tr>
+<tr><td>Close type</td><td>Full close / Partial close</td><td>Full close</td></tr>
+<tr><td>Order type</td><td>Market / Limit</td><td>Market</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Market close: fields</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Row</th><th>Value</th></tr>
+<tr><td>Avg entry</td><td>Average fill price of the position.</td></tr>
+<tr><td>Market price</td><td>Current best bid (for closing a long).</td></tr>
+<tr><td>Shares</td><td>Total shares (full close) or slider-determined amount (partial close).</td></tr>
+<tr><td>Cost basis</td><td>Original cost of shares being closed.</td></tr>
+<tr><td>Est. proceeds</td><td>Shares × current market price.</td></tr>
+<tr><td>P&amp;L if closed</td><td>Est. proceeds − cost basis. Large colored text.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Limit close: fields</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Behavior</th></tr>
+<tr><td>Limit close price input</td><td>Number input with − / + stepper (0.01 increments). Shows current market price as reference hint below: "Market price: 0.64".</td></tr>
+<tr><td>If filled at [price] preview</td><td>Updates live as price changes. Shows: Shares · Cost basis · Proceeds · P&amp;L (colored).</td></tr>
+<tr><td>Confirm button</td><td>"Place limit close at [price]". Places a limit sell order. Does not execute immediately.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Partial close: additional elements</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Behavior</th></tr>
+<tr><td>Slider</td><td>1–100% range. Controls what % of position to close. Label shows: "50% · 4,310 shares".</td></tr>
+<tr><td>Quick buttons</td><td>25% / 50% / 75% / 100% presets. Active state highlighted.</td></tr>
+<tr><td>Summary tiles</td><td>Closing ($) · Proceeds ($) · P&amp;L ($). Updates with slider.</td></tr>
+<tr><td>Remaining</td><td>Shows cost and shares remaining after close: "Remaining: $2,500 · 4,310 shares".</td></tr>
+<tr><td>Confirm button</td><td>"Confirm close [N]% at market" or "Place limit close at [price]" depending on order type.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Actions and post-execution flows</h3>
+<div class="tbl"><table>
+<tr><th style="width:30%">Button / action</th><th>Post-action outcome</th></tr>
+<tr><td>Confirm full close at market</td><td>Closes modal. Opens Trade Detail Modal populated with execution summary: exit price received, realized P&L, CLV, share button. Title becomes "Position closed".</td></tr>
+<tr><td>Confirm close X% at market</td><td>Same as above for the partial share count.</td></tr>
+<tr><td>Place limit close at [price]</td><td>Closes modal. Opens Limit Order Placed modal confirming the SELL limit order. Order appears in Open Orders as <code>SELL · LIMIT · GTC</code>.</td></tr>
+<tr><td>Place limit close X% at [price]</td><td>Same as above for partial share count. Order type badge shows <code>SELL · LIMIT · GTC · X% of position</code>.</td></tr>
+<tr><td>Cancel</td><td>Closes modal without action.</td></tr>
+</table></div>
+<p style="font-size:12px;color:#888;margin-top:8px">Market order footer: "Market order · fills immediately at best available price · minor slippage may apply"</p>
+</div>
+
+
+<!-- POST-ACTION FLOWS -->
+<div id="s13b">
+<h2><span class="sec-num">13b</span>Post-Action Flows</h2>
+
+<h3><div class="h3-dot"></div>Market close: execution summary (Trade Detail Modal)</h3>
+<p style="font-size:13px;color:#555;margin-bottom:10px">Reuses the Trade Detail Modal. Opened automatically after market close confirms. Same structure as clicking a trade history row.</p>
+<div class="tbl"><table>
+<tr><th style="width:26%">Field</th><th>Value</th></tr>
+<tr><td>Title</td><td>Market name</td></tr>
+<tr><td>Subtitle</td><td>"Closed just now · Polymarket"</td></tr>
+<tr><td>Badge</td><td>WON (white border) if P&amp;L positive, LOST (red border) if negative</td></tr>
+<tr><td>P&amp;L hero</td><td>Realized P&amp;L from the close. Large colored figure + % return.</td></tr>
+<tr><td>Side</td><td>Outcome held (YES / NO / named)</td></tr>
+<tr><td>Avg entry</td><td>Original entry price</td></tr>
+<tr><td>Avg exit</td><td>Market price received at fill</td></tr>
+<tr><td>Shares</td><td>Shares closed</td></tr>
+<tr><td>Cost basis</td><td>Cost of shares closed</td></tr>
+<tr><td>CLV achieved</td><td>CLV in cents, colored</td></tr>
+<tr><td>Share button</td><td>Full-width gold border row. Opens trade share card.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Limit close: order placed modal</h3>
+<p style="font-size:13px;color:#555;margin-bottom:10px">New modal. Opened after "Place limit close at [price]" confirms. Gold gradient top bar (2px).</p>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content</th></tr>
+<tr><td>Title</td><td>"Limit sell order placed"</td></tr>
+<tr><td>Market name</td><td>Full market name</td></tr>
+<tr><td>Badges</td><td>SELL badge (red) + outcome pill + sport tag</td></tr>
+<tr><td>Limit price</td><td>The price entered in the close modal. Gold.</td></tr>
+<tr><td>Shares</td><td>Shares to be sold</td></tr>
+<tr><td>Total if filled</td><td>Limit price x shares. Green.</td></tr>
+<tr><td>Order type</td><td><code>SELL · LIMIT · GTC</code> (or with partial % suffix)</td></tr>
+<tr><td>Info note</td><td>"Will execute when market price reaches [price]. Visible in Open Orders. No further action needed until filled."</td></tr>
+<tr><td>Done</td><td>Gold border CTA. Closes modal.</td></tr>
+<tr><td>View Open Orders</td><td>Ghost secondary. Closes modal, switches to Open Orders tab.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Cancel order: toast</h3>
+<p style="font-size:13px;color:#555;margin-bottom:10px">Bottom-right toast. Auto-dismisses after 3.5s. No user action required.</p>
+<div class="tbl"><table>
+<tr><th style="width:26%">Scenario</th><th>Toast text</th></tr>
+<tr><td>Unfilled cancel (BUY or SELL)</td><td>Title: "Order cancelled" · Sub: market name</td></tr>
+<tr><td>Partial fill cancel (BUY)</td><td>Title: "Remaining order cancelled" · Sub: "[N] shares cancelled · filled shares remain as open position"</td></tr>
+<tr><td>Partial fill cancel (SELL)</td><td>Title: "Remaining sell order cancelled" · Sub: "Already sold shares have settled. [N] unfilled shares cancelled."</td></tr>
+</table></div>
+</div>
+
+<!-- CANCEL ORDER MODAL -->
+<div id="s13c">
+<h2><span class="sec-num">13c</span>Cancel Order Modal</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Opened by clicking Cancel on any order row. Red gradient top bar (2px). Backdrop click or x closes. Two states based on fill status.</p>
+
+<h3><div class="h3-dot"></div>Common elements (both states)</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content</th></tr>
+<tr><td>Title</td><td>"Cancel order" / "Cancel sell order" / "Cancel remaining order" / "Cancel remaining sell order" - based on direction and fill state</td></tr>
+<tr><td>Market name</td><td>Full market name</td></tr>
+<tr><td>Tags</td><td>Sport tag pill + outcome pill + order type string</td></tr>
+<tr><td>Limit price</td><td>Plain white (t1), no color coding by direction.</td></tr>
+<tr><td>Shares</td><td>Total shares in the order</td></tr>
+<tr><td>Total value</td><td>Limit x shares</td></tr>
+<tr><td>Placed</td><td>Relative time</td></tr>
+<tr><td>Keep order</td><td>Ghost button. Closes modal, no action.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Unfilled state</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content</th></tr>
+<tr><td>CTA</td><td>"Cancel order" red primary</td></tr>
+<tr><td>Footer note</td><td>"Order will be fully cancelled. No funds have been reserved."</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Partial fill state</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content</th></tr>
+<tr><td>Fill status band</td><td>Filled so far: amount + shares + % (green). To be cancelled: amount + shares + % (red).</td></tr>
+<tr><td>Warning</td><td>BUY: "Filled shares ([N]) will remain as an open position. Only the remaining [N] unfilled shares will be cancelled." SELL: "Already sold shares ([N]) have settled. Only remaining [N] unfilled shares will be cancelled."</td></tr>
+<tr><td>CTA</td><td>"Cancel remaining" red primary</td></tr>
+<tr><td>Footer note</td><td>BUY: "Filled portion becomes a position at [price] avg entry." SELL: "Already sold shares have settled at [price]."</td></tr>
+</table></div>
+</div>
+
+<!-- MODIFY ORDER MODAL -->
+<div id="s13d">
+<h2><span class="sec-num">13d</span>Modify Order Modal</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Opened by clicking Modify on any order row. Gold gradient top bar (2px), matching the limit-order placed modal. Backdrop click or x closes without saving.</p>
+
+<h3><div class="h3-dot"></div>Header</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content</th></tr>
+<tr><td>Title</td><td>"Modify order" / "Modify sell order" based on direction</td></tr>
+<tr><td>Market name</td><td>Full market name</td></tr>
+<tr><td>Tags</td><td>Sport tag pill + outcome pill + order type string</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Editable fields</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Field</th><th>Content</th></tr>
+<tr><td>Limit price</td><td>Numeric input, prefilled with current limit. Label shows original value ("was 0.48") for reference.</td></tr>
+<tr><td>Shares</td><td>Numeric input. Unfilled order: prefilled with the full order shares, label "Shares" + "was [N]". Partial fill: prefilled with only the remaining unfilled shares (not the original order size), label changes to "Shares (unfilled portion)" + "was [remaining N]". Filled shares already settled are untouched either way.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Balance impact preview</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content</th></tr>
+<tr><td>New total value</td><td>Live recalculation: new limit price x new shares. Updates as the trader types.</td></tr>
+<tr><td>Balance impact (BUY)</td><td>Compares new total against the amount currently reserved. Unfilled order: baseline is the full original total. Partial fill: baseline is only the value of the remaining unfilled shares, since that is the only amount still reserved. If new total &gt; baseline: "Additional balance reserved" in red, showing the extra amount that gets locked. If new total &lt; baseline: "Balance released" in green, showing the amount returned to available balance. If unchanged: "$0".</td></tr>
+<tr><td>Balance impact (SELL)</td><td>"No balance impact" - sell orders reserve shares, not cash, so modifying price or size does not touch the cash balance.</td></tr>
+<tr><td>Note</td><td>Unfilled: "Modifying replaces the existing order. Balance reserved for the original order is released and the new amount is reserved instead." Partial fill: "Filled shares ([N]) are unaffected. Only the unfilled portion of this order is modified."</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Actions</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content</th></tr>
+<tr><td>Save changes</td><td>Gold primary button. Cancels the existing order and places a new one at the updated price/shares. Closes modal, shows "Order updated" toast with market name.</td></tr>
+<tr><td>Discard</td><td>Ghost button. Closes modal, no action.</td></tr>
+</table></div>
+<div class="callout callout-gold"><div class="callout-title">Mechanics</div>A modify is a cancel-and-replace under the hood, same as Polymarket's own order book. The trader never sees "cancel" language here since from their side it is one edit, but balance impact must reflect the full delta between old and new reserved amount, not just the new order in isolation.</div>
+</div>
+
+
+<div id="s14">
+<h2><span class="sec-num">14</span>Trade Detail Modal</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Opened by clicking a row in trade history. Read-only.</p>
+<div class="tbl"><table>
+<tr><th style="width:24%">Field</th><th>Content</th></tr>
+<tr><td>Header</td><td>Market name + WON / LOST badge + X close</td></tr>
+<tr><td>Subtitle</td><td>Settlement date · Polymarket</td></tr>
+<tr><td>Avg entry</td><td>Average fill price.</td></tr>
+<tr><td>Avg exit</td><td>Average exit price.</td></tr>
+<tr><td>Shares</td><td>Total shares traded.</td></tr>
+<tr><td>Cost</td><td>Total cost basis.</td></tr>
+<tr><td>Gross payout</td><td>Total received on settlement.</td></tr>
+<tr><td>Net P&amp;L</td><td>Payout − cost. Large colored.</td></tr>
+</table></div>
+</div>
+
+<!-- 15 VIEW ALL OVERLAY -->
+<div id="s15">
+<h2><span class="sec-num">15</span>View All Overlay</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Full-page overlay. Opens when "View all →" is clicked. Breadcrumb updates to Profile › Portfolio › Open Positions.</p>
+<div class="tbl"><table>
+<tr><th style="width:22%">Element</th><th>Behavior</th></tr>
+<tr><td>KPI strip</td><td>Total Open · Total Exposure · Total Unrealized P&amp;L · Largest Position (4 tiles).</td></tr>
+<tr><td>Tabs</td><td>Open Positions / Open Orders. Switches section visibility. Order tab shows count of 5.</td></tr>
+<tr><td>Filter bar (positions)</td><td>All 12 · sport-specific filters. Filters rows by sport tag.</td></tr>
+<tr><td>Search (positions)</td><td>Text input inline left of Sort pill. Filters rows by market name in real time.</td></tr>
+<tr><td>Sort (positions)</td><td>P&amp;L (always descending) / Cost / Avg entry / Mkt price / Recent / Oldest.</td></tr>
+<tr><td>Filter bar (orders)</td><td>All 5 · league filters. Filters by sport tag on the order.</td></tr>
+<tr><td>Sort (orders)</td><td>Recent / Total value / Limit / Filled.</td></tr>
+<tr><td>Positions table</td><td>Same columns as portfolio page positions table. All 12 rows shown.</td></tr>
+<tr><td>Orders table</td><td>Same header+grid format as portfolio page orders table.</td></tr>
+<tr><td>Footer</td><td>Summary: "All 12 positions · $31,640 deployed · +$1,872 unrealized" (positions) or "5 orders · $43,650 total · $15,264 filled" (orders).</td></tr>
+<tr><td>Close</td><td>Click outside overlay or navigate breadcrumb "Portfolio".</td></tr>
+</table></div>
+</div>
+
+<!-- 16 PUBLIC PROFILE -->
+<div id="s16">
+<h2><span class="sec-num">16</span>Public Profile Overlay</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Opens when "View as public" is clicked. Shows what other users see at the trader's public URL.</p>
+<div class="tbl"><table>
+<tr><th style="width:24%">Element</th><th>Behavior</th></tr>
+<tr><td>Preview banner</td><td>Yellow bar at top: "Viewing as public · this is your public profile".</td></tr>
+<tr><td>Avatar + alias</td><td>Initials avatar + DG3 alias (dg3_alias_table lookup) + wallet address short. No venue tag shown.</td></tr>
+<tr><td>Public stats</td><td>Win rate · Avg CLV · Total P&amp;L (realized). Same definitions as KPI strip.</td></tr>
+<tr><td>Positions tab</td><td>Shows open positions with balance masked. P&amp;L column stacks $ amount above % return (same as main positions table). Search input above table filters by market name.</td></tr>
+<tr><td>Closed positions tab</td><td>Settled trade history visible publicly. Search input above table filters by market name.</td></tr>
+<tr><td>Share profile</td><td>Opens profile share card modal as overlay over the page.</td></tr>
+<tr><td>Click-outside close</td><td>Clicking the dark backdrop outside the modal closes both the public profile overlay and share card modals.</td></tr>
+<tr><td>LISTED toggle</td><td>In breadcrumb. Controls searchability only. Does not affect what is visible on public URL.</td></tr>
+</table></div>
+</div>
+
+<!-- 17 SHARE CARDS -->
+<div id="s17">
+<h2><span class="sec-num">17</span>Share Cards</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Three card types. All share the same modal shell. Cards are designed for screenshot + Share on X (primary CTA).</p>
+<div class="callout callout-grey"><div class="callout-title">Meta line</div>The context line below the badge shows league/event only. "Polymarket" and "Open position" are stripped from the displayed string. Example: "NBA Playoffs · Game 4 · Resolves Apr 28, 2026" not "NBA Playoffs · Polymarket · Open position".</div>
+<div class="callout callout-grey"><div class="callout-title">Modal behavior</div>Share card modals render as a fixed overlay above the current page with a semi-transparent backdrop (rgba 0,0,0,0.45). Clicking the backdrop or pressing Escape closes the modal. Both trade share and profile share modals are placed outside the main app container in the DOM so position:fixed renders correctly at all times.</div>
+
+<h3><div class="h3-dot"></div>Card anatomy (all types)</h3>
+<div class="tbl"><table>
+<tr><th style="width:20%">Zone</th><th>Content</th></tr>
+<tr><td>Logo</td><td>DG3 wordmark (<code>&gt;|DG3</code>) single SVG text element at top-left. Left edge flush with the WON/OPEN badge and market name below it.</td></tr>
+<tr><td>Result badge + meta</td><td>WON / LOST / OPEN badge + settlement date or context string, same row. Badge and date share a left column; sport tag pinned top-right.</td></tr>
+<tr><td>Market name</td><td>Full market question, 16px bold. Sits below logo + badge row, full width.</td></tr>
+<tr><td>Outcome</td><td>YES/NO or named outcome pill.</td></tr>
+<tr><td>Stats grid</td><td>3–4 stat cells. Each: label (9px uppercase) + value (20px bold).</td></tr>
+<tr><td>Footer</td><td>DG3 URL (dg3.trade) muted right.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Trade share card</h3>
+<div class="tbl"><table>
+<tr><th>Stat</th><th>Value</th></tr>
+<tr><td>Entry → Exit</td><td>e.g. <code>0.42 → 1.00</code></td></tr>
+<tr><td>CLV</td><td>e.g. <code>+19.0¢</code></td></tr>
+<tr><td>Shares</td><td>e.g. <code>4,762</code></td></tr>
+<tr><td>Net P&amp;L</td><td>e.g. <code>+$2,762</code> colored</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Position share card</h3>
+<div class="tbl"><table>
+<tr><th>Stat</th><th>Value</th></tr>
+<tr><td>Entry → Now</td><td>e.g. <code>0.52 → 0.58</code> (live price, not exit)</td></tr>
+<tr><td>CLV</td><td>e.g. <code>+6.8¢</code></td></tr>
+<tr><td>Shares</td><td>e.g. <code>6,154</code></td></tr>
+<tr><td>Unrealized P&amp;L</td><td>e.g. <code>+$369</code> colored</td></tr>
+</table></div>
+<p style="font-size:12px;color:#888;margin-top:6px">Position cards show badge "OPEN" (green). Trade cards show "WON" (white) or "LOST" (red).</p>
+
+<h3><div class="h3-dot"></div>Profile share card</h3>
+<div class="tbl"><table>
+<tr><th>Stat</th><th>Value</th></tr>
+<tr><td>Win rate</td><td>e.g. <code>54.8%</code></td></tr>
+<tr><td>Avg CLV</td><td>e.g. <code>+3.2¢</code></td></tr>
+<tr><td>Total P&amp;L</td><td>e.g. <code>+$6,420</code></td></tr>
+<tr><td>Total volume</td><td>e.g. <code>$142k</code></td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Share modal actions</h3>
+<div class="tbl"><table>
+<tr><th>Button</th><th>Style</th><th>Action</th></tr>
+<tr><td>Share on X</td><td>Gold primary (most prominent)</td><td>Opens Twitter intent URL with pre-filled text + share card URL.</td></tr>
+<tr><td>Copy image</td><td>Muted grey secondary</td><td>Copies card as image to clipboard.</td></tr>
+<tr><td>Copy link</td><td>Tertiary / ghost</td><td>Copies share card URL to clipboard. Button text changes to "Copied!" for 1.8s.</td></tr>
+</table></div>
+</div>
+
+<!-- 18 SHARE CARD URLS -->
+<div id="s18">
+<h2><span class="sec-num">18</span>Share Card URLs</h2>
+<div class="tbl"><table>
+<tr><th style="width:24%">Type</th><th>Opens</th></tr>
+<tr><td>Trade share</td><td>Terminal (<code>dg3.trade/terminal</code>). Trade is settled so market is read-only in context.</td></tr>
+<tr><td>Position share</td><td>Uses the existing market URL (same as terminal deck URL for that market). Market is still live; viewer can trade it.</td></tr>
+<tr><td>Profile share</td><td>Public profile page directly. No terminal involved.</td></tr>
+</table></div>
+<div class="callout callout-grey"><div class="callout-title">Server-side rendering</div>All share URLs require server-side og:image rendering (S3 + SSR) for Twitter/X link preview unfurl.</div>
+
+<h3><div class="h3-dot"></div>X (Twitter) intent format</h3>
+<div class="tbl"><table>
+<tr><th>Type</th><th>Pre-filled tweet text</th></tr>
+<tr><td>Trade (WON)</td><td>"Just settled: [Market name] · [Outcome] · +$[P&amp;L] on [Shares] shares. @dg3_terminal"</td></tr>
+<tr><td>Position</td><td>"Live position: [Market name] · [Outcome] · up [P&amp;L]% · entry [price]. @dg3_terminal"</td></tr>
+<tr><td>Profile</td><td>"My DG3 profile: [Win rate] win rate, [Avg CLV] avg CLV across [N] predictions. @dg3_terminal"</td></tr>
+</table></div>
+</div>
+
+<!-- 19 ASSETS & ICONS -->
+<div id="s19">
+<h2><span class="sec-num">19</span>Assets &amp; Icons</h2>
+
+<div class="asset-grid">
+
+  <div class="asset-card">
+    <div class="asset-prev">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 64" width="90" height="32">
+        <g font-family="'JetBrains Mono',monospace" font-weight="700" text-rendering="geometricPrecision">
+          <text x="4" y="34.5" font-size="20" dominant-baseline="central" fill="#CDBD70">&gt;</text>
+          <rect x="18" y="22" width="3" height="25" fill="#CDBD70" rx="0.5"/>
+          <text x="29" y="47" font-size="34" font-weight="700" letter-spacing="0"><tspan fill="#F5F2E8">DG</tspan><tspan font-weight="800" fill="#CDBD70">3</tspan></text>
+        </g>
+      </svg>
+    </div>
+    <div class="asset-meta">
+      <div class="asset-name">DG3 Wordmark</div>
+      <div class="asset-usage">Share cards, headers, brand placements</div>
+      <a class="asset-dl" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%2064%22%3E%3Cg%20font-family%3D%22'JetBrains%20Mono'%2Cmonospace%22%20font-weight%3D%22700%22%3E%3Ctext%20x%3D%224%22%20y%3D%2234.5%22%20font-size%3D%2220%22%20dominant-baseline%3D%22central%22%20fill%3D%22%23CDBD70%22%3E%3E%3C/text%3E%3Crect%20x%3D%2218%22%20y%3D%2222%22%20width%3D%223%22%20height%3D%2225%22%20fill%3D%22%23CDBD70%22%20rx%3D%220.5%22/%3E%3Ctext%20x%3D%2229%22%20y%3D%2247%22%20font-size%3D%2234%22%20font-weight%3D%22700%22%3E%3Ctspan%20fill%3D%22%23F5F2E8%22%3EDG%3C/tspan%3E%3Ctspan%20font-weight%3D%22800%22%20fill%3D%22%23CDBD70%22%3E3%3C/tspan%3E%3C/text%3E%3C/g%3E%3C/svg%3E" download="dg3-wordmark.svg">↓ SVG</a>
+    </div>
+  </div>
+
+  <div class="asset-card">
+    <div class="asset-prev">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#F5F2E8"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </div>
+    <div class="asset-meta">
+      <div class="asset-name">X (Twitter) Icon</div>
+      <div class="asset-usage">Share on X button in share cards</div>
+      <a class="asset-dl" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23F5F2E8%22%3E%3Cpath%20d%3D%22M18.244%202.25h3.308l-7.227%208.26%208.502%2011.24H16.17l-4.714-6.231-5.401%206.231H2.744l7.73-8.835L1.254%202.25H8.08l4.253%205.622zm-1.161%2017.52h1.833L7.084%204.126H5.117z%22/%3E%3C/svg%3E" download="x-icon.svg">↓ SVG</a>
+    </div>
+  </div>
+
+  <div class="asset-card">
+    <div class="asset-prev">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F2E8" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+    </div>
+    <div class="asset-meta">
+      <div class="asset-name">Link Icon</div>
+      <div class="asset-usage">Copy link button in share cards</div>
+      <a class="asset-dl" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23F5F2E8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M10%2013a5%205%200%200%200%207.54.54l3-3a5%205%200%200%200-7.07-7.07l-1.72%201.71%22/%3E%3Cpath%20d%3D%22M14%2011a5%205%200%200%200-7.54-.54l-3%203a5%205%200%200%200%207.07%207.07l1.71-1.71%22/%3E%3C/svg%3E" download="link-icon.svg">↓ SVG</a>
+    </div>
+  </div>
+
+  <div class="asset-card">
+    <div class="asset-prev">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F2E8" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    </div>
+    <div class="asset-meta">
+      <div class="asset-name">Image Icon</div>
+      <div class="asset-usage">Copy image button in share cards</div>
+      <a class="asset-dl" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23F5F2E8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2218%22%20height%3D%2218%22%20rx%3D%222%22/%3E%3Ccircle%20cx%3D%228.5%22%20cy%3D%228.5%22%20r%3D%221.5%22/%3E%3Cpolyline%20points%3D%2221%2015%2016%2010%205%2021%22/%3E%3C/svg%3E" download="image-icon.svg">↓ SVG</a>
+    </div>
+  </div>
+
+  <div class="asset-card">
+    <div class="asset-prev">
+      <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="#F5F2E8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3" r="1.5"/><circle cx="12" cy="13" r="1.5"/><circle cx="3" cy="8" r="1.5"/><path d="M4.5 7.1L10.5 4M4.5 8.9l6 3.1"/></svg>
+    </div>
+    <div class="asset-meta">
+      <div class="asset-name">Share Icon</div>
+      <div class="asset-usage">Share profile button, share icon in drawer header</div>
+      <a class="asset-dl" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20stroke%3D%22%23F5F2E8%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%223%22%20r%3D%221.5%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%221.5%22/%3E%3Ccircle%20cx%3D%223%22%20cy%3D%228%22%20r%3D%221.5%22/%3E%3Cpath%20d%3D%22M4.5%207.1L10.5%204M4.5%208.9l6%203.1%22/%3E%3C/svg%3E" download="share-icon.svg">↓ SVG</a>
+    </div>
+  </div>
+
+  <div class="asset-card">
+    <div class="asset-prev">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#F5F2E8" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"/></svg>
+    </div>
+    <div class="asset-meta">
+      <div class="asset-name">Close (×) Icon</div>
+      <div class="asset-usage">Modal close buttons, drawer close, overlay close</div>
+      <a class="asset-dl" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20stroke%3D%22%23F5F2E8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M1%201l12%2012M13%201L1%2013%22/%3E%3C/svg%3E" download="close-icon.svg">↓ SVG</a>
+    </div>
+  </div>
+
+</div>
+
+<h3><div class="h3-dot"></div>Sport stream color tokens</h3>
+<p style="font-size:13px;color:#555;margin-bottom:10px">Hardcoded for known high-volume streams. All other streams (additional sports, esports titles, new tournaments) receive a color assigned from the randomized palette below at runtime. Assignment is stable per stream slug for a session.</p>
+<div class="tbl"><table>
+<tr><th style="width:28%">Stream / Substream</th><th style="width:20%">CSS class</th><th style="width:20%">Color (hex)</th><th>Type</th></tr>
+<tr><td>FIFA / World Cup</td><td><code>cp-wc</code></td><td><code>#4A90D9</code> blue</td><td>Hardcoded</td></tr>
+<tr><td>UCL / Champions League</td><td><code>cp-ucl</code></td><td><code>#4CAF7D</code> green</td><td>Hardcoded</td></tr>
+<tr><td>NBA</td><td><code>cp-nba</code></td><td><code>#E05C5C</code> red</td><td>Hardcoded</td></tr>
+<tr><td>MLB</td><td><code>cp-nba</code> + override</td><td><code>#E5A07A</code> amber</td><td>Hardcoded</td></tr>
+<tr><td>Esports (known)</td><td><code>cp-esports</code></td><td><code>#B496DC</code> purple</td><td>Hardcoded</td></tr>
+<tr><td>Tennis (known)</td><td><code>cp-tennis</code></td><td><code>#CDBD70</code> gold</td><td>Hardcoded</td></tr>
+<tr><td>All other streams</td><td>Runtime assigned</td><td>See palette below</td><td>Randomized</td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Randomized color palette (for unmapped streams)</h3>
+<p style="font-size:13px;color:#555;margin-bottom:10px">Colors drawn from this set in rotation. Assignment is deterministic per stream slug within a session to avoid color flicker.</p>
+<div class="tbl"><table>
+<tr><th style="width:30%">Color</th><th>Hex</th></tr>
+<tr><td>Teal</td><td><code>#3EC6C6</code></td></tr>
+<tr><td>Orange</td><td><code>#E0935A</code></td></tr>
+<tr><td>Pink</td><td><code>#DC6FA0</code></td></tr>
+<tr><td>Indigo</td><td><code>#7C87DC</code></td></tr>
+<tr><td>Lime</td><td><code>#8DC44A</code></td></tr>
+<tr><td>Muted grey</td><td><code>#808080</code></td></tr>
+</table></div>
+
+<h3><div class="h3-dot"></div>Outcome pill classes</h3>
+<div class="tbl"><table>
+<tr><th style="width:22%">Class</th><th style="width:22%">Renders as</th><th>Use case</th></tr>
+<tr><td><code>oc oc-y</code></td><td>YES · green border, green text</td><td>YES side on any market</td></tr>
+<tr><td><code>oc oc-n</code></td><td>NO · red border, red text</td><td>NO side on any market</td></tr>
+<tr><td><code>oc oc-over</code></td><td>O [value] · green border, green text</td><td>Over on totals markets</td></tr>
+<tr><td><code>oc oc-under</code></td><td>U [value] · amber border, amber text</td><td>Under on totals markets</td></tr>
+<tr><td><code>oc oc-named</code></td><td>Named text · plain t1, no border</td><td>Named outcome (e.g. "Argentina", "Vinicius")</td></tr>
+<tr><td><code>oc oc-draw</code></td><td>Draw · muted border, t2 text</td><td>Draw outcome</td></tr>
+</table></div>
+</div>
+
+<!-- 20 TOOLTIPS -->
+<div id="s20">
+<h2><span class="sec-num">20</span>Tooltips Reference</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">All tooltips triggered on hover of <code>i.ti</code> icons. Dark bg, gold border, 200px max-width, JetBrains Mono 11px.</p>
+<div class="tbl"><table>
+<tr><th style="width:26%">Location</th><th style="width:32%">Label</th><th>Tooltip text</th></tr>
+<tr><td>Balance card</td><td>Reserved</td><td>Cash locked in open BUY limit orders, not yet filled. Released back to Balance if the order is cancelled or modified down.</td></tr>
+<tr><td>KPI strip</td><td>Open Positions</td><td>Number of positions currently open.</td></tr>
+<tr><td>KPI strip</td><td>Total P&amp;L (Realized)</td><td>Total realized profit and loss across all settled positions.</td></tr>
+<tr><td>KPI strip</td><td>Win Rate</td><td>Percentage of settled positions that closed profitably.</td></tr>
+<tr><td>KPI strip</td><td>Avg CLV</td><td>Average closing line value. Positive = consistently buying at better prices than the closing market.</td></tr>
+<tr><td>Exposure panel</td><td>Exposure</td><td>Current USDC deployed by event category.</td></tr>
+<tr><td>Equity curve</td><td>Equity curve</td><td>Total portfolio balance over time including deposits and unrealized P&amp;L.</td></tr>
+<tr><td>Risk metrics</td><td>Sharpe (90d)</td><td>Risk-adjusted return over 90 days. Above 1 is strong.</td></tr>
+<tr><td>Risk metrics</td><td>Sortino</td><td>Like Sharpe but only penalises downside volatility.</td></tr>
+<tr><td>Risk metrics</td><td>Max drawdown</td><td>Largest peak-to-trough decline in portfolio equity.</td></tr>
+<tr><td>Risk metrics</td><td>VaR (95%)</td><td>Maximum expected loss in a single day at 95% confidence.</td></tr>
+<tr><td>Risk metrics</td><td>Largest position</td><td>Largest single open position by cost basis.</td></tr>
+<tr><td>Risk metrics</td><td>Corr. cluster</td><td>Groups of positions that may move together, amplifying risk.</td></tr>
+<tr><td>View all KPI</td><td>Total Open</td><td>Number of positions currently open.</td></tr>
+<tr><td>View all KPI</td><td>Total Exposure</td><td>Total USDC deployed across open positions.</td></tr>
+<tr><td>View all KPI</td><td>Total Unrealized P&amp;L</td><td>Unrealized gain or loss across all open positions at current market prices.</td></tr>
+<tr><td>View all KPI</td><td>Largest Position</td><td>Largest single position by cost basis.</td></tr>
+<tr><td>Public profile</td><td>Win rate</td><td>Percentage of settled positions that closed profitably.</td></tr>
+<tr><td>Public profile</td><td>Avg CLV</td><td>Average closing line value.</td></tr>
+<tr><td>Public profile</td><td>Total P&amp;L (Realized)</td><td>Total realized profit and loss across all settled trades.</td></tr>
+</table></div>
+</div>
+
+<!-- 21 METRICS & CALCULATIONS -->
+<div id="s21">
+<h2><span class="sec-num">21</span>Metrics &amp; Calculations</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Defines how every portfolio-level number is derived, and which order/position states feed into each one. Reference for engineering; no UI changes implied by this table alone.</p>
+<div class="tbl"><table>
+<tr><th style="width:18%">Metric</th><th style="width:38%">Calculation</th><th>Included / excluded</th></tr>
+<tr><td>Balance</td><td>Deposits - deployed - reserved + realized P&amp;L</td><td>Cash only. Excludes unrealized P&amp;L; an open position's paper gain is not spendable until it is closed or settles. This is the number used to determine what a trader can actually place new orders with.</td></tr>
+<tr><td>Reserved</td><td>Sum of (limit price x shares) across open BUY limit orders, unfilled portion only</td><td>Deducted from Balance the moment a BUY order is placed, not on fill. Released back to Balance if the order is cancelled or modified to a smaller amount. Never included in P&amp;L; it is a reservation, not a trade. SELL limit orders reserve shares, not cash, so they are excluded from this figure entirely.</td></tr>
+<tr><td>Deployed</td><td>Sum of cost basis (avg entry x shares) across open positions only</td><td>Excludes cash reserved for open orders. Open orders are pending, not deployed.</td></tr>
+<tr><td>Unrealized P&amp;L</td><td>(current market price - avg entry) x shares, summed across open positions</td><td>Open orders excluded entirely; they have no entry price yet, so no unrealized P&amp;L exists for them. Shown as its own line/KPI, never folded into Balance.</td></tr>
+<tr><td>Realized P&amp;L</td><td>(exit price - avg entry) x shares, summed across settled/closed positions</td><td>Only counted once a position is closed or a market settles. An order being placed, modified, or cancelled never generates P&amp;L.</td></tr>
+<tr><td>Win rate</td><td>Settled positions with P&amp;L &gt; 0 divided by total settled positions</td><td>Open positions and open orders excluded. Only finished trades count.</td></tr>
+<tr><td>Volume traded</td><td>Sum of cost basis across all trades, open + settled</td><td>Counted once an order fills and becomes a position. An unfilled or cancelled order contributes $0 volume.</td></tr>
+<tr><td>CLV</td><td>Closing line price - entry price, in cents, per outcome</td><td>Only meaningful for pre-match entries; in-play entries excluded from the average since CLV mechanically mirrors win/loss there. Open orders excluded; CLV needs a confirmed entry price.</td></tr>
+</table></div>
+<div class="callout callout-gold"><div class="callout-title">Core rule</div>An open order can change Balance and Reserved (BUY orders lock cash) but never changes Deployed, Unrealized P&amp;L, Realized P&amp;L, Win rate, or Volume. Those five only react to filled, open, or settled positions. Modifying or cancelling an order only ever moves the reservation between Balance and Reserved; it never touches P&amp;L. Unrealized P&amp;L is always informational and never added into Balance, even though both are shown on the same card.</div>
+</div>
+
+<div class="platform-divider" id="mobile-start"><div class="platform-badge pb-mob">&#9679; Mobile</div><span style="font-size:13px;color:#888;font-weight:500">iOS &amp; Android · 390px viewport · dg3.trade/portfolio</span></div>
+
+<div class="callout callout-blue" style="margin-top:16px"><div class="callout-title">Mobile design principles</div>Card-based layout replaces all tables. Actions surface through bottom sheets (not modals). No hover states. Minimum tap target 44px. Bottom navigation bar for global navigation. Positions, orders and history all scroll within the screen.</div>
+
+<!-- M01 LAYOUT -->
+<div id="m1">
+<div class="callout callout-gold"><div class="callout-title">Scrollbars (mobile)</div>Main page scroll uses gold (<code>#CDBD70</code>) 2px thumb. All other scrollbars hidden.</div>
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M01</span>Layout &amp; Bottom Navigation</h2>
+<div class="tbl"><table>
+<tr><th style="width:22%">Zone</th><th>Description</th></tr>
+<tr><td>Top bar (50px)</td><td>DG3 logo left · Balance + today delta center · Avatar (DC) right. Avatar tap opens profile share sheet.</td></tr>
+<tr><td>Visibility bar (36px)</td><td>Below top bar. Listed/Unlisted toggle left · Share icon + View public profile right. Always visible. Not scrollable.</td></tr>
+<tr><td>Scroll body</td><td>Full-width scrollable content below visibility bar. All sections stack vertically.</td></tr>
+<tr><td>Bottom nav (58px fixed)</td><td>4 tabs: Terminal · Portfolio (active) · Search · Profile. Gold color on active tab.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Visibility bar elements</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Behavior</th></tr>
+<tr><td>Listed toggle</td><td>Pill toggle switch. On = green fill + "LISTED" label. Off = muted + "UNLISTED". Controls profile searchability/discoverability only.</td></tr>
+<tr><td>Share icon</td><td>26x26px, gold border. Tap opens profile share sheet directly.</td></tr>
+<tr><td>View public profile →</td><td>Gold text link. Tap opens public profile full-screen overlay within device frame.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Bottom nav tabs</h3>
+<div class="tbl"><table>
+<tr><th>Tab</th><th>Icon</th><th>Destination</th></tr>
+<tr><td>Terminal</td><td>Grid 2x2</td><td>Main trading terminal.</td></tr>
+<tr><td>Portfolio</td><td>Bar chart</td><td>This screen. Always active on portfolio page.</td></tr>
+<tr><td>Search</td><td>Magnifier</td><td>Search markets and wallets.</td></tr>
+<tr><td>Profile</td><td>Person</td><td>User profile settings.</td></tr>
+</table></div>
+</div>
+
+<!-- M02 BALANCE & KPI -->
+<div id="m2">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M02</span>Balance &amp; KPI Strip</h2>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content</th><th>Notes</th></tr>
+<tr><td>Balance hero</td><td><code>$84,210</code> 36px mono</td><td>Most prominent element on screen.</td></tr>
+<tr><td>Delta row</td><td><code>+$2,140 today · +2.6%</code></td><td>Muted base text, delta value in green/red.</td></tr>
+<tr><td>Deposit / Withdraw</td><td>Two full-width buttons</td><td>Deposit = gold filled. Withdraw = ghost border.</td></tr>
+<tr><td>Deployed / Reserved / Unrealized</td><td>Three-column row below buttons</td><td>Secondary metrics. Deployed and Reserved show % of balance. Reserved reflects cash locked in open BUY limit orders; gold accent to distinguish from Deployed. Unrealized shown for context, not part of Balance (see s4 callout on web for full reasoning, applies identically on mobile).</td></tr>
+<tr><td>KPI chips (horizontal scroll)</td><td>P&amp;L · Win Rate · Avg CLV · Fill Speed · Volume</td><td>Horizontal scroll row. Each chip: label + value + sub-label. No grid -- user scrolls right for more.</td></tr>
+</table></div>
+</div>
+
+<!-- M03 EQUITY -->
+<div id="m3">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M03</span>Equity Curve</h2>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Behavior</th></tr>
+<tr><td>Header</td><td>Title + green P&amp;L percentage + period tabs (7d / 30d / 90d / All).</td></tr>
+<tr><td>Chart</td><td>Single green area chart. Full card width. No horizontal overflow. Dates (start/mid/end) sit flush below chart with consistent padding.</td></tr>
+<tr><td>Period tabs</td><td>Toggle chart data range. Active tab: gold background.</td></tr>
+</table></div>
+</div>
+
+<!-- M04 NOTE -->
+<div id="m4" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px 16px;margin-bottom:16px"><p style="font-size:12px;color:#8E8880"><strong style="color:#CDBD70">Exposure by Stream and Risk Metrics are web-only.</strong> Both sections are omitted on mobile. Mobile traders need to act on positions quickly -- these are analytical views suited to the desktop session.</p></div>
+
+<!-- M05 OPEN BOOK -->
+<div id="m5">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M05</span>History Tabs</h2>
+<p style="font-size:13px;color:#888;margin-bottom:12px">Sticky tab bar with <strong>4 tabs</strong> matching web exactly: <strong>Open Positions</strong> (green count badge) · <strong>Open Orders</strong> (muted count badge) · <strong>Closed Positions</strong> · <strong>Activity</strong>. Active tab: uppercase label + green underline. Tapping a tab swaps the full content panel below.</p>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Open Positions tab</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content / Behavior</th></tr>
+<tr><td>Search bar</td><td>Full-width search input above cards. Filters position cards by market name inline on keystroke.</td></tr>
+<tr><td>Position card accent</td><td>2px top border. Green if P&amp;L positive, red if negative.</td></tr>
+<tr><td>Market name</td><td>Full name, white. Wraps to 2 lines if needed.</td></tr>
+<tr><td>P&amp;L (top right)</td><td>Dollar amount stacked above percentage. Color coded green/red.</td></tr>
+<tr><td>Tags row</td><td>Stream tag pill + outcome pill (YES/NO/spread label).</td></tr>
+<tr><td>Stats strip</td><td>4-column grid: Entry · Price · Shares · Cost. Price colored green/red per direction.</td></tr>
+<tr><td>Tap behavior</td><td>Tap anywhere on card opens Position Detail sheet.</td></tr>
+<tr><td>Show more</td><td>"Showing 6 of 12 open positions · View all 12 →" row below last visible card. Tap reveals remaining cards inline. Label updates to "Showing all 12 open positions". No sheet, no navigation -- expands in place.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Open Orders tab</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content / Behavior</th></tr>
+<tr><td>Order card</td><td>Market name + Modify button (ghost) + Cancel button (red border) · stream tag + outcome pill + direction badge (BUY gold / SELL red) + LIMIT · GTC · 4-cell stats grid: Limit (plain white) · Mkt (muted, no color or arrow) · Total · Filled.</td></tr>
+<tr><td>Fill bar</td><td>2px green progress bar. Only shown on partially filled orders.</td></tr>
+<tr><td>Modify button</td><td>Tap opens Modify Order sheet for that order. Same fields and balance impact logic as web (see s13d).</td></tr>
+<tr><td>Cancel button</td><td>Tap opens Cancel Order sheet for that order.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Closed Positions tab</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content / Behavior</th></tr>
+<tr><td>Filter pills</td><td>Horizontal scroll strip: ALL · FIFA WC · UCL · NBA · Esports · Tennis. Active pill: white border + light fill.</td></tr>
+<tr><td>Search bar</td><td>Full-width search input. Filters trade cards by market name inline.</td></tr>
+<tr><td>Trade card</td><td>Market name + P&amp;L + WON/LOST badge + date + outcome pill + CLV inline.</td></tr>
+<tr><td>Tap behavior</td><td>Opens Trade Detail sheet.</td></tr>
+<tr><td>Show more</td><td>"Show more trades ↓" button below last visible card. Tap reveals next batch inline. Button disappears when all trades shown.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Activity tab</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content / Behavior</th></tr>
+<tr><td>Row format</td><td>Time · Action badge (WON/LOST/BUY/SELL) · Market name · Amount.</td></tr>
+<tr><td>Action badge colors</td><td>WON = green · LOST = red · BUY = gold · SELL = red.</td></tr>
+<tr><td>Tap behavior</td><td>Read-only. No tap interaction.</td></tr>
+</table></div>
+</div>
+
+<!-- M06 NOTE: History tabs -->
+<div id="m6" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px 16px;margin-bottom:16px">
+<p style="font-size:12px;color:#8E8880"><strong style="color:#CDBD70">Mobile tab structure: 4 tabs matching web.</strong> Open Positions / Open Orders / Closed Positions / Activity. The Open Orders tab on mobile mirrors the web Orders table -- same cancel flow, same fill status. The M05 tab group replaces both the web "Open Book" section and "History" section in a single scroll area.</p>
+</div>
+
+<!-- M07 POSITION DETAIL SHEET -->
+<div id="m7">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M07</span>Position Detail Sheet</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Bottom sheet. Opens on position card tap. Spring animation upward. Max 90% screen height.</p>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Handle</td><td>Drag indicator bar. Tap to close.</td></tr>
+<tr><td>Header</td><td>Market name + stream sub-label · Share icon (gold) · Close (x).</td></tr>
+<tr><td>Price hero</td><td>Current market price large. Color indicates direction vs entry. Delta label below.</td></tr>
+<tr><td>Data rows</td><td>Side · Avg entry · Shares · Cost · Unrealized P&amp;L · CLV · Fills count.</td></tr>
+<tr><td>Close position</td><td>Red primary button. Opens Close Position sheet.</td></tr>
+<tr><td>Open in terminal</td><td>Ghost secondary button. Navigates to market in terminal.</td></tr>
+</table></div>
+</div>
+
+<!-- M08 CLOSE POSITION SHEET -->
+<div id="m8">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M08</span>Close Position Sheet</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Bottom sheet. Exact structural mirror of the web Close Position modal. Two-level selection: Full/Partial tab strip on top, Market/Limit toggle below. Content panel updates per combination.</p>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Tab strip (Full / Partial)</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Behavior</th></tr>
+<tr><td>Full close tab</td><td>Active by default. Red-tinted background + red text when active (mirrors web <code>.tsi.r</code>). Tap to switch.</td></tr>
+<tr><td>Partial close tab</td><td>Muted until tapped. Same activation style.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Order type toggle (Market / Limit)</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Behavior</th></tr>
+<tr><td>Market</td><td>Active by default. Gold-tinted background when active (mirrors web <code>.oti.on</code>).</td></tr>
+<tr><td>Limit</td><td>Muted until tapped. Gold activation.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Full close · Market</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Data rows</td><td>Avg entry · Market price · Shares · Cost basis · Est. proceeds · P&amp;L if closed (large, colored).</td></tr>
+<tr><td>Primary CTA</td><td>Red: "Confirm full close at market". Closes sheet, opens Trade Detail sheet with execution summary.</td></tr>
+<tr><td>Disclaimer</td><td>Small muted text: "Market order · fills immediately at best available price · minor slippage may apply".</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Full close · Limit</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Limit price input</td><td>Label + <code>[-] [input] [+]</code> row. Input at 14px mono, right-aligned. Nudge buttons step ±0.01. Same compact layout as web <code>.lw/.ladj/.linp</code>.</td></tr>
+<tr><td>Market price hint</td><td>Below input: "Market price: 0.64" in small muted text.</td></tr>
+<tr><td>"If filled at X" block</td><td>Grey background block. Rows: Shares · Cost basis · Proceeds · P&amp;L. Updates live as price changes.</td></tr>
+<tr><td>Primary CTA</td><td>Gold: "Place limit close at [price]". Updates dynamically. Closes sheet, shows toast confirmation.</td></tr>
+<tr><td>Disclaimer</td><td>"Limit order · placed on CLOB · fills only when market price reaches your limit".</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Partial close · Market</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Slider label</td><td>"Close how much?" left · "[pct]% · [N] shares" gold right. Updates live.</td></tr>
+<tr><td>Range slider</td><td>1–100%. Gold accent color.</td></tr>
+<tr><td>Quick % buttons</td><td>25% / 50% / 75% / 100%. Active button highlighted gold.</td></tr>
+<tr><td>Live tiles (3-column)</td><td>Closing · Proceeds · P&amp;L. All update on slider move.</td></tr>
+<tr><td>Remaining label</td><td>"Remaining: $X · N shares" below tiles.</td></tr>
+<tr><td>Primary CTA</td><td>Red: "Confirm close [pct]% at market". Label updates with pct.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Partial close · Limit</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Slider</td><td>Same 1–100% range slider + quick % buttons as Partial Market.</td></tr>
+<tr><td>Limit price input</td><td>Same <code>[-] [input] [+]</code> compact row as Full Limit.</td></tr>
+<tr><td>Live tiles</td><td>Closing · If filled · P&amp;L. All update on slider or price change.</td></tr>
+<tr><td>Remaining label</td><td>Updates with slider position.</td></tr>
+<tr><td>Primary CTA</td><td>Gold: "Place limit close [pct]% at [price]". Both values update live.</td></tr>
+</table></div>
+</div>
+
+<!-- M09 LIMIT ORDER PLACED -->
+<div id="m9">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M09</span>Limit Order Placed (Toast)</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">On placing a limit close, the sheet closes and a toast notification appears confirming placement. No separate confirmation sheet -- mirrors the web's limit-placed modal intent but simplified to a toast on mobile.</p>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Toast title</td><td>"Limit sell placed"</td></tr>
+<tr><td>Toast sub</td><td>"Visible in Open Orders"</td></tr>
+<tr><td>Duration</td><td>3.5s auto-dismiss.</td></tr>
+</table></div>
+</div>
+
+<!-- M10 TRADE DETAIL SHEET -->
+<div id="m10">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M10</span>Trade Detail Sheet</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Bottom sheet. Same data as web trade modal. WON/LOST badge in header. Share icon opens share sheet.</p>
+<div class="tbl"><table>
+<tr><th>Field</th><th>Content</th></tr>
+<tr><td>P&amp;L hero</td><td>Net P&amp;L large, return % below. Colored.</td></tr>
+<tr><td>Data rows</td><td>Side · Avg entry · Avg exit · Shares · Cost · CLV (or Side if CLV negative).</td></tr>
+</table></div>
+</div>
+
+<!-- M11 CANCEL ORDER SHEET -->
+<div id="m11">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M11</span>Cancel Order Sheet</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Bottom sheet. Exact structural mirror of the web Cancel Order modal. Two states: unfilled and partial fill. SELL/BUY-aware copy throughout.</p>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Header</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Title</td><td>Dynamic: "Cancel order" (unfilled BUY) · "Cancel sell order" (unfilled SELL) · "Cancel remaining order" (partial BUY) · "Cancel remaining sell order" (partial SELL).</td></tr>
+<tr><td>Sub-header</td><td>Market name · stream tag pill · outcome pill · order type string (e.g. "BUY · LIMIT · GTC").</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Data rows (always shown)</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Field</th><th>Content</th></tr>
+<tr><td>Limit price</td><td>Plain white (t1), no color coding by direction.</td></tr>
+<tr><td>Shares</td><td>Total shares in the order.</td></tr>
+<tr><td>Total value</td><td>Limit × shares.</td></tr>
+<tr><td>Placed</td><td>Relative time (e.g. "2h ago"). Muted color.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Fill status band (partial fill only)</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Filled so far</td><td>Dollar value · shares · percentage. Green.</td></tr>
+<tr><td>To be cancelled</td><td>Dollar value · shares · remaining percentage. Red.</td></tr>
+<tr><td>Warning note</td><td>BUY: "Filled shares will remain as an open position. Only unfilled shares will be cancelled." SELL: "Sold shares have already been removed from your position. Only unfilled shares will be cancelled."</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Footer</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Footer note</td><td>Unfilled: "Order will be fully cancelled. No funds have been reserved." Partial BUY: "Filled portion becomes a position at [limit] avg entry." Partial SELL: "Already sold shares have settled at [limit]. Remaining sell order will be removed."</td></tr>
+<tr><td>Primary CTA</td><td>Red: "Cancel order" (unfilled) or "Cancel remaining" (partial).</td></tr>
+<tr><td>Ghost CTA</td><td>"Keep order". Closes sheet with no action.</td></tr>
+</table></div>
+</div>
+
+<!-- M11b MODIFY ORDER SHEET -->
+<div id="m11b">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M11b</span>Modify Order Sheet</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Bottom sheet. Exact structural mirror of the web Modify Order modal (s13d). Opened by tapping Modify on any order card.</p>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Header</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Title</td><td>"Modify order" (BUY) / "Modify sell order" (SELL).</td></tr>
+<tr><td>Sub-header</td><td>Market name · stream tag pill · outcome pill · order type string.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Editable fields</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Field</th><th>Content</th></tr>
+<tr><td>Limit price</td><td>Numeric input, prefilled with current limit. Label shows "was [price]" for reference.</td></tr>
+<tr><td>Shares</td><td>Numeric input. Unfilled order: prefilled with full order shares. Partial fill: prefilled with only the remaining unfilled shares, label changes to "Shares (unfilled portion)". Same logic as web.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Balance impact preview</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>New total value</td><td>Live recalculation as the trader edits either field.</td></tr>
+<tr><td>Balance impact</td><td>BUY: "Additional balance reserved" (red) / "Balance released" (green) / "$0", compared against the amount currently reserved (full total if unfilled, remaining value if partial). SELL: "No balance impact".</td></tr>
+<tr><td>Note</td><td>Unfilled: "Modifying replaces the existing order. Balance reserved for the original order is released and the new amount is reserved instead." Partial fill: "Filled shares are unaffected. Only the unfilled portion of this order is modified."</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Footer</h3>
+<div class="tbl"><table>
+<tr><th style="width:28%">Element</th><th>Content</th></tr>
+<tr><td>Primary CTA</td><td>Gold: "Save changes". Cancels existing order, places new one at updated values. Closes sheet, shows "Order updated" toast.</td></tr>
+<tr><td>Ghost CTA</td><td>"Discard". Closes sheet with no action.</td></tr>
+</table></div>
+</div>
+
+<!-- M12 SHARE CARDS -->
+<div id="m12">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M12</span>Share Cards (Mobile)</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Bottom sheets. Same card content as web. Three types: trade, position, profile. Same CLV/Side swap logic applies.</p>
+<div class="tbl"><table>
+<tr><th style="width:26%">Type</th><th>Trigger</th><th>Opens</th></tr>
+<tr><td>Trade share</td><td>Share icon in Trade Detail sheet header</td><td>Share sheet with trade card + 3 action buttons</td></tr>
+<tr><td>Position share</td><td>Share icon in Position Detail sheet header</td><td>Share sheet with position card + 3 action buttons</td></tr>
+<tr><td>Profile share</td><td>Share icon in visibility bar, or avatar tap in top bar, or share icon in public profile overlay header</td><td>Profile share sheet directly</td></tr>
+</table></div>
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Share actions (all types)</h3>
+<div class="tbl"><table>
+<tr><th>Button</th><th>Action</th></tr>
+<tr><td>Share on X</td><td>Opens X intent URL with pre-filled tweet text.</td></tr>
+<tr><td>Copy image</td><td>Copies rendered card to clipboard.</td></tr>
+<tr><td>Copy link</td><td>Copies share URL. Button text changes to "Copied!" for 1.8s.</td></tr>
+</table></div>
+</div>
+
+<!-- M13 ALL POSITIONS -->
+<div id="m13">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M13</span>Show More (Open Positions)</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Inline expansion within the Open Positions tab. No sheet or overlay.</p>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Behavior</th></tr>
+<tr><td>Default state</td><td>6 position cards visible. "Showing 6 of 12 open positions · View all 12 →" label below last card.</td></tr>
+<tr><td>Tap "View all 12 →"</td><td>Remaining 6 cards appear inline below. Label updates to "Showing all 12 open positions". No button remains.</td></tr>
+<tr><td>No sheet</td><td>Expansion happens in place within the scroll area. No bottom sheet, no overlay, no navigation.</td></tr>
+</table></div>
+</div>
+
+<!-- M14 PUBLIC PROFILE OVERLAY -->
+<div id="m14">
+<h2><span class="sec-num" style="background:#1A2E4A;color:#7CC8F0">M14</span>Public Profile Overlay</h2>
+<p style="font-size:13px;color:#555;margin-bottom:12px">Full-screen overlay scoped inside the device frame. Opens from "View public profile →" in the visibility bar. Uses <code>position:absolute;inset:0;z-index:400</code> so it covers the portfolio content without breaking the device chrome.</p>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Header bar</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Behavior</th></tr>
+<tr><td>Back</td><td>Left. Closes overlay, returns to portfolio.</td></tr>
+<tr><td>URL</td><td>Center. <code>dg3.trade/u/DC</code> in mono. Static label.</td></tr>
+<tr><td>Share icon</td><td>Right. 26x26px gold border button. Opens profile share sheet at z-index 500 (above the overlay).</td></tr>
+<tr><td>LISTED badge</td><td>Right of share icon. Green border pill. Reflects current Listed/Unlisted state.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Profile hero</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Element</th><th>Content</th></tr>
+<tr><td>Avatar</td><td>48x48px circle. Initials. Gradient background with gold border.</td></tr>
+<tr><td>Name</td><td>Display name, 16px bold.</td></tr>
+<tr><td>Address</td><td>Truncated wallet address in mono.</td></tr>
+<tr><td>Meta</td><td>"Active since [month year] · [N] predictions"</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>4-stat strip (matches web exactly)</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Stat</th><th>Value</th><th>Sub-label</th></tr>
+<tr><td>Win Rate</td><td>Green percentage</td><td>N won of N settled</td></tr>
+<tr><td>Avg CLV</td><td>Gold ¢ value</td><td>N settled bets</td></tr>
+<tr><td>Total P&amp;L (Realized)</td><td>Green dollar</td><td>N settled · +X% ROI</td></tr>
+<tr><td>Volume Traded</td><td>White dollar</td><td>across N total trades</td></tr>
+</table></div>
+<p style="font-size:12px;color:#888;margin:8px 0 12px">Displayed as 2x2 grid on mobile (4-column not feasible at 390px). Same data, same labels as web.</p>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>3 tabs (matches web exactly)</h3>
+<div class="tbl"><table>
+<tr><th style="width:26%">Tab</th><th>Content</th></tr>
+<tr><td>Open positions</td><td>Position cards: market name + stream + outcome + shares. Avg Entry / Mkt Price / Cost stats row. 4 shown by default. "Showing 4 of 12 · Show more ↓" below last card. Tapping Show more reveals extra cards inline and updates label to "Showing all 12 open positions".</td></tr>
+<tr><td>Closed positions</td><td>Rows in a single card container: market + date + outcome + P&amp;L + CLV. "Show more ↓" is the last row inside the card. Tapping it appends extra rows inline within the same card and hides the button.</td></tr>
+<tr><td>Activity</td><td>Time · badge · market · amount rows. Read-only.</td></tr>
+</table></div>
+
+<h3><div class="h3-dot" style="background:#7CC8F0"></div>Footer</h3>
+<p style="font-size:13px;color:#555;margin-bottom:12px">DG3 logo + <code>dg3.trade/u/DC</code> centered at bottom of scroll. Powered-by attribution.</p>
+</div>
+</main>
+<script>
+const items=document.querySelectorAll('.snav-item');
+const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){items.forEach(i=>i.classList.remove('active'));const a=document.querySelector(`.snav-item[href="#${en.target.id}"]`);if(a)a.classList.add('active');}})},{threshold:.3});
+document.querySelectorAll('[id]').forEach(el=>{if(el.id&&el.id!=='main'&&el.id!=='sidenav')obs.observe(el);});
+</script>
+</body>
+</html>

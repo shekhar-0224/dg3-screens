@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DG3 · Intelligence Panel — Chart, Stream &amp; Bottom Section PRD</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;height:100%}
+body{background:#F0EFE9;color:#1A1A1A;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.6;height:100%;overflow-y:auto}
+:root{--pos:#4CAF7D;--neg:#E05C5C;--gold:#CDBD70}
+#sidenav{position:fixed;top:0;left:0;width:218px;height:100vh;background:#0D0D0D;overflow-y:auto;z-index:200;border-right:1px solid rgba(255,255,255,0.06)}
+#sidenav::-webkit-scrollbar{width:2px}
+#sidenav::-webkit-scrollbar-thumb{background:#2a2a2a}
+.snav-logo{padding:16px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:6px}
+.snav-tagline{font-size:10px;color:#555;letter-spacing:.03em}
+.snav-section{padding:14px 16px 4px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#484848}
+.snav-item{display:block;padding:5px 16px;font-size:12px;color:#777;text-decoration:none;border-left:2px solid transparent;transition:all .1s}
+.snav-item:hover{color:#B0A890;background:rgba(255,255,255,0.03)}
+#main{margin-left:218px;max-width:1060px;padding:44px 52px 80px;background:#FAFAF7;min-height:100vh}
+.cover{border-bottom:3px solid #CDBD70;padding-bottom:28px;margin-bottom:36px}
+.cover-title{font-size:28px;font-weight:800;color:#0D0D0D;line-height:1.15;margin-bottom:5px;letter-spacing:-.5px}
+.cover-sub{font-size:15px;color:#666;margin-bottom:22px}
+.meta-grid{display:flex;flex-wrap:wrap;border:1px solid #E0DDD5;border-radius:8px;overflow:hidden}
+.meta-cell{padding:10px 18px;font-size:12px;border-right:1px solid #E0DDD5;flex-shrink:0}
+.meta-cell:last-child{border-right:none}
+.meta-lbl{font-size:10px;font-weight:600;color:#AAA;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.meta-val{font-weight:600;color:#222}
+h2{font-size:21px;font-weight:700;color:#111;margin:50px 0 16px;padding-bottom:11px;border-bottom:2px solid #E8E5DC;letter-spacing:-.3px;display:flex;align-items:center;gap:10px}
+.sec-num{font-size:11px;font-weight:800;background:#CDBD70;color:#0D0D0D;padding:2px 7px;border-radius:4px;letter-spacing:.06em;flex-shrink:0}
+h3{font-size:15px;font-weight:700;color:#222;margin:27px 0 11px;display:flex;align-items:center;gap:7px}
+.h3-dot{width:6px;height:6px;border-radius:50%;background:#CDBD70;flex-shrink:0}
+p{margin-bottom:14px;color:#3A3A3A;line-height:1.7;font-size:15.5px}
+.lead{font-size:17px;color:#444;line-height:1.7;margin-bottom:20px}
+strong{color:#111;font-weight:600}
+ul{padding-left:22px;margin-bottom:14px;color:#3A3A3A;font-size:15px;line-height:1.8}
+li{margin-bottom:3px}
+code{font-family:"SF Mono","Courier New",monospace;font-size:12.5px;background:#EDECE7;padding:1px 5px;border-radius:3px;color:#1A4A8A;border:1px solid #DDD;white-space:nowrap}
+.tbl{overflow-x:auto;margin:12px 0 20px;border-radius:8px;border:1px solid #E2DFD7;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px}
+table th{background:#F4F2EC;padding:10px 16px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#888;border-bottom:1px solid #E2DFD7;white-space:nowrap}
+table td{padding:11px 16px;border-bottom:1px solid #EEECE6;vertical-align:top;color:#333;line-height:1.6}
+table tr:last-child td{border-bottom:none}
+table tr:hover td{background:#F8F7F2}
+.callout{border-radius:7px;padding:13px 17px;margin:14px 0 20px;font-size:13px;line-height:1.65}
+.callout-title{font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
+.callout-gold{background:#FDF8EC;border-left:3px solid #CDBD70}.callout-gold .callout-title{color:#7A6820}
+.callout-blue{background:#EEF3FB;border-left:3px solid #4A90D9}.callout-blue .callout-title{color:#1A5090}
+.callout-grey{background:#F0EFE9;border-left:3px solid #999}.callout-grey .callout-title{color:#555}
+.spec-block{background:#fff;border:1px solid #E2DFD7;border-radius:8px;padding:16px 20px;margin:14px 0 20px}
+.spec-block-title{font-size:10px;font-weight:800;color:#888;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.spec-row{display:flex;align-items:flex-start;gap:14px;padding:7px 0;border-bottom:1px solid #F0EDE6;font-size:13.5px}
+.spec-row:last-child{border-bottom:none;padding-bottom:0}
+.spec-key{width:180px;flex-shrink:0;font-weight:600;color:#555;font-size:12.5px;padding-top:1px}
+.spec-val{flex:1;color:#333;line-height:1.6}
+.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700}
+.b-green{background:#EEF8F3;color:#2E7D52;border:1px solid #B8DEC9}
+.b-gold{background:#FDF8EC;color:#7A6A10;border:1px solid #DDD0A0}
+.b-grey{background:#F0EFE9;color:#666;border:1px solid #CCC}
+</style>
+</head>
+<body>
+<div id="sidenav">
+  <div class="snav-logo">
+    <span style="font-size:14px;font-weight:800;letter-spacing:.06em"><span style="color:#F5F2E8">DG</span><span style="color:#CDBD70">3</span></span>
+    <div class="snav-tagline">Chart · Stream · Bottom Section PRD</div>
+  </div>
+  <div class="snav-section">Sections</div>
+  <a class="snav-item" href="#s01" onclick="event.preventDefault();var e=document.getElementById('s01');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">01 &middot; Chart/Stream Tab Strip</a>
+  <a class="snav-item" href="#s02" onclick="event.preventDefault();var e=document.getElementById('s02');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">02 &middot; Chart Changes</a>
+  <a class="snav-item" href="#s03" onclick="event.preventDefault();var e=document.getElementById('s03');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">03 &middot; Stream (Live)</a>
+  <a class="snav-item" href="#s04" onclick="event.preventDefault();var e=document.getElementById('s04');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">04 &middot; Bottom Tab Strip</a>
+  <a class="snav-item" href="#s05" onclick="event.preventDefault();var e=document.getElementById('s05');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">05 &middot; Positions</a>
+  <a class="snav-item" href="#s06" onclick="event.preventDefault();var e=document.getElementById('s06');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">06 &middot; Orders</a>
+  <a class="snav-item" href="#s07" onclick="event.preventDefault();var e=document.getElementById('s07');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">07 &middot; Chat</a>
+  <a class="snav-item" href="#s09" onclick="event.preventDefault();var e=document.getElementById('s09');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">08 &middot; Resolved Deck Rules</a>
+  <div class="snav-section">Reference</div>
+  <a class="snav-item" href="#colors" onclick="event.preventDefault();var e=document.getElementById('colors');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">09 &middot; Color Reference</a>
+  <a class="snav-item" href="#icons" onclick="event.preventDefault();var e=document.getElementById('icons');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">10 &middot; Icons &amp; Assets</a>
+  
+</div>
+
+<div id="main">
+<div class="cover">
+  <div class="cover-title">DG3 &middot; Intelligence Panel<br>Chart, Stream &amp; Bottom Section</div>
+  <div class="cover-sub">Covers the chart surface, live stream tab, and the bottom section — Positions and Chat.</div>
+  <div class="meta-grid">
+    <div class="meta-cell"><div class="meta-lbl">Status</div><div class="meta-val">Phase 0</div></div>
+    <div class="meta-cell"><div class="meta-lbl">Component</div><div class="meta-val">Livestream &middot; Charts &middot; Lower Half</div></div>
+    <div class="meta-cell"><div class="meta-lbl">Updated</div><div class="meta-val">Jul 2026</div></div>
+  </div>
+</div>
+
+<!-- 01 -->
+<div id="s01">
+<h2><span class="sec-num">01</span>Chart / Stream Tab Strip</h2>
+<p class="lead">A 36px strip above the chart and stream zones. Two tabs: CHART (default) and LIVE. Controls live on the right side and are scoped to the active tab.</p>
+
+<h3><div class="h3-dot"></div>Tab anatomy</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Height</div><div class="spec-val">36px. Background <code>var(--bg2)</code>. 1px bottom border.</div></div>
+  <div class="spec-row"><div class="spec-key">Font</div><div class="spec-val">JetBrains Mono 10px/800, 0.1em letter-spacing, uppercase.</div></div>
+  <div class="spec-row"><div class="spec-key">Active state</div><div class="spec-val"><code>var(--t1)</code> text, 2px gold bottom border.</div></div>
+  <div class="spec-row"><div class="spec-key">Inactive state</div><div class="spec-val"><code>var(--t3)</code> text. No border.</div></div>
+  <div class="spec-row"><div class="spec-key">Default</div><div class="spec-val">CHART tab is active on load.</div></div>
+</div>
+
+<h3><div class="h3-dot"></div>CHART tab controls (right side)</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Outcome filter</div><div class="spec-val">"ALL OUTCOMES" dropdown. Filters which price series render. Options are the outcome labels from the current market.</div></div>
+  <div class="spec-row"><div class="spec-key">Timeframe picker</div><div class="spec-val">Gold pill showing active TF (default 15M). Click opens dropdown. Groups: In-Play (5M · 15M · 30M), Session (1H · 3H · 12H · ALL).</div></div>
+  <div class="spec-row"><div class="spec-key">Pop-out button</div><div class="spec-val">Square-with-arrow icon. Detaches chart into a draggable, resizable floating panel. Clicking again docks back.</div></div>
+</div>
+
+<h3><div class="h3-dot"></div>LIVE tab controls (right side)</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Channel dropdown</div><div class="spec-val">Platform icon (YouTube / Twitch / Kick) + label + viewer count + active checkmark. Only shown when <code>ipCsSetChannels(sources)</code> has been called with at least one source.</div></div>
+  <div class="spec-row"><div class="spec-key">Pop-out button</div><div class="spec-val">Same icon as chart. Only visible when LIVE tab is active. Detaches stream into a floating panel with the channel dropdown inside.</div></div>
+  <div class="spec-row"><div class="spec-key">Tab label: no source</div><div class="spec-val">Circle-play icon + "STREAM" label in <code>var(--t3)</code>.</div></div>
+  <div class="spec-row"><div class="spec-key">Tab label: source active</div><div class="spec-val">Red pulsing dot (6px) + "LIVE" label in <code>var(--t1)</code>. Icon hidden.</div></div>
+</div>
+</div>
+
+<!-- 02 -->
+<div id="s02">
+<h2><span class="sec-num">02</span>Chart — Changes</h2>
+<p class="lead">Full chart spec is in the Intelligence Pane PRD. This section covers only what changed.</p>
+
+<h3><div class="h3-dot"></div>Timeframe dropdown</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Old</div><div class="spec-val">Inline buttons: 1H · 3H · 1D · 7D · ALL.</div></div>
+  <div class="spec-row"><div class="spec-key">New</div><div class="spec-val">Gold pill dropdown showing active TF. Click opens menu. Options: <strong>5M · 15M · 30M · 1H · 3H · 12H · ALL</strong>. Default active: 15M. Same dropdown appears in both the inline tab strip and the chart pop-out header.</div></div>
+  <div class="spec-row"><div class="spec-key">Active indicator</div><div class="spec-val">Gold dot to the right of the active option label inside the menu.</div></div>
+</div>
+
+<h3><div class="h3-dot"></div>Legend labels</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Old</div><div class="spec-val">Small inline text labels: "Polymarket" and "Sharp Line".</div></div>
+  <div class="spec-row"><div class="spec-key">New</div><div class="spec-val">Bordered pill buttons with line swatch inside. Labels: <strong>POLYMARKET LINE</strong> (solid swatch) and <strong>FAIR PRICE</strong> (dashed swatch). Active state: gold-tinted border + subtle gold fill. Inactive: 45% opacity, plain border. Click toggles series visibility. At least one must remain active.</div></div>
+</div>
+</div>
+
+<!-- 03 -->
+<div id="s03">
+<h2><span class="sec-num">03</span>Stream (Live)</h2>
+<p class="lead">Live video feed from Twitch, YouTube, or Kick. Only shown when LIVE tab is active. Height matches chart zone.</p>
+
+<div class="callout callout-gold">
+  <div class="callout-title">Phase 0 limitation</div>
+  YouTube embeds may show Error 153 in local file:// context due to iframe origin restrictions. In production on HTTPS these resolve correctly.
+</div>
+
+<h3><div class="h3-dot"></div>Zone</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Height</div><div class="spec-val">310px. Matches chart zone. Background <code>#080808</code>.</div></div>
+  <div class="spec-row"><div class="spec-key">No source state</div><div class="spec-val">Centered platform icon + "Live Stream" heading + "Select a channel above to start watching" sub-label.</div></div>
+  <div class="spec-row"><div class="spec-key">Active source</div><div class="spec-val">16:9 iframe fills zone. <code>● LIVE</code> badge overlays top-left corner.</div></div>
+  <div class="spec-row"><div class="spec-key">Tab switch pause</div><div class="spec-val">When switching away from LIVE tab, <code>iframe.src = iframe.src</code> is reassigned to pause audio.</div></div>
+</div>
+
+<h3><div class="h3-dot"></div>Pop-out panel</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Default size</div><div class="spec-val">720×420px. Centered on viewport.</div></div>
+  <div class="spec-row"><div class="spec-key">Draggable</div><div class="spec-val">By header. Same grab cursor behavior as chart popout.</div></div>
+  <div class="spec-row"><div class="spec-key">Resizable</div><div class="spec-val">Bottom-right handle. Min 400×250px.</div></div>
+  <div class="spec-row"><div class="spec-key">Header</div><div class="spec-val">Stream icon + platform label + "· Live" + channel dropdown (same as tab strip) + close (×) button.</div></div>
+  <div class="spec-row"><div class="spec-key">Close</div><div class="spec-val">× button in header, or clicking the pop-out button again. DOM node is removed.</div></div>
+  <div class="spec-row"><div class="spec-key">No source</div><div class="spec-val">"NO STREAM SOURCE" centered message in <code>var(--t4)</code> mono.</div></div>
+</div>
+
+<div class="callout callout-gold">
+  <div class="callout-title">Channel order</div>
+  Channels are displayed in the order supplied by <code>ipCsSetChannels(sources)</code>. Production data pipeline should pass sources in priority order: <strong>Twitch first, Kick second, YouTube third</strong> — or whatever is highest quality for the fixture. The first channel in the array is the default active source. No UI sorting is applied.
+</div>
+</div>
+
+<!-- 04 -->
+<div id="s04">
+<h2><span class="sec-num">04</span>Bottom Tab Strip</h2>
+<p class="lead">32px strip below the chart/stream zones. Contains two tabs: Positions and Chat.</p>
+
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Tab order</div><div class="spec-val">Positions &middot; Chat. Left to right.</div></div>
+  <div class="spec-row"><div class="spec-key">Default active</div><div class="spec-val">Positions on load.</div></div>
+  <div class="spec-row"><div class="spec-key">Height</div><div class="spec-val">32px. Background <code>var(--bg1)</code>. 1px top border.</div></div>
+  <div class="spec-row"><div class="spec-key">Font</div><div class="spec-val">JetBrains Mono 9px/700, 0.1em letter-spacing, uppercase.</div></div>
+  <div class="spec-row"><div class="spec-key">Active state</div><div class="spec-val">2px gold top border, <code>var(--bg2)</code> background fill, <code>var(--t1)</code> text.</div></div>
+  <div class="spec-row"><div class="spec-key">Inactive state</div><div class="spec-val"><code>var(--t3)</code> text.</div></div>
+  <div class="spec-row"><div class="spec-key">Positions badge</div><div class="spec-val">Live count in green pill (<code>rgba(76,175,125,.18)</code>). Turns muted when count is 0.</div></div>
+</div>
+</div>
+
+<!-- 05 -->
+<div id="s05">
+<h2><span class="sec-num">05</span>Positions</h2>
+<p class="lead">Shows the trader's open positions. Fixture-relevant positions appear first, followed by other matches on expand.</p>
+
+<h3><div class="h3-dot"></div>Sub-tabs</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Items</div><div class="spec-val">Positions (with count badge) / Orders. Slash separator.</div></div>
+  <div class="spec-row"><div class="spec-key">Height</div><div class="spec-val">28px. Same styling as bottom strip but smaller: 8px/700, gold on active, <code>var(--t2)</code> on inactive.</div></div>
+</div>
+
+<h3><div class="h3-dot"></div>Position row (live deck)</h3>
+<div class="spec-block">
+  <div class="spec-block-title">Anatomy</div>
+  <div class="spec-row"><div class="spec-key">Left accent bar</div><div class="spec-val">2px. Green for positive P&amp;L, red for negative P&amp;L.</div></div>
+  <div class="spec-row"><div class="spec-key">Line 1</div><div class="spec-val">Market name (12px/800, <code>var(--t1)</code>) + outcome pill inline. Pill: green bordered for YES direction, red bordered for NO direction. 8px mono.</div></div>
+  <div class="spec-row"><div class="spec-key">Line 2</div><div class="spec-val"><code>@ [entry]¢ &middot; [N] shares &middot; $[cost]</code>. 10px mono, <code>var(--t3)</code>.</div></div>
+  <div class="spec-row"><div class="spec-key">Right — P&amp;L</div><div class="spec-val">12px/800. Green if positive, red if negative.</div></div>
+  <div class="spec-row"><div class="spec-key">Right — price arrow</div><div class="spec-val"><code>52¢ → 55¢</code>. 9px mono, <code>var(--t3)</code>. Entry → current price.</div></div>
+  <div class="spec-row"><div class="spec-key">Padding</div><div class="spec-val">10px top/bottom, 14px right, 12px left of accent bar.</div></div>
+  <div class="spec-row"><div class="spec-key">Hover</div><div class="spec-val"><code>rgba(255,255,255,.03)</code> background.</div></div>
+</div>
+
+<h3><div class="h3-dot"></div>Position row (resolved / post-match deck)</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Layout</div><div class="spec-val">Same as live row. Read-only — no interaction.</div></div>
+  <div class="spec-row"><div class="spec-key">Price arrow</div><div class="spec-val">Entry → settlement price. Settlement colored green (99¢) or red (0¢). <code>SETTLED</code> micro-badge appended (6px mono, bordered).</div></div>
+</div>
+
+<h3><div class="h3-dot"></div>Other positions</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Placement</div><div class="spec-val">Below fixture positions. No section header for fixture rows — they appear first with no label.</div></div>
+  <div class="spec-row"><div class="spec-key">Divider</div><div class="spec-val">Horizontal rule with <code>+ Other positions (N)</code> centered in it. Always visible when other positions exist.</div></div>
+  <div class="spec-row"><div class="spec-key">Expand</div><div class="spec-val">Click divider to expand. Icon changes <code>+</code> → <code>−</code>. Click again to collapse. All in the same scroll container — no separate scroll zone.</div></div>
+</div>
+
+<h3><div class="h3-dot"></div>Empty state</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Label</div><div class="spec-val"><code>NO OPEN POSITIONS</code>. 8px mono, <code>var(--t4)</code>, uppercase. Centered in pane.</div></div>
+</div>
+</div>
+
+<!-- 06 -->
+<div id="s06">
+<h2><span class="sec-num">06</span>Orders</h2>
+<p class="lead">Open limit orders grouped under the same sub-tab strip as Positions. Shown on switching to the Orders sub-tab.</p>
+
+<h3><div class="h3-dot"></div>Order row</h3>
+<div class="spec-block">
+  <div class="spec-block-title">Anatomy</div>
+  <div class="spec-row"><div class="spec-key">Left accent bar</div><div class="spec-val">2px. Gold (<code>rgba(205,189,112,.4)</code>) for all pending/partial orders.</div></div>
+  <div class="spec-row"><div class="spec-key">Line 1</div><div class="spec-val">Market name + outcome pill (same chip style as positions) + limit price in gold (<code>@ 58¢</code>, 11px/700) + status badge right-aligned.</div></div>
+  <div class="spec-row"><div class="spec-key">Status badge</div><div class="spec-val"><code>PENDING</code>: muted background, <code>var(--t3)</code>. <code>PARTIAL</code>: gold-bordered, <code>var(--g3)</code>.</div></div>
+  <div class="spec-row"><div class="spec-key">Fill bar</div><div class="spec-val">2px track. Gold fill at fill percentage. 0% for Pending; partial % for Partial fills.</div></div>
+  <div class="spec-row"><div class="spec-key">Fill line</div><div class="spec-val"><code>$[filled] of $[total] filled &middot; [N] shares &middot; GTC/GTD [&middot; Exp date]</code>. 9px mono, <code>var(--t3)</code>.</div></div>
+</div>
+
+<div class="callout callout-blue">
+  <div class="callout-title">No cancel action in Phase 0</div>
+  Order rows are read-only in Phase 0. Cancel and modify actions are deferred to Phase 1.
+</div>
+
+<h3><div class="h3-dot"></div>Empty state</h3>
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Label</div><div class="spec-val"><code>NO OPEN ORDERS</code>. Centered. Same treatment as positions empty state.</div></div>
+</div>
+</div>
+
+<!-- 07 -->
+<div id="s07">
+<h2><span class="sec-num">07</span>Chat</h2>
+<p class="lead">Event discussion channel. Coming soon. Kept in the tab strip to communicate the roadmap.</p>
+
+<div class="spec-block">
+  <div class="spec-row"><div class="spec-key">Height</div><div class="spec-val">Fixed 120px. <code>flex:none</code>. Does not expand to fill remaining space.</div></div>
+  <div class="spec-row"><div class="spec-key">Content</div><div class="spec-val">Blurred event brief and placeholder messages at 5px blur, 35% opacity.</div></div>
+  <div class="spec-row"><div class="spec-key">Overlay badge</div><div class="spec-val"><code>Chat | COMING SOON</code>. Gold border, dark semi-transparent background. Centered over blurred content.</div></div>
+  <div class="spec-row"><div class="spec-key">Tab badge</div><div class="spec-val">None. Chat tab shows label only — no message count badge until feature ships.</div></div>
+  <div class="spec-row"><div class="spec-key">Why kept</div><div class="spec-val">Chat is a confirmed upcoming feature. Keeping the tab signals roadmap to traders and reserves the space in the layout.</div></div>
+</div>
+
+<!-- 08 -->
+<div id="s08">
+<h2><span class="sec-num">08</span>Resolved Deck Rules</h2>
+<p class="lead">When the active deck is resolved or post-match, the bottom section enforces specific UI rules on every render.</p>
+<div class="spec-block">
+  <div class="spec-block-title">Detection</div>
+  <div class="spec-row"><div class="spec-key">Trigger flags</div><div class="spec-val"><code>deck.resolved</code>, <code>deck.resolvedState</code>, or <code>deck.postMatch</code> being truthy. Also checked via <code>ipDeckId.indexOf('post')</code> as fallback.</div></div>
+  <div class="spec-row"><div class="spec-key">CSS class</div><div class="spec-val"><code>body.deck-resolved</code> is set by the IIFE at the end of every <code>ipFullUpdate()</code>. This is the single source of truth for hiding elements on resolved decks.</div></div>
+</div>
+<div class="spec-block">
+  <div class="spec-block-title">Bottom section changes</div>
+  <div class="spec-row"><div class="spec-key">Positions tab</div><div class="spec-val">Shows settled position rows. Settlement price (99&cent; or 0&cent;) colored by outcome. <code>SETTLED</code> badge. Read-only.</div></div>
+  <div class="spec-row"><div class="spec-key">Orders tab</div><div class="spec-val">Empty state. No pending orders on a closed market.</div></div>
+  <div class="spec-row"><div class="spec-key">Place Trade CTA</div><div class="spec-val">Label changes to "Market Resolved". Button disabled.</div></div>
+  <div class="spec-row"><div class="spec-key">Restore on live deck</div><div class="spec-val"><code>body.deck-resolved</code> class is removed by the IIFE when the active deck is not resolved. Bottom section returns to normal state.</div></div>
+</div>
+</div>
+
+<!-- 09 -->
+<div id="s09">
+<h2><span class="sec-num">09</span>Color Reference</h2>
+<p class="lead">Every token in use. Copy the variable name — never hardcode the hex. If a surface looks wrong, match it against this table first.</p>
+<div class="callout callout-gold">
+  <div class="callout-title">Fastest way for devs to identify a color</div>
+  Open Chrome DevTools &rarr; inspect the element &rarr; Computed panel &rarr; read the <code>color</code> or <code>background</code> value. It will be a <code>var(--x)</code> token. Match that token below.
+</div>
+<h3><div class="h3-dot"></div>Backgrounds</h3>
+<div class="tbl"><table>
+<thead><tr><th style="width:16%">Token</th><th style="width:20%">Hex</th><th style="width:36px">Swatch</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><code>--bg0</code></td><td><code>#060604</code></td><td><div style="width:28px;height:18px;background:#060604;border:1px solid #444;border-radius:2px"></div></td><td>HTML root. Deepest background — behind everything.</td></tr>
+<tr><td><code>--bg1</code></td><td><code>#0E0E0C</code></td><td><div style="width:28px;height:18px;background:#0E0E0C;border:1px solid #444;border-radius:2px"></div></td><td>Top bar, floating panels, bottom section pane backgrounds.</td></tr>
+<tr><td><code>--bg2</code></td><td><code>#161512</code></td><td><div style="width:28px;height:18px;background:#161512;border:1px solid #444;border-radius:2px"></div></td><td>Chart/stream tab strip, active bottom tab background.</td></tr>
+<tr><td><code>--bg3</code></td><td><code>#1E1D18</code></td><td><div style="width:28px;height:18px;background:#1E1D18;border:1px solid #444;border-radius:2px"></div></td><td>Dropdowns, tooltips, hover states on cards.</td></tr>
+<tr><td><code>--bg4</code></td><td><code>#282720</code></td><td><div style="width:28px;height:18px;background:#282720;border:1px solid #444;border-radius:2px"></div></td><td>Active dropdown option, deepest card state.</td></tr>
+</tbody>
+</table></div>
+<h3><div class="h3-dot"></div>Text</h3>
+<div class="tbl"><table>
+<thead><tr><th style="width:16%">Token</th><th style="width:20%">Hex</th><th style="width:36px">Swatch</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><code>--t1</code></td><td><code>#F5F2E8</code></td><td><div style="width:28px;height:18px;background:#F5F2E8;border:1px solid #444;border-radius:2px"></div></td><td>Primary text. Market names, active tab labels, prices.</td></tr>
+<tr><td><code>--t2</code></td><td><code>#C9C3B4</code></td><td><div style="width:28px;height:18px;background:#C9C3B4;border:1px solid #444;border-radius:2px"></div></td><td>Secondary text. Inactive sub-tabs, price arrows, order meta.</td></tr>
+<tr><td><code>--t3</code></td><td><code>#AFA99C</code></td><td><div style="width:28px;height:18px;background:#AFA99C;border:1px solid #444;border-radius:2px"></div></td><td>Dim metadata. Entry lines, fill amounts, inactive tab strip labels.</td></tr>
+<tr><td><code>--t4</code></td><td><code>#706A62</code></td><td><div style="width:28px;height:18px;background:#706A62;border:1px solid #444;border-radius:2px"></div></td><td>Placeholder and empty state text only.</td></tr>
+</tbody>
+</table></div>
+<h3><div class="h3-dot"></div>Gold</h3>
+<div class="tbl"><table>
+<thead><tr><th style="width:16%">Token</th><th style="width:20%">Value</th><th style="width:36px">Swatch</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><code>--g3</code></td><td><code>#CDBD70</code></td><td><div style="width:28px;height:18px;background:#CDBD70;border:1px solid #444;border-radius:2px"></div></td><td>Active tabs, order limit prices, fill bars.</td></tr>
+<tr><td><code>--g4</code></td><td><code>#B9A750</code></td><td><div style="width:28px;height:18px;background:#B9A750;border:1px solid #444;border-radius:2px"></div></td><td>Hover state on gold elements.</td></tr>
+<tr><td><code>--glow</code></td><td><code>rgba(205,189,112,.07)</code></td><td><div style="width:28px;height:18px;background:rgba(205,189,112,.07);border:1px solid #444;border-radius:2px"></div></td><td>Subtle gold wash on active surfaces.</td></tr>
+<tr><td><code>--glowb</code></td><td><code>rgba(205,189,112,.25)</code></td><td><div style="width:28px;height:18px;background:rgba(205,189,112,.25);border:1px solid #444;border-radius:2px"></div></td><td>Gold border on focus and hover.</td></tr>
+</tbody>
+</table></div>
+<h3><div class="h3-dot"></div>Signal colors</h3>
+<div class="tbl"><table>
+<thead><tr><th style="width:16%">Token</th><th style="width:20%">Value</th><th style="width:36px">Swatch</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><code>--pos</code></td><td><code>#4CAF7D</code></td><td><div style="width:28px;height:18px;background:#4CAF7D;border:1px solid #444;border-radius:2px"></div></td><td>Positive P&amp;L, YES pills, position badge, green accent bar.</td></tr>
+<tr><td><code>--posg</code></td><td><code>rgba(76,175,125,.08)</code></td><td><div style="width:28px;height:18px;background:rgba(76,175,125,.08);border:1px solid #444;border-radius:2px"></div></td><td>YES pill background fill.</td></tr>
+<tr><td><code>--posbr</code></td><td><code>rgba(76,175,125,.30)</code></td><td><div style="width:28px;height:18px;background:rgba(76,175,125,.30);border:1px solid #444;border-radius:2px"></div></td><td>YES pill border.</td></tr>
+<tr><td><code>--neg</code></td><td><code>#E05C5C</code></td><td><div style="width:28px;height:18px;background:#E05C5C;border:1px solid #444;border-radius:2px"></div></td><td>Negative P&amp;L, NO pills, red accent bar, live stream dot.</td></tr>
+<tr><td><code>--negg</code></td><td><code>rgba(224,92,92,.08)</code></td><td><div style="width:28px;height:18px;background:rgba(224,92,92,.08);border:1px solid #444;border-radius:2px"></div></td><td>NO pill background fill.</td></tr>
+<tr><td><code>--negbr</code></td><td><code>rgba(224,92,92,.30)</code></td><td><div style="width:28px;height:18px;background:rgba(224,92,92,.30);border:1px solid #444;border-radius:2px"></div></td><td>NO pill border.</td></tr>
+</tbody>
+</table></div>
+<h3><div class="h3-dot"></div>Borders &amp; radius</h3>
+<div class="tbl"><table>
+<thead><tr><th style="width:16%">Token</th><th style="width:28%">Value</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><code>--line</code></td><td><code>rgba(255,255,255,.06)</code></td><td>Subtle dividers. Row separators, section rules.</td></tr>
+<tr><td><code>--line2</code></td><td><code>rgba(255,255,255,.10)</code></td><td>Standard borders. Tab strips, panel edges, dropdown borders.</td></tr>
+<tr><td><code>--r</code></td><td><code>2px</code></td><td>Global border-radius for pills, chips, and buttons.</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<!-- 10 -->
+<div id="s10">
+<h2><span class="sec-num">10</span>Icons &amp; Assets</h2>
+<p class="lead">All SVG icons used in the chart, stream, and bottom section. Inline SVG only — no external dependency. All non-platform icons use <code>stroke="currentColor"</code> so they inherit color from their container.</p>
+
+<style>
+.icon-grid-ex{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:18px 0 28px}
+.icon-card-ex{display:flex;align-items:flex-start;gap:14px;padding:14px;background:#fff;border:1px solid #E2DFD7;border-radius:7px}
+.icon-prev-ex{width:72px;height:72px;background:#060604;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#CDBD70;flex-shrink:0}
+.icon-prev-ex svg{display:block}
+.icon-meta-ex{flex:1;min-width:0}
+.icon-fn-ex{margin-bottom:3px}
+.icon-fn-ex code{font-size:11px;background:#EDECE7;color:#1A4A8A;padding:2px 5px;border-radius:3px;word-break:break-all;border:1px solid #DDD}
+.icon-title-ex{font-size:14px;font-weight:700;color:#111;margin:4px 0 3px}
+.icon-use-ex{font-size:12px;color:#666;line-height:1.5;margin-bottom:8px}
+.icon-dl-btn-ex{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;font-family:"SF Mono","Courier New",monospace;text-decoration:none;padding:4px 10px;border-radius:5px;background:#0D0D0D;letter-spacing:.03em;transition:background .1s}
+.icon-dl-btn-ex:hover{background:#333;text-decoration:none}
+</style>
+
+<div class="icon-grid-ex">
+<div class="icon-card-ex">
+  <div class="icon-prev-ex"><svg viewBox="0 0 16 16" width="28" height="28" fill="none" stroke="#CDBD70" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2H2v12h12V7M9 2v7h7M9 9l6-7"/></svg></div>
+  <div class="icon-meta-ex">
+    <div class="icon-fn-ex"><code>dg3_icon_dock_back.svg</code></div>
+    <div class="icon-title-ex">Dock back</div>
+    <div class="icon-use-ex">Return floating panel inline. Used in all panel headers.</div>
+    <a href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M9%202H2v12h12V7M9%202v7h7M9%209l6-7%22/%3E%3C/svg%3E" download="dg3_icon_dock_back.svg" class="icon-dl-btn-ex">&#8595; Download SVG</a>
+  </div>
+</div>
+<div class="icon-card-ex">
+  <div class="icon-prev-ex"><svg viewBox="0 0 16 16" width="28" height="28" fill="none" stroke="#CDBD70" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="8" height="8" rx="1"/><path d="M7 2h7v7M9 7l5-5"/></svg></div>
+  <div class="icon-meta-ex">
+    <div class="icon-fn-ex"><code>dg3_icon_pop_out.svg</code></div>
+    <div class="icon-title-ex">Pop out</div>
+    <div class="icon-use-ex">Detach chart or stream into a floating panel.</div>
+    <a href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%222%22%20y%3D%225%22%20width%3D%228%22%20height%3D%228%22%20rx%3D%221%22/%3E%3Cpath%20d%3D%22M7%202h7v7M9%207l5-5%22/%3E%3C/svg%3E" download="dg3_icon_pop_out.svg" class="icon-dl-btn-ex">&#8595; Download SVG</a>
+  </div>
+</div>
+<div class="icon-card-ex">
+  <div class="icon-prev-ex"><svg viewBox="0 0 16 16" width="28" height="28" fill="none" stroke="#CDBD70" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></div>
+  <div class="icon-meta-ex">
+    <div class="icon-fn-ex"><code>dg3_icon_close.svg</code></div>
+    <div class="icon-title-ex">Close</div>
+    <div class="icon-use-ex">Close floating panels and modals.</div>
+    <a href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M4%204l8%208M12%204l-8%208%22/%3E%3C/svg%3E" download="dg3_icon_close.svg" class="icon-dl-btn-ex">&#8595; Download SVG</a>
+  </div>
+</div>
+<div class="icon-card-ex">
+  <div class="icon-prev-ex"><svg viewBox="0 0 16 16" width="28" height="28" fill="none" stroke="#CDBD70" stroke-width="1.4" stroke-linecap="round"><path d="M2 13L5.5 7 8.5 10 11.5 5 14 8"/></svg></div>
+  <div class="icon-meta-ex">
+    <div class="icon-fn-ex"><code>dg3_icon_chart.svg</code></div>
+    <div class="icon-title-ex">Chart</div>
+    <div class="icon-use-ex">Chart tab in the intelligence panel tab strip.</div>
+    <a href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M2%2013L5.5%207%208.5%2010%2011.5%205%2014%208%22/%3E%3C/svg%3E" download="dg3_icon_chart.svg" class="icon-dl-btn-ex">&#8595; Download SVG</a>
+  </div>
+</div>
+<div class="icon-card-ex">
+  <div class="icon-prev-ex"><svg viewBox="0 0 12 12" width="28" height="28" fill="none" stroke="#CDBD70" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><polygon points="5,4 9,6 5,8" fill="#CDBD70" stroke="none"/></svg></div>
+  <div class="icon-meta-ex">
+    <div class="icon-fn-ex"><code>dg3_icon_stream.svg</code></div>
+    <div class="icon-title-ex">Stream / Play</div>
+    <div class="icon-use-ex">Live stream tab and floating stream panel header.</div>
+    <a href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%3E%3Ccircle%20cx%3D%226%22%20cy%3D%226%22%20r%3D%224.5%22/%3E%3Cpolygon%20points%3D%225%2C4%209%2C6%205%2C8%22%20fill%3D%22currentColor%22%20stroke%3D%22none%22/%3E%3C/svg%3E" download="dg3_icon_stream.svg" class="icon-dl-btn-ex">&#8595; Download SVG</a>
+  </div>
+</div>
+<div class="icon-card-ex">
+  <div class="icon-prev-ex"><svg viewBox="0 0 10 10" width="28" height="28" fill="none" stroke="#CDBD70" stroke-width="1.8" stroke-linecap="round"><path d="M3 2l4 3-4 3"/></svg></div>
+  <div class="icon-meta-ex">
+    <div class="icon-fn-ex"><code>dg3_icon_chevron.svg</code></div>
+    <div class="icon-title-ex">Expand chevron</div>
+    <div class="icon-use-ex">Expand / collapse "Other positions" divider.</div>
+    <a href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2010%2010%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M3%202l4%203-4%203%22/%3E%3C/svg%3E" download="dg3_icon_chevron.svg" class="icon-dl-btn-ex">&#8595; Download SVG</a>
+  </div>
+</div>
+<div class="icon-card-ex">
+  <div class="icon-prev-ex"><svg viewBox="0 0 16 18" width="26" height="28" fill="#9147FF"><path d="M1 0L0 4v12h4v2h2l2-2h3l4-4V0H1zm13 9l-3 3H8l-2 2V12H3V2h11v7z"/><path d="M11 4h2v4h-2zM7 4h2v4H7z"/></svg></div>
+  <div class="icon-meta-ex">
+    <div class="icon-fn-ex"><code>dg3_icon_twitch.svg</code></div>
+    <div class="icon-title-ex">Twitch</div>
+    <div class="icon-use-ex">Channel selector and stream popout. Hardcoded fill — do not use currentColor.</div>
+    <a href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2018%22%20fill%3D%22%239147FF%22%3E%3Cpath%20d%3D%22M1%200L0%204v12h4v2h2l2-2h3l4-4V0H1zm13%209l-3%203H8l-2%202V12H3V2h11v7z%22/%3E%3Cpath%20d%3D%22M11%204h2v4h-2zM7%204h2v4H7z%22/%3E%3C/svg%3E" download="dg3_icon_twitch.svg" class="icon-dl-btn-ex">&#8595; Download SVG</a>
+  </div>
+</div>
+<div class="icon-card-ex">
+  <div class="icon-prev-ex"><svg viewBox="0 0 16 12" width="28" height="21" fill="#FF4646"><path d="M15.5 1.9a2 2 0 00-1.4-1.4C12.8 0 8 0 8 0S3.2 0 1.9.5A2 2 0 00.5 1.9C0 3.2 0 6 0 6s0 2.8.5 4.1a2 2 0 001.4 1.4C3.2 12 8 12 8 12s4.8 0 6.1-.5a2 2 0 001.4-1.4C16 8.8 16 6 16 6s0-2.8-.5-4.1zM6.4 8.5V3.5L10.6 6 6.4 8.5z"/></svg></div>
+  <div class="icon-meta-ex">
+    <div class="icon-fn-ex"><code>dg3_icon_youtube.svg</code></div>
+    <div class="icon-title-ex">YouTube</div>
+    <div class="icon-use-ex">Channel selector and stream popout. Hardcoded fill — do not use currentColor.</div>
+    <a href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2012%22%20fill%3D%22%23FF4646%22%3E%3Cpath%20d%3D%22M15.5%201.9a2%202%200%2000-1.4-1.4C12.8%200%208%200%208%200S3.2%200%201.9.5A2%202%200%2000.5%201.9C0%203.2%200%206%200%206s0%202.8.5%204.1a2%202%200%20001.4%201.4C3.2%2012%208%2012%208%2012s4.8%200%206.1-.5a2%202%200%20001.4-1.4C16%208.8%2016%206%2016%206s0-2.8-.5-4.1zM6.4%208.5V3.5L10.6%206%206.4%208.5z%22/%3E%3C/svg%3E" download="dg3_icon_youtube.svg" class="icon-dl-btn-ex">&#8595; Download SVG</a>
+  </div>
+</div>
+<div class="icon-card-ex">
+  <div class="icon-prev-ex"><svg viewBox="0 0 16 16" width="28" height="28" fill="#53FF5F"><rect width="16" height="16" rx="2"/><path d="M4 3h2v4l3-4h3L8.5 8 12 13H9L6 9v4H4V3z" fill="#000"/></svg></div>
+  <div class="icon-meta-ex">
+    <div class="icon-fn-ex"><code>dg3_icon_kick.svg</code></div>
+    <div class="icon-title-ex">Kick</div>
+    <div class="icon-use-ex">Channel selector and stream popout. Hardcoded fill — do not use currentColor.</div>
+    <a href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22%2353FF5F%22%3E%3Crect%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22/%3E%3Cpath%20d%3D%22M4%203h2v4l3-4h3L8.5%208%2012%2013H9L6%209v4H4V3z%22%20fill%3D%22%23000%22/%3E%3C/svg%3E" download="dg3_icon_kick.svg" class="icon-dl-btn-ex">&#8595; Download SVG</a>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- 11 -->
+<div id="s11">
+<h2><span class="sec-num">11</span>Tailwind Token Mapping</h2>
+<p class="lead">Drop this into <code>tailwind.config.js</code> to use DG3 design tokens as Tailwind utilities. After this, use <code>bg-bg1</code>, <code>text-t1</code>, <code>border-line2</code> etc. directly in class names.</p>
+
+<div class="callout callout-gold">
+  <div class="callout-title">This is a config extension, not a replacement</div>
+  This extends Tailwind's default theme — all standard Tailwind utilities still work alongside these. The file uses vanilla CSS variables internally; this mapping lets you consume those same tokens from Tailwind class names in React/Vue components built on top of the terminal.
+</div>
+
+<h3><div class="h3-dot"></div>tailwind.config.js</h3>
+<div class="tbl"><table>
+<thead><tr><th style="width:28%">Tailwind class</th><th style="width:28%">CSS variable</th><th style="width:20%">Hex / Value</th><th>Example usage</th></tr></thead>
+<tbody>
+<tr><td colspan="4" style="background:#F4F2EC;font-size:10px;font-weight:700;letter-spacing:.08em;color:#888;text-transform:uppercase">Backgrounds</td></tr>
+<tr><td><code>bg-bg0</code></td><td><code>var(--bg0)</code></td><td><code>#060604</code></td><td>Root terminal body</td></tr>
+<tr><td><code>bg-bg1</code></td><td><code>var(--bg1)</code></td><td><code>#0E0E0C</code></td><td>Panels, top bar</td></tr>
+<tr><td><code>bg-bg2</code></td><td><code>var(--bg2)</code></td><td><code>#161512</code></td><td>Tab strips, active tabs</td></tr>
+<tr><td><code>bg-bg3</code></td><td><code>var(--bg3)</code></td><td><code>#1E1D18</code></td><td>Dropdowns, tooltips</td></tr>
+<tr><td><code>bg-bg4</code></td><td><code>var(--bg4)</code></td><td><code>#282720</code></td><td>Active options, deep cards</td></tr>
+<tr><td colspan="4" style="background:#F4F2EC;font-size:10px;font-weight:700;letter-spacing:.08em;color:#888;text-transform:uppercase">Text</td></tr>
+<tr><td><code>text-t1</code></td><td><code>var(--t1)</code></td><td><code>#F5F2E8</code></td><td>Primary labels, market names</td></tr>
+<tr><td><code>text-t2</code></td><td><code>var(--t2)</code></td><td><code>#C9C3B4</code></td><td>Secondary text, meta lines</td></tr>
+<tr><td><code>text-t3</code></td><td><code>var(--t3)</code></td><td><code>#AFA99C</code></td><td>Dim metadata, entry prices</td></tr>
+<tr><td><code>text-t4</code></td><td><code>var(--t4)</code></td><td><code>#706A62</code></td><td>Placeholders, empty states</td></tr>
+<tr><td colspan="4" style="background:#F4F2EC;font-size:10px;font-weight:700;letter-spacing:.08em;color:#888;text-transform:uppercase">Gold</td></tr>
+<tr><td><code>text-gold / bg-gold</code></td><td><code>var(--g3)</code></td><td><code>#CDBD70</code></td><td>Active tabs, limit prices, fill bars</td></tr>
+<tr><td><code>text-gold-dim / bg-gold-dim</code></td><td><code>var(--g4)</code></td><td><code>#B9A750</code></td><td>Gold hover states</td></tr>
+<tr><td><code>border-gold</code></td><td><code>var(--glowb)</code></td><td><code>rgba(205,189,112,.25)</code></td><td>Gold focus borders</td></tr>
+<tr><td colspan="4" style="background:#F4F2EC;font-size:10px;font-weight:700;letter-spacing:.08em;color:#888;text-transform:uppercase">Signal</td></tr>
+<tr><td><code>text-pos / bg-pos</code></td><td><code>var(--pos)</code></td><td><code>#4CAF7D</code></td><td>Positive P&amp;L, YES pills</td></tr>
+<tr><td><code>text-neg / bg-neg</code></td><td><code>var(--neg)</code></td><td><code>#E05C5C</code></td><td>Negative P&amp;L, NO pills, live dot</td></tr>
+<tr><td colspan="4" style="background:#F4F2EC;font-size:10px;font-weight:700;letter-spacing:.08em;color:#888;text-transform:uppercase">Borders</td></tr>
+<tr><td><code>border-line</code></td><td><code>var(--line)</code></td><td><code>rgba(255,255,255,.06)</code></td><td>Subtle row dividers</td></tr>
+<tr><td><code>border-line2</code></td><td><code>var(--line2)</code></td><td><code>rgba(255,255,255,.10)</code></td><td>Panel edges, tab strips</td></tr>
+<tr><td colspan="4" style="background:#F4F2EC;font-size:10px;font-weight:700;letter-spacing:.08em;color:#888;text-transform:uppercase">Fonts</td></tr>
+<tr><td><code>font-mono</code></td><td><code>var(--mono)</code></td><td>JetBrains Mono</td><td>All numeric data, tabs, prices</td></tr>
+<tr><td><code>font-sans</code></td><td><code>var(--sans)</code></td><td>IBM Plex Sans</td><td>Descriptive text, market context</td></tr>
+</tbody>
+</table></div>
+
+<h3><div class="h3-dot"></div>Config block (copy paste)</h3>
+<div style="background:#111;border-radius:8px;padding:20px 22px;margin:14px 0 20px;overflow-x:auto">
+<pre style="font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:1.7;color:#C9C3B4;white-space:pre">/** @type {import('tailwindcss').Config} */
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        bg0:       '#060604',
+        bg1:       '#0E0E0C',
+        bg2:       '#161512',
+        bg3:       '#1E1D18',
+        bg4:       '#282720',
+        t1:        '#F5F2E8',
+        t2:        '#C9C3B4',
+        t3:        '#AFA99C',
+        t4:        '#706A62',
+        gold:      '#CDBD70',
+        'gold-dim':'#B9A750',
+        pos:       '#4CAF7D',
+        neg:       '#E05C5C',
+        line:      'rgba(255,255,255,0.06)',
+        line2:     'rgba(255,255,255,0.10)',
+      },
+      fontFamily: {
+        mono: ['"JetBrains Mono"','Cascadia Code','SF Mono','Fira Code',
+               'ui-monospace','monospace'],
+        sans: ['"IBM Plex Sans"','Inter','Helvetica Neue',
+               'system-ui','sans-serif'],
+      },
+      borderRadius: {
+        dg3: '2px',
+      },
+    },
+  },
+};</pre>
+</div>
+</div>
+
+</div>
+</body>
+</html>

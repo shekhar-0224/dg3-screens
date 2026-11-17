@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DG3 · Portfolio · Mobile</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0D0D0A;--s1:#252320;--s2:#2E2C28;--s3:#363330;
+  --t1:#FFFFFF;--t2:#D8D2C8;--t3:#A8A29A;--t4:#5A5650;
+  --pos:#4CAF7D;--neg:#E05C5C;--gold:#CDBD70;
+  --glow:rgba(205,189,112,.08);--glowb:rgba(205,189,112,.25);
+  --line:rgba(255,255,255,.10);
+}
+body{background:#E8E6E0;display:flex;align-items:flex-start;justify-content:center;min-height:100vh;padding:32px 16px;font-family:'JetBrains Mono','SF Mono',monospace}
+.wrap{width:390px;flex-shrink:0}
+.device-lbl{text-align:center;font-size:10px;color:#999;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.device{width:390px;border-radius:46px;border:7px solid #1A1A1A;box-shadow:0 24px 64px rgba(0,0,0,.38),inset 0 0 0 1px rgba(255,255,255,.04);background:var(--bg);overflow:hidden}
+.notch-row{background:#080808;height:38px;display:flex;align-items:center;justify-content:center;padding:8px 0 4px}
+.notch{width:110px;height:24px;background:#111;border-radius:0 0 18px 18px;display:flex;align-items:center;justify-content:center;gap:5px}
+.n-cam{width:9px;height:9px;border-radius:50%;background:#0A0A0A;border:1.5px solid #222}
+.n-pill{width:60px;height:5px;background:#0A0A0A;border-radius:3px;border:1.5px solid #222}
+.screen{height:800px;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.tb{height:50px;background:var(--s1);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0;position:relative}
+.tb-bal{text-align:center}
+.tb-bal-v{font-size:15px;font-weight:800;color:var(--t1)}
+.tb-bal-d{font-size:10px;color:var(--pos);font-weight:600;margin-top:1px}
+.tb-av{width:30px;height:30px;border-radius:50%;background:rgba(205,189,112,.15);border:1.5px solid var(--glowb);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--gold);cursor:pointer}
+/* visibility bar */
+.vis-bar{height:36px;background:var(--s1);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0}
+.vis-left{display:flex;align-items:center;gap:8px}
+.vis-lbl{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.vis-toggle{width:34px;height:18px;border-radius:9px;position:relative;cursor:pointer;transition:background .15s;flex-shrink:0}
+.vis-knob{position:absolute;top:2px;width:14px;height:14px;border-radius:50%;background:#060604;transition:left .15s}
+.vis-view{font-size:10px;font-weight:600;color:var(--gold);cursor:pointer;display:flex;align-items:center;gap:4px;opacity:.85}
+.vis-view:active{opacity:1}
+/* public profile full overlay */
+.pub-overlay{display:none;position:absolute;inset:0;z-index:400;background:var(--bg);flex-direction:column;overflow:hidden}
+.pub-overlay.open{display:flex}
+.pub-ov-head{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--line);flex-shrink:0}
+.pub-ov-scroll{flex:1;overflow-y:auto;padding:16px 14px 40px}
+.pub-ov-back{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--t2);cursor:pointer}
+.pub-ov-url{font-size:9px;color:var(--t3);font-family:var(--mono)}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg)}
+.scroll::-webkit-scrollbar{width:2px}
+.scroll::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+.gap8{height:8px}.gap6{height:6px}
+
+/* BALANCE */
+.bal-section{padding:14px 16px 0}
+.bal-main{font-size:36px;font-weight:800;color:#FFFFFF;letter-spacing:-.03em;line-height:1}
+.bal-sub{font-size:12px;color:var(--t3);margin:4px 0 12px;display:flex;align-items:center;gap:4px}
+.bal-btns{display:flex;gap:8px;margin-bottom:14px}
+.btn-dep{flex:1;background:var(--gold);color:#060604;font-size:11px;font-weight:800;border-radius:8px;padding:11px;text-align:center;letter-spacing:.04em;cursor:pointer}
+.btn-wd{flex:1;background:transparent;color:var(--t2);font-size:11px;font-weight:600;border:1px solid var(--line);border-radius:8px;padding:11px;text-align:center;cursor:pointer}
+.bal-mini-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);padding:10px 0 4px}
+.bal-mini-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.bal-mini-val{font-size:12px;font-weight:700;color:#FFFFFF}
+
+/* KPI CHIPS */
+.kpi-scroll{display:flex;overflow-x:auto;scrollbar-width:none;background:var(--s1);border-radius:12px;margin:0 16px;border:1px solid var(--line)}
+.kpi-scroll::-webkit-scrollbar{display:none}
+.kpi-chip{flex-shrink:0;padding:11px 14px;min-width:140px;border-right:1px solid var(--line)}
+.kpi-chip:last-child{border-right:none}
+.kc-lbl{font-size:8.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;white-space:nowrap}
+.kc-val{font-size:18px;font-weight:800;line-height:1;margin-bottom:2px;color:#FFFFFF}
+.kc-sub{font-size:9px;color:var(--t3)}
+
+
+
+
+/* RISK */
+
+/* OPEN BOOK TABS */
+.book-tabbar{display:flex;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;padding:0 16px;background:var(--bg);flex-shrink:0}
+.book-tabbar::-webkit-scrollbar{display:none}
+.btab{font-size:10px;font-weight:700;color:var(--t3);padding:10px 0;border-bottom:2px solid transparent;margin-bottom:-1px;margin-right:16px;cursor:pointer;white-space:nowrap;flex-shrink:0;letter-spacing:.06em;text-transform:uppercase}
+.btab.on{color:var(--pos);border-bottom-color:var(--pos)}
+.bpanel{display:none}.bpanel.on{display:block}
+
+/* SECTION HEADER */
+.sec-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 6px}
+.sec-lbl{font-size:9px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.1em}
+.sec-cnt{font-size:9px;color:var(--t4)}
+
+/* POSITION CARD */
+.pos-card{margin:0 16px 8px;background:var(--s1);border-radius:10px;border:1px solid var(--line);overflow:hidden;cursor:pointer}
+.pos-card:active{background:var(--s2)}
+.pc-accent{height:2px}
+.pc-body{padding:11px 14px}
+.pc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px}
+.pc-name{font-size:12.5px;font-weight:600;color:#FFFFFF;line-height:1.3;flex:1}
+.pc-pnl{text-align:right;flex-shrink:0}
+.pc-pnl-v{font-size:14px;font-weight:800}
+.pc-pnl-p{font-size:10px;margin-top:1px}
+.pc-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:7px}
+.tag{display:inline-flex;align-items:center;padding:2px 6px;border-radius:4px;font-size:8.5px;font-weight:700;letter-spacing:.03em}
+.tag-wc{color:#4A90D9;border:1px solid rgba(74,144,217,.3);background:rgba(74,144,217,.07)}
+.tag-ucl{color:#4CAF7D;border:1px solid rgba(76,175,125,.3);background:rgba(76,175,125,.07)}
+.tag-nba{color:#E05C5C;border:1px solid rgba(224,92,92,.3);background:rgba(224,92,92,.07)}
+.tag-esports{color:#B496DC;border:1px solid rgba(180,150,220,.3);background:rgba(180,150,220,.07)}
+.tag-tennis{color:#CDBD70;border:1px solid rgba(205,189,112,.3);background:rgba(205,189,112,.07)}
+.tag-mlb{color:#E5A07A;border:1px solid rgba(229,160,122,.3);background:rgba(229,160,122,.07)}
+.oc-pill{display:inline-flex;align-items:center;padding:2px 6px;border-radius:3px;font-size:8.5px;font-weight:800;letter-spacing:.04em}
+.oc-y{color:var(--pos);border:1px solid rgba(76,175,125,.35)}
+.oc-n{color:var(--neg);border:1px solid rgba(224,92,92,.35)}
+.oc-ov{color:var(--pos);border:1px solid rgba(76,175,125,.35)}
+.oc-un{color:#E08C5C;border:1px solid rgba(224,140,92,.35)}
+.oc-nm{color:var(--t1);font-size:9px}
+.pc-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.05)}
+.pc-stat{padding:6px 0}
+.pc-stat-lbl{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+.pc-stat-val{font-size:11px;font-weight:700;color:#FFFFFF}
+
+/* ORDER CARD */
+.ord-card{margin:0 16px 8px;background:var(--s1);border-radius:10px;border:1px solid var(--line);padding:11px 14px}
+.oc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;gap:8px}
+.oc-name{font-size:12.5px;font-weight:600;color:#FFFFFF;flex:1;line-height:1.3;min-width:0}
+.oc-actions{display:flex;gap:6px;flex-shrink:0}
+.oc-cancel{font-size:9px;font-weight:700;color:var(--neg);border:1px solid rgba(224,92,92,.3);border-radius:4px;padding:3px 9px;cursor:pointer;flex-shrink:0;white-space:nowrap}
+.oc-modify{font-size:9px;font-weight:700;color:var(--t3);border:1px solid var(--line);border-radius:4px;padding:3px 9px;cursor:pointer;flex-shrink:0;white-space:nowrap}
+.oc-row2{display:flex;align-items:center;gap:5px;margin-bottom:8px;flex-wrap:wrap}
+.dir-buy{font-size:8.5px;font-weight:800;color:var(--gold)}
+.dir-sell{font-size:8.5px;font-weight:800;color:var(--neg)}
+.oc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.oc-stat-lbl{font-size:8px;color:var(--t3);text-transform:uppercase;margin-bottom:1px}
+.oc-stat-val{font-size:11.5px;font-weight:700;color:#FFFFFF}
+.fill-bar{height:2px;background:rgba(255,255,255,.06);border-radius:1px;margin-top:8px}
+.fill-bar-inner{height:100%;border-radius:1px;background:var(--pos)}
+
+/* TRADE CARDS */
+.tr-card{margin:0 16px 6px;padding:10px 14px;background:var(--s1);border-radius:10px;border:1px solid var(--line);cursor:pointer}
+.tr-card:active{background:var(--s2)}
+.tr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px}
+.tr-name{font-size:12px;font-weight:600;color:#FFFFFF;line-height:1.3;flex:1}
+.tr-pnl{text-align:right;flex-shrink:0}
+.tr-pnl-v{font-size:13px;font-weight:800}
+.tr-pnl-p{font-size:9.5px;margin-top:1px}
+.tr-meta{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t3);flex-wrap:wrap}
+.m-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:800;letter-spacing:.04em}
+.bw{color:var(--pos);border:1px solid rgba(76,175,125,.4)}
+.bl{color:var(--neg);border:1px solid rgba(224,92,92,.4)}
+
+/* ACTIVITY */
+.act-row{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid rgba(255,255,255,.05);font-size:11px}
+.act-row:last-child{border-bottom:none}
+.act-time{color:var(--t3);font-size:9.5px;width:60px;flex-shrink:0}
+.act-badge{display:inline-flex;align-items:center;justify-content:center;padding:2px 7px;border-radius:3px;font-size:8.5px;font-weight:800;white-space:nowrap;flex-shrink:0}
+.a-won{color:var(--pos);border:1px solid rgba(76,175,125,.35)}
+.a-lost{color:var(--neg);border:1px solid rgba(224,92,92,.35)}
+.a-buy{color:var(--gold);border:1px solid rgba(205,189,112,.3);background:rgba(205,189,112,.06)}
+.a-sell{color:#7CC8F0;border:1px solid rgba(124,200,240,.3);background:rgba(124,200,240,.06)}
+.tr-pill{font-size:9px;font-weight:700;color:var(--t3);border:1px solid var(--line);border-radius:5px;padding:3px 9px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.tr-pill.on{color:var(--t1);border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.05)}
+.act-mkt{flex:1;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.act-amt{font-weight:700;text-align:right;flex-shrink:0}
+.sect-foot{padding:10px 16px;font-size:10px;color:var(--t3);text-align:center;border-top:1px solid var(--line)}
+
+/* SEARCH */
+.hsearch{display:flex;align-items:center;gap:7px;background:var(--s2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 16px 4px}
+.hsearch input{background:none;border:none;outline:none;color:var(--t1);font-size:12px;font-family:inherit;flex:1}
+.hsearch input::placeholder{color:var(--t4)}
+
+/* BOTTOM NAV */
+.bnav{height:58px;background:var(--s1);border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:stretch;flex-shrink:0}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;color:var(--t4)}
+.bn.on{color:var(--gold)}
+.bn-lbl{font-size:9px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:inherit}
+
+/* BOTTOM SHEET */
+.bso{display:none;position:absolute;inset:0;z-index:50;background:rgba(0,0,0,.6)}
+.bso.open{display:block}
+.bs{position:absolute;bottom:0;left:0;right:0;z-index:51;background:#111;border-top:1px solid rgba(255,255,255,.1);border-radius:18px 18px 0 0;max-height:92%;overflow-y:auto;transform:translateY(100%);transition:transform .24s cubic-bezier(.25,1,.5,1)}
+.bs.open{transform:translateY(0)}
+.bs-hdl{display:flex;justify-content:center;padding:10px 0 5px;cursor:pointer;flex-shrink:0}
+.bs-hdl-bar{width:38px;height:4px;border-radius:2px;background:rgba(255,255,255,.18)}
+.bs-head{padding:0 16px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.bs-title{font-size:14px;font-weight:700;color:#FFFFFF;margin-bottom:2px}
+.bs-sub{font-size:10px;color:var(--t3)}
+.bs-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.bs-x{font-size:14px;color:var(--t3);cursor:pointer;padding:2px;flex-shrink:0}
+.bs-body{padding:14px 16px 28px}
+.bs-hero{background:var(--s2);border-radius:10px;padding:14px;text-align:center;margin-bottom:12px}
+.bs-hero-lbl{font-size:8.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.bs-hero-v{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.bs-hero-s{font-size:11px;margin-top:4px}
+.data-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px}
+.data-row:last-of-type{border-bottom:none}
+.data-lbl{color:var(--t3)}.data-val{font-weight:600;color:#FFFFFF}
+.bs-btn{display:flex;align-items:center;justify-content:center;padding:13px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px;letter-spacing:.04em}
+.btn-red{background:rgba(224,92,92,.12);color:var(--neg);border:1px solid rgba(224,92,92,.3)}
+.btn-ghost{background:transparent;color:var(--t2);border:1px solid rgba(255,255,255,.1)}
+.btn-gold{background:rgba(205,189,112,.1);color:var(--gold);border:1px solid var(--glowb)}
+.toggle-row{display:flex;border:1px solid rgba(255,255,255,.1);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.tog-item{flex:1;padding:8px 0;text-align:center;font-size:11px;color:var(--t3);cursor:pointer;font-weight:600}
+.tog-item.on{background:rgba(205,189,112,.1);color:var(--gold);font-weight:700}
+.close-panel{display:none}.close-panel.on{display:block}
+/* CLOSE MODAL - exact web class parity */
+.tsw{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.tsi{flex:1;padding:6px 0;text-align:center;font-size:11px;color:var(--t3);cursor:pointer;transition:all .12s}
+.tsi.r{font-weight:700;background:rgba(224,92,92,.1);color:var(--neg)}
+.otype{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.oti{flex:1;padding:5px 0;text-align:center;font-size:11px;color:var(--t3);cursor:pointer;font-weight:600;letter-spacing:.04em;transition:all .12s}
+.oti.on{background:rgba(205,189,112,.1);color:var(--gold)}
+.lw{margin-bottom:10px}
+.ll{font-size:9px;color:var(--t3);margin-bottom:4px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.lr{display:flex;align-items:center;gap:5px}
+.linp{flex:1;background:var(--s2);border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-family:var(--mono);font-size:14px;font-weight:700;color:var(--t1);text-align:right;outline:none;-webkit-appearance:none;-moz-appearance:textfield;appearance:none}
+.mo-field-lbl{display:flex;justify-content:space-between;font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.mo-field-lbl span:last-child{text-transform:none;letter-spacing:0;color:var(--t3)}
+.mo-input{width:100%;background:var(--s2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:15px;font-weight:700;color:var(--gold);outline:none}
+.linp::-webkit-inner-spin-button,.linp::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.linp:focus{border-color:var(--glowb)}
+.ladj{width:27px;height:32px;background:var(--s2);border:1px solid var(--line);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--t3);cursor:pointer}
+.lest{background:var(--s2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:4px}
+.lestl{font-size:9px;color:var(--t3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.ler{display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-bottom:3px}
+.ler:last-child{margin-bottom:0}
+.ler span:last-child{font-weight:600;color:var(--t1)}
+.sli{width:100%;accent-color:var(--gold);cursor:pointer;margin-bottom:9px;display:block}
+.sli-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:5px}
+.t3g{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:10px 0}
+.t3b{background:var(--s2);border-radius:6px;padding:8px 10px;text-align:center}
+.t3l{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;font-weight:600}
+.t3v{font-size:12px;font-weight:700;color:var(--t1)}
+.rem{font-size:11px;color:var(--t3);margin-bottom:3px}
+.rem span{color:var(--t1);font-weight:600}
+.btn-d{background:rgba(224,92,92,.12);color:var(--neg);border:1px solid rgba(224,92,92,.26);border-radius:8px;padding:9px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;margin-top:12px;display:block}
+.btn-g{background:transparent;color:var(--t2);border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center;font-size:12px;cursor:pointer;margin-top:5px;display:block}
+.btn-lim{background:rgba(205,189,112,.1);color:var(--gold);border:1px solid var(--glowb);border-radius:8px;padding:9px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;margin-top:12px;display:block}
+.disc{font-size:9px;color:var(--t3);text-align:center;margin-top:9px;line-height:1.5}
+.tiles3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin:10px 0}
+.tile3{background:var(--s2);border-radius:7px;padding:8px 10px;text-align:center}
+.t3-lbl{font-size:8px;color:var(--t3);text-transform:uppercase;margin-bottom:2px}
+.t3-val{font-size:13px;font-weight:700;color:var(--t1)}
+.slider-row{margin:10px 0}
+.slider-lbl{display:flex;justify-content:space-between;font-size:10.5px;color:var(--t3);margin-bottom:5px}
+.sl{width:100%;accent-color:var(--gold);cursor:pointer;display:block;margin-bottom:6px}
+.qbtns{display:flex;gap:5px;margin-bottom:10px}
+.qb{flex:1;padding:5px 0;border:1px solid rgba(255,255,255,.1);border-radius:6px;font-size:10px;color:var(--t3);text-align:center;cursor:pointer}
+.qb.on{border-color:var(--glowb);color:var(--gold);background:var(--glow)}
+.bs-warn{background:rgba(205,189,112,.06);border:1px solid var(--glowb);border-radius:8px;padding:9px 12px;font-size:11px;color:var(--t2);line-height:1.5;margin:8px 0}
+.fill-band{background:var(--s2);border-radius:8px;padding:10px 12px;margin:8px 0}
+.fill-row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0}
+
+/* SHARE CARD */
+.scard{background:#0D0D0B;border:1px solid rgba(205,189,112,.2);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.scard::before{content:'';display:block;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.scard-body{padding:14px}
+.scard-logo{margin-bottom:8px}
+.scard-meta{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:6px;margin:4px 0 6px}
+.scard-name{font-size:14px;font-weight:800;color:#FFFFFF;line-height:1.3;margin-bottom:8px}
+.scard-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.05);border-radius:8px;overflow:hidden;margin-top:8px}
+.scard-stat{background:#111;padding:10px}
+.ss-lbl{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.ss-val{font-size:14px;font-weight:800;line-height:1;color:#FFFFFF}
+.ss-sub{font-size:9px;color:var(--t3);margin-top:2px}
+.scard-foot{padding:8px 14px;font-size:9px;color:var(--t4);display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06)}
+.share-btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:11px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;margin-top:7px}
+.sbn-x{background:rgba(255,255,255,.05);color:var(--t1);border:1px solid rgba(255,255,255,.1)}
+.sbn-img{background:rgba(255,255,255,.03);color:var(--t3);border:1px solid rgba(255,255,255,.07)}
+.sbn-lnk{background:var(--glow);color:var(--gold);border:1px solid var(--glowb)}
+.toast{position:absolute;bottom:68px;right:12px;z-index:200;background:var(--s2);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--t1);box-shadow:0 8px 24px rgba(0,0,0,.6);max-width:270px;transform:translateY(16px);opacity:0;pointer-events:none;transition:all .2s cubic-bezier(.16,1,.3,1)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-title{font-weight:700;margin-bottom:1px}
+.toast-sub{font-size:10px;color:var(--t3)}
+.pos{color:var(--pos)}.neg{color:var(--neg)}.gold{color:var(--gold)}.t3{color:var(--t3)}.t4{color:var(--t4)}.fw8{font-weight:800}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="device-lbl">DG3 · Portfolio · Mobile · 390px</div>
+<div class="device">
+<div class="notch-row"><div class="notch"><div class="n-pill"></div><div class="n-cam"></div></div></div>
+<div class="screen" id="scr">
+
+<div class="tb">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 24" width="72" height="24" style="flex-shrink:0;display:block;"><text y="20" font-family="'JetBrains Mono',monospace" font-size="20" font-weight="700" text-rendering="geometricPrecision"><tspan fill="#CDBD70">&gt;|</tspan><tspan fill="#F5F2E8">DG</tspan><tspan fill="#CDBD70" font-weight="800">3</tspan></text></svg>
+  <div class="tb-bal" style="position:absolute;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none"><div class="tb-bal-v">$84,210</div><div class="tb-bal-d">+$2,140 today · +2.6%</div></div>
+  <div class="tb-av" onclick="openSheet('profile-share')">DC</div>
+</div>
+
+<!-- VISIBILITY BAR -->
+<div class="vis-bar">
+  <div class="vis-left">
+    <div id="vis-toggle" class="vis-toggle" onclick="mobToggleListed()" style="background:#4CAF7D">
+      <div id="vis-knob" class="vis-knob" style="left:16px"></div>
+    </div>
+    <span id="vis-lbl" class="vis-lbl" style="color:var(--t1)">Listed</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div onclick="openSheet('profile-share')" style="width:26px;height:26px;border:1px solid var(--glowb);border-radius:6px;background:rgba(205,189,112,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gold)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3" r="1.5"/><circle cx="12" cy="13" r="1.5"/><circle cx="3" cy="8" r="1.5"/><path d="M4.5 7.1L10.5 4M4.5 8.9l6 3.1"/></svg></div>
+    <div class="vis-view" onclick="mobOpenPublic()">View public profile <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+  </div>
+</div>
+
+<div class="scroll" id="sc">
+
+  <!-- BALANCE -->
+  <div class="bal-section">
+    <div class="bal-main">$84,210</div>
+    <div class="bal-sub"><span class="pos">+$2,140</span>&nbsp;today&nbsp;·&nbsp;+2.6%</div>
+    <div class="bal-btns">
+      <div class="btn-dep">+ Deposit</div>
+      <div class="btn-wd">Withdraw</div>
+    </div>
+    <div style="display:flex;gap:6px;padding:10px 0 4px;border-top:1px solid rgba(255,255,255,.08)">
+      <div style="flex:1;background:rgba(255,255,255,.05);border-radius:8px;padding:9px 10px;border:1px solid rgba(255,255,255,.08)">
+        <div style="font-size:8.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Deployed</div>
+        <div style="font-size:13px;font-weight:800;color:#FFFFFF;line-height:1">$31,640</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:2px">38% of balance</div>
+      </div>
+      <div style="flex:1;background:rgba(205,189,112,.07);border-radius:8px;padding:9px 10px;border:1px solid rgba(205,189,112,.18)">
+        <div style="font-size:8.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Reserved</div>
+        <div style="font-size:13px;font-weight:800;color:var(--gold);line-height:1">$5,730</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:2px">7% of balance</div>
+      </div>
+      <div style="flex:1;background:rgba(76,175,125,.07);border-radius:8px;padding:9px 10px;border:1px solid rgba(76,175,125,.18)">
+        <div style="font-size:8.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Unrealized</div>
+        <div style="font-size:13px;font-weight:800;color:var(--pos);line-height:1">+$1,872</div>
+        <div style="font-size:9px;color:var(--pos);opacity:.7;margin-top:2px">+5.9%</div>
+      </div>
+    </div>
+  </div>
+  <div class="gap8"></div>
+
+  <!-- KPI CHIPS -->
+  <div class="kpi-scroll">
+    <div class="kpi-chip"><div class="kc-lbl">Open Positions</div><div class="kc-val">12</div><div class="kc-sub">5 orders pending</div></div>
+    <div class="kpi-chip"><div class="kc-lbl">Total P&amp;L (Realized)</div><div class="kc-val pos">+$6,420</div><div class="kc-sub">42 settled</div></div>
+    <div class="kpi-chip"><div class="kc-lbl">Win Rate</div><div class="kc-val pos">54.8%</div><div class="kc-sub">23 won of 42</div></div>
+    <div class="kpi-chip"><div class="kc-lbl">Unrealized P&amp;L</div><div class="kc-val pos">+$1,872</div><div class="kc-sub">across 12 positions</div></div>
+    <div class="kpi-chip"><div class="kc-lbl">Avg CLV</div><div class="kc-val gold">+3.2¢</div><div class="kc-sub">42 settled bets</div></div>
+    <div class="kpi-chip" style="border-right:none"><div class="kc-lbl">Volume Traded</div><div class="kc-val">$142k</div><div class="kc-sub">42 total trades</div></div>
+  </div>
+  <div class="gap8"></div>
+
+
+
+  <!-- TABS: Open Positions / Open Orders / Closed Positions / Activity -->
+  <div class="book-tabbar">
+    <div class="btab on" onclick="switchBook('pos',this)">Open Positions <span style="background:rgba(76,175,125,.15);color:var(--pos);border-radius:4px;padding:1px 5px;font-size:9px;margin-left:3px">12</span></div>
+    <div class="btab" onclick="switchBook('ord',this)">Open Orders <span style="background:rgba(255,255,255,.07);color:var(--t3);border-radius:4px;padding:1px 5px;font-size:9px;margin-left:3px">5</span></div>
+    <div class="btab" onclick="switchBook('closed',this)">Closed Positions</div>
+    <div class="btab" onclick="switchBook('act',this)">Activity</div>
+  </div>
+
+  <!-- OPEN POSITIONS -->
+  <div class="bpanel on" id="bk-pos">
+    <div class="hsearch" style="margin-top:8px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input placeholder="Search positions…" oninput="mSearchPos(this.value)" style="background:none;border:none;outline:none;color:#FFFFFF;font-size:12px;font-family:inherit;flex:1"></div>
+    <div class="pos-card" onclick="openSheet('pos',8)">
+      <div class="pc-accent" style="background:var(--pos)"></div>
+      <div class="pc-body">
+        <div class="pc-top"><div class="pc-name">Carlos Alcaraz wins Wimbledon 2026</div><div class="pc-pnl"><div class="pc-pnl-v pos">+$25,000</div><div class="pc-pnl-p pos">+17.9%</div></div></div>
+        <div class="pc-meta"><div class="tag tag-tennis">ATP Wimbledon</div><div class="oc-pill oc-y">YES</div></div>
+        <div class="pc-stats"><div class="pc-stat"><div class="pc-stat-lbl">Entry</div><div class="pc-stat-val">0.28</div></div><div class="pc-stat"><div class="pc-stat-lbl">Price</div><div class="pc-stat-val pos">0.33</div></div><div class="pc-stat"><div class="pc-stat-lbl">Shares</div><div class="pc-stat-val">500k</div></div><div class="pc-stat"><div class="pc-stat-lbl">Cost</div><div class="pc-stat-val">$140k</div></div></div>
+      </div>
+    </div>
+    <div class="pos-card" onclick="openSheet('pos',0)">
+      <div class="pc-accent" style="background:var(--pos)"></div>
+      <div class="pc-body">
+        <div class="pc-top"><div class="pc-name">RM wins 1st leg vs Man City</div><div class="pc-pnl"><div class="pc-pnl-v pos">+$420</div><div class="pc-pnl-p pos">+8.4%</div></div></div>
+        <div class="pc-meta"><div class="tag tag-wc">FIFA WC 2026</div><div class="oc-pill oc-y">YES</div></div>
+        <div class="pc-stats"><div class="pc-stat"><div class="pc-stat-lbl">Entry</div><div class="pc-stat-val">0.58</div></div><div class="pc-stat"><div class="pc-stat-lbl">Price</div><div class="pc-stat-val pos">0.64</div></div><div class="pc-stat"><div class="pc-stat-lbl">Shares</div><div class="pc-stat-val">8,620</div></div><div class="pc-stat"><div class="pc-stat-lbl">Cost</div><div class="pc-stat-val">$5,000</div></div></div>
+      </div>
+    </div>
+    <div class="pos-card" onclick="openSheet('pos',1)">
+      <div class="pc-accent" style="background:var(--pos)"></div>
+      <div class="pc-body">
+        <div class="pc-top"><div class="pc-name">Will Real Madrid Win the UCL 2025/26 Final vs Arsenal?</div><div class="pc-pnl"><div class="pc-pnl-v pos">+$369</div><div class="pc-pnl-p pos">+11.5%</div></div></div>
+        <div class="pc-meta"><div class="tag tag-ucl">UCL 25/26</div><div class="oc-pill oc-y">YES</div></div>
+        <div class="pc-stats"><div class="pc-stat"><div class="pc-stat-lbl">Entry</div><div class="pc-stat-val">0.52</div></div><div class="pc-stat"><div class="pc-stat-lbl">Price</div><div class="pc-stat-val pos">0.58</div></div><div class="pc-stat"><div class="pc-stat-lbl">Shares</div><div class="pc-stat-val">6,154</div></div><div class="pc-stat"><div class="pc-stat-lbl">Cost</div><div class="pc-stat-val">$3,200</div></div></div>
+      </div>
+    </div>
+    <div class="pos-card" onclick="openSheet('pos',7)">
+      <div class="pc-accent" style="background:var(--neg)"></div>
+      <div class="pc-body">
+        <div class="pc-top"><div class="pc-name">Will T1 Win the League of Legends World Championship 2026?</div><div class="pc-pnl"><div class="pc-pnl-v neg">-$333</div><div class="pc-pnl-p neg">-11.9%</div></div></div>
+        <div class="pc-meta"><div class="tag tag-esports">Esports</div><div class="oc-pill oc-y">YES</div></div>
+        <div class="pc-stats"><div class="pc-stat"><div class="pc-stat-lbl">Entry</div><div class="pc-stat-val">0.42</div></div><div class="pc-stat"><div class="pc-stat-lbl">Price</div><div class="pc-stat-val neg">0.37</div></div><div class="pc-stat"><div class="pc-stat-lbl">Shares</div><div class="pc-stat-val">1,200</div></div><div class="pc-stat"><div class="pc-stat-lbl">Cost</div><div class="pc-stat-val">$500</div></div></div>
+      </div>
+    </div>
+    <div class="pos-card" onclick="openSheet('pos',3)">
+      <div class="pc-accent" style="background:var(--pos)"></div>
+      <div class="pc-body">
+        <div class="pc-top"><div class="pc-name">Philadelphia Phillies vs Atlanta Braves · NLCS 2026</div><div class="pc-pnl"><div class="pc-pnl-v pos">+$315</div><div class="pc-pnl-p pos">+15.8%</div></div></div>
+        <div class="pc-meta"><div class="tag tag-mlb">MLB Playoffs</div><span class="t3" style="font-size:9px">Philadelphia Phillies</span><div class="oc-pill oc-y">YES</div></div>
+        <div class="pc-stats"><div class="pc-stat"><div class="pc-stat-lbl">Entry</div><div class="pc-stat-val">0.38</div></div><div class="pc-stat"><div class="pc-stat-lbl">Price</div><div class="pc-stat-val pos">0.44</div></div><div class="pc-stat"><div class="pc-stat-lbl">Shares</div><div class="pc-stat-val">5,263</div></div><div class="pc-stat"><div class="pc-stat-lbl">Cost</div><div class="pc-stat-val">$2,000</div></div></div>
+      </div>
+    </div>
+    <div class="pos-card" onclick="openSheet('pos',4)">
+      <div class="pc-accent" style="background:var(--pos)"></div>
+      <div class="pc-body">
+        <div class="pc-top"><div class="pc-name">Boston Celtics vs Miami Heat Game 4 · Total Points O/U 214.5</div><div class="pc-pnl"><div class="pc-pnl-v pos">+$4,327</div><div class="pc-pnl-p pos">+17.3%</div></div></div>
+        <div class="pc-meta"><div class="tag tag-nba">NBA Playoffs</div><div class="oc-pill oc-ov">O 214.5</div></div>
+        <div class="pc-stats"><div class="pc-stat"><div class="pc-stat-lbl">Entry</div><div class="pc-stat-val">0.52</div></div><div class="pc-stat"><div class="pc-stat-lbl">Price</div><div class="pc-stat-val pos">0.61</div></div><div class="pc-stat"><div class="pc-stat-lbl">Shares</div><div class="pc-stat-val">48,077</div></div><div class="pc-stat"><div class="pc-stat-lbl">Cost</div><div class="pc-stat-val">$25,000</div></div></div>
+      </div>
+    </div>
+    <div class="pos-card" onclick="openSheet('pos',5)">
+      <div class="pc-accent" style="background:var(--neg)"></div>
+      <div class="pc-body">
+        <div class="pc-top"><div class="pc-name">Group C winner · WC 2026</div><div class="pc-pnl"><div class="pc-pnl-v neg">-$147</div><div class="pc-pnl-p neg">-9.8%</div></div></div>
+        <div class="pc-meta"><div class="tag tag-wc">FIFA WC 2026</div><span class="t3" style="font-size:9px">Argentina</span><div class="oc-pill oc-y">YES</div></div>
+        <div class="pc-stats"><div class="pc-stat"><div class="pc-stat-lbl">Entry</div><div class="pc-stat-val">0.61</div></div><div class="pc-stat"><div class="pc-stat-lbl">Price</div><div class="pc-stat-val neg">0.55</div></div><div class="pc-stat"><div class="pc-stat-lbl">Shares</div><div class="pc-stat-val">2,459</div></div><div class="pc-stat"><div class="pc-stat-lbl">Cost</div><div class="pc-stat-val">$1,500</div></div></div>
+      </div>
+    </div>
+        <div id="pos-extra" style="display:none">
+      <div class="pos-card" onclick="openSheet('pos',2)">
+        <div class="pc-accent" style="background:var(--pos)"></div>
+        <div class="pc-body">
+          <div class="pc-top"><div class="pc-name">Celtics vs Knicks · Total pts O/U 218</div><div class="pc-pnl"><div class="pc-pnl-v neg">-$30</div><div class="pc-pnl-p neg">-12.5%</div></div></div>
+          <div class="pc-meta"><div class="tag tag-nba">NBA Playoffs</div><div class="oc-pill oc-n">U 218</div></div>
+          <div class="pc-stats"><div class="pc-stat"><div class="pc-stat-lbl">Entry</div><div class="pc-stat-val">0.48</div></div><div class="pc-stat"><div class="pc-stat-lbl">Price</div><div class="pc-stat-val neg">0.42</div></div><div class="pc-stat"><div class="pc-stat-lbl">Shares</div><div class="pc-stat-val">500</div></div><div class="pc-stat"><div class="pc-stat-lbl">Cost</div><div class="pc-stat-val">$240</div></div></div>
+        </div>
+      </div>
+      <div class="pos-card" onclick="openSheet('pos',5)">
+        <div class="pc-accent" style="background:var(--pos)"></div>
+        <div class="pc-body">
+          <div class="pc-top"><div class="pc-name">T1 vs GenG · LoL LCK Final</div><div class="pc-pnl"><div class="pc-pnl-v pos">+$88</div><div class="pc-pnl-p pos">+17.6%</div></div></div>
+          <div class="pc-meta"><div class="tag tag-esports">Esports</div><div class="oc-pill oc-y">YES</div></div>
+          <div class="pc-stats"><div class="pc-stat"><div class="pc-stat-lbl">Entry</div><div class="pc-stat-val">0.34</div></div><div class="pc-stat"><div class="pc-stat-lbl">Price</div><div class="pc-stat-val pos">0.40</div></div><div class="pc-stat"><div class="pc-stat-lbl">Shares</div><div class="pc-stat-val">1,500</div></div><div class="pc-stat"><div class="pc-stat-lbl">Cost</div><div class="pc-stat-val">$500</div></div></div>
+        </div>
+      </div>
+      <div class="pos-card" onclick="openSheet('pos',6)">
+        <div class="pc-accent" style="background:var(--neg)"></div>
+        <div class="pc-body">
+          <div class="pc-top"><div class="pc-name">Morocco vs Colombia · WC 2026 Group D</div><div class="pc-pnl"><div class="pc-pnl-v neg">-$42</div><div class="pc-pnl-p neg">-8.4%</div></div></div>
+          <div class="pc-meta"><div class="tag tag-wc">FIFA WC 2026</div><div class="oc-pill oc-y">YES</div></div>
+          <div class="pc-stats"><div class="pc-stat"><div class="pc-stat-lbl">Entry</div><div class="pc-stat-val">0.72</div></div><div class="pc-stat"><div class="pc-stat-lbl">Price</div><div class="pc-stat-val neg">0.66</div></div><div class="pc-stat"><div class="pc-stat-lbl">Shares</div><div class="pc-stat-val">700</div></div><div class="pc-stat"><div class="pc-stat-lbl">Cost</div><div class="pc-stat-val">$500</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div id="pos-show-more" style="display:flex;align-items:center;justify-content:space-between;padding:8px 16px;cursor:pointer" onclick="showAllPos(this)">
+      <span style="font-size:9px;color:var(--t3)">Showing 6 of 12 open positions</span>
+      <span style="font-size:10px;font-weight:600;color:var(--gold)">View all 12 →</span>
+    </div>
+    <div class="gap8"></div>
+  </div>
+
+  <!-- OPEN ORDERS -->
+  <div class="bpanel" id="bk-ord">
+    <div class="ord-card">
+      <div class="oc-top"><div class="oc-name">Man City win UEFA Final</div><div class="oc-actions"><div class="oc-modify" onclick="openSheet('modify',0)">Modify</div><div class="oc-cancel" onclick="openSheet('cancel',0)">Cancel</div></div></div>
+      <div class="oc-row2"><div class="tag tag-wc">FIFA WC 2026</div><div class="oc-pill oc-y">YES</div><span style="font-size:9px;color:var(--t3)"><span class="dir-buy">BUY</span> · LIMIT · GTC</span></div>
+      <div class="oc-grid"><div><div class="oc-stat-lbl">Limit</div><div class="oc-stat-val">0.48</div></div><div><div class="oc-stat-lbl">Mkt</div><div class="oc-stat-val t3">0.44</div></div><div><div class="oc-stat-lbl">Total</div><div class="oc-stat-val">$2,400</div></div><div><div class="oc-stat-lbl">Filled</div><div class="oc-stat-val t3">--</div></div></div>
+    </div>
+    <div class="ord-card">
+      <div class="oc-top"><div class="oc-name">RM wins UCL 2026 · Top scorer</div><div class="oc-actions"><div class="oc-modify" onclick="openSheet('modify',1)">Modify</div><div class="oc-cancel" onclick="openSheet('cancel',1)">Cancel</div></div></div>
+      <div class="oc-row2"><div class="tag tag-ucl">UCL 25/26</div><div class="oc-pill oc-nm">Vinicius</div><span style="font-size:9px;color:var(--t3)"><span class="dir-buy">BUY</span> · LIMIT · GTC</span></div>
+      <div class="oc-grid"><div><div class="oc-stat-lbl">Limit</div><div class="oc-stat-val">0.18</div></div><div><div class="oc-stat-lbl">Mkt</div><div class="oc-stat-val t3">0.21</div></div><div><div class="oc-stat-lbl">Total</div><div class="oc-stat-val">$1,440</div></div><div><div class="oc-stat-lbl">Filled</div><div class="oc-stat-val pos fw8">$864</div></div></div>
+      <div class="fill-bar"><div class="fill-bar-inner" style="width:60%"></div></div>
+    </div>
+    <div class="ord-card">
+      <div class="oc-top"><div class="oc-name">Lakers vs Thunder · O/U 218.5</div><div class="oc-actions"><div class="oc-modify" onclick="openSheet('modify',2)">Modify</div><div class="oc-cancel" onclick="openSheet('cancel',2)">Cancel</div></div></div>
+      <div class="oc-row2"><div class="tag tag-nba">NBA Playoffs</div><div class="oc-pill oc-ov">O 218.5</div><span style="font-size:9px;color:var(--t3)"><span class="dir-buy">BUY</span> · LIMIT · GTD · Exp Jun 28</span></div>
+      <div class="oc-grid"><div><div class="oc-stat-lbl">Limit</div><div class="oc-stat-val">0.54</div></div><div><div class="oc-stat-lbl">Mkt</div><div class="oc-stat-val t3">0.51</div></div><div><div class="oc-stat-lbl">Total</div><div class="oc-stat-val">$1,890</div></div><div><div class="oc-stat-lbl">Filled</div><div class="oc-stat-val t3">--</div></div></div>
+    </div>
+    <div class="ord-card">
+      <div class="oc-top"><div class="oc-name">Carlos Alcaraz wins Wimbledon 2026</div><div class="oc-actions"><div class="oc-modify" onclick="openSheet('modify',3)">Modify</div><div class="oc-cancel" onclick="openSheet('cancel',3)">Cancel</div></div></div>
+      <div class="oc-row2"><div class="tag tag-tennis">ATP Wimbledon</div><div class="oc-pill oc-y">YES</div><span style="font-size:9px;color:var(--t3)"><span class="dir-sell">SELL</span> · LIMIT · GTC · Partial fill</span></div>
+      <div class="oc-grid"><div><div class="oc-stat-lbl">Limit</div><div class="oc-stat-val">0.36</div></div><div><div class="oc-stat-lbl">Mkt</div><div class="oc-stat-val t3">0.33</div></div><div><div class="oc-stat-lbl">Total</div><div class="oc-stat-val">$36,000</div></div><div><div class="oc-stat-lbl">Filled</div><div class="oc-stat-val pos fw8">$14,400</div></div></div>
+      <div class="fill-bar"><div class="fill-bar-inner" style="width:40%"></div></div>
+    </div>
+    <div class="ord-card">
+      <div class="oc-top"><div class="oc-name">Real Madrid wins UCL 2026 Final</div><div class="oc-actions"><div class="oc-modify" onclick="openSheet('modify',4)">Modify</div><div class="oc-cancel" onclick="openSheet('cancel',4)">Cancel</div></div></div>
+      <div class="oc-row2"><div class="tag tag-ucl">UCL 25/26</div><div class="oc-pill oc-y">YES</div><span style="font-size:9px;color:var(--t3)"><span class="dir-sell">SELL</span> · LIMIT · GTC</span></div>
+      <div class="oc-grid"><div><div class="oc-stat-lbl">Limit</div><div class="oc-stat-val">0.64</div></div><div><div class="oc-stat-lbl">Mkt</div><div class="oc-stat-val t3">0.61</div></div><div><div class="oc-stat-lbl">Total</div><div class="oc-stat-val">$1,920</div></div><div><div class="oc-stat-lbl">Filled</div><div class="oc-stat-val t3">--</div></div></div>
+    </div>
+    <div style="padding:8px 16px 4px;font-size:9px;color:var(--t3)">5 orders · $43,650 total · <span style="color:var(--pos)">$15,264 filled so far</span></div>
+    <div class="gap8"></div>
+  </div>
+
+  <!-- CLOSED POSITIONS -->
+  <div class="bpanel" id="bk-closed">
+    <div style="display:flex;gap:6px;padding:10px 16px 6px;overflow-x:auto;scrollbar-width:none">
+      <div class="tr-pill on" onclick="filterTrades('all',this)">ALL</div>
+      <div class="tr-pill" onclick="filterTrades('wc',this)">FIFA WC</div>
+      <div class="tr-pill" onclick="filterTrades('ucl',this)">UCL</div>
+      <div class="tr-pill" onclick="filterTrades('nba',this)">NBA</div>
+      <div class="tr-pill" onclick="filterTrades('esports',this)">Esports</div>
+      <div class="tr-pill" onclick="filterTrades('tennis',this)">Tennis</div>
+    </div>
+    <div class="hsearch"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input placeholder="Search trades…" oninput="mSearchTr(this.value)"></div>
+    <div id="tr-list">
+      <div class="tr-card" onclick="openSheet('trade',0)"><div class="tr-top"><div class="tr-name">NBA East · Celtics win series</div><div class="tr-pnl"><div class="tr-pnl-v pos">+$116,000</div><div class="tr-pnl-p pos">+138.1%</div></div></div><div class="tr-meta"><span class="m-badge bw">WON</span><span>Apr 7</span><span class="oc-pill oc-y">YES</span><span class="pos">+19.0¢ CLV</span></div></div>
+      <div class="tr-card" onclick="openSheet('trade',1)"><div class="tr-top"><div class="tr-name">Man City wins UCL 2026 Final</div><div class="tr-pnl"><div class="tr-pnl-v pos">+$1,170</div><div class="tr-pnl-p pos">+78.0%</div></div></div><div class="tr-meta"><span class="m-badge bw">WON</span><span>Apr 5</span><span class="oc-pill oc-y">YES</span><span class="pos">+7.8¢ CLV</span></div></div>
+      <div class="tr-card" onclick="openSheet('trade',2)"><div class="tr-top"><div class="tr-name">Real Madrid beats Bayern home leg</div><div class="tr-pnl"><div class="tr-pnl-v neg">-$348</div><div class="tr-pnl-p neg">-100%</div></div></div><div class="tr-meta"><span class="m-badge bl">LOST</span><span>Apr 3</span><span class="oc-pill oc-y">YES</span><span class="neg">-2.8¢ CLV</span></div></div>
+      <div class="tr-card" onclick="openSheet('trade',3)"><div class="tr-top"><div class="tr-name">Uruguay vs Cabo Verde · Draw</div><div class="tr-pnl"><div class="tr-pnl-v pos">+$3,250</div><div class="tr-pnl-p pos">+162.5%</div></div></div><div class="tr-meta"><span class="m-badge bw">WON</span><span>Mar 29</span><span class="oc-pill oc-nm">Draw NO</span><span class="pos">+16.2¢ CLV</span></div></div>
+      <div class="tr-card" onclick="openSheet('trade',4)"><div class="tr-top"><div class="tr-name">Brazil vs Argentina · Match Winner</div><div class="tr-pnl"><div class="tr-pnl-v pos">+$982</div><div class="tr-pnl-p pos">+81.8%</div></div></div><div class="tr-meta"><span class="m-badge bw">WON</span><span>Mar 25</span><span class="oc-pill oc-nm">Argentina YES</span><span class="pos">+8.1¢ CLV</span></div></div>
+      <div class="tr-card" onclick="openSheet('trade',5)"><div class="tr-top"><div class="tr-name">France beats Brazil · WC 2026</div><div class="tr-pnl"><div class="tr-pnl-v neg">-$9,520</div><div class="tr-pnl-p neg">-100%</div></div></div><div class="tr-meta"><span class="m-badge bl">LOST</span><span>Mar 22</span><span class="oc-pill oc-n">NO</span><span class="neg">-1.9¢ CLV</span></div></div>
+      <div class="tr-card" onclick="openSheet('trade',6)"><div class="tr-top"><div class="tr-name">Novak Djokovic wins Roland Garros</div><div class="tr-pnl"><div class="tr-pnl-v pos">+$7,244</div><div class="tr-pnl-p pos">+241.5%</div></div></div><div class="tr-meta"><span class="m-badge bw">WON</span><span>Mar 18</span><span class="oc-pill oc-y">YES</span><span class="pos">+24.1¢ CLV</span></div></div>
+      <div class="tr-card" onclick="openSheet('trade',7)"><div class="tr-top"><div class="tr-name">Celtics vs Heat G4 · Total O/U 214.5</div><div class="tr-pnl"><div class="tr-pnl-v pos">+$922</div><div class="tr-pnl-p pos">+92.2%</div></div></div><div class="tr-meta"><span class="m-badge bw">WON</span><span>Mar 14</span><span class="oc-pill oc-ov">O 214.5</span><span class="pos">+5.6¢ CLV</span></div></div>
+    </div>
+    <div id="tr-load-more" onclick="loadMoreTrades(this)" style="display:flex;align-items:center;justify-content:center;gap:6px;margin:0 16px 8px;padding:10px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid var(--line);cursor:pointer;font-size:11px;color:var(--t3)">Show more trades <span style="color:var(--gold)">↓</span></div>
+    <div id="tr-extra" style="display:none">
+      <div class="tr-card"><div class="tr-top"><div class="tr-name">Atletico Madrid vs Lazio · UCL QF</div><div class="tr-pnl"><div class="tr-pnl-v pos">+$2,100</div><div class="tr-pnl-p pos">+140%</div></div></div><div class="tr-meta"><span class="m-badge bw">WON</span><span>Mar 10</span><span class="oc-pill oc-y">YES</span><span class="pos">+11.2¢ CLV</span></div></div>
+      <div class="tr-card"><div class="tr-top"><div class="tr-name">Sinner wins Australian Open 2026</div><div class="tr-pnl"><div class="tr-pnl-v neg">-$1,200</div><div class="tr-pnl-p neg">-100%</div></div></div><div class="tr-meta"><span class="m-badge bl">LOST</span><span>Mar 6</span><span class="oc-pill oc-y">YES</span><span class="neg">-4.1¢ CLV</span></div></div>
+      <div class="tr-card"><div class="tr-top"><div class="tr-name">Chiefs vs Eagles · Super Bowl LX</div><div class="tr-pnl"><div class="tr-pnl-v pos">+$4,800</div><div class="tr-pnl-p pos">+96%</div></div></div><div class="tr-meta"><span class="m-badge bw">WON</span><span>Feb 28</span><span class="oc-pill oc-y">YES</span><span class="pos">+9.6¢ CLV</span></div></div>
+      <div class="tr-card"><div class="tr-top"><div class="tr-name">Liverpool win Premier League 2026</div><div class="tr-pnl"><div class="tr-pnl-v pos">+$6,300</div><div class="tr-pnl-p pos">+210%</div></div></div><div class="tr-meta"><span class="m-badge bw">WON</span><span>Feb 20</span><span class="oc-pill oc-y">YES</span><span class="pos">+21.0¢ CLV</span></div></div>
+      <div class="sect-foot">Showing all 42 trades</div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY -->
+  <div class="bpanel" id="bk-act">
+    <div style="background:var(--s1);margin:8px 16px;border-radius:10px;overflow:hidden;border:1px solid var(--line)">
+      <div class="act-row"><div class="act-time">Apr 7 11:42</div><div class="act-badge a-won">WON</div><div class="act-mkt">NBA East · Celtics win series</div><div class="act-amt pos">+$116,000</div></div>
+      <div class="act-row"><div class="act-time">Apr 5 09:15</div><div class="act-badge a-won">WON</div><div class="act-mkt">Man City UCL Final</div><div class="act-amt pos">+$1,170</div></div>
+      <div class="act-row"><div class="act-time">Apr 4 14:30</div><div class="act-badge a-buy">BUY</div><div class="act-mkt">T1 wins LoL Worlds 2026</div><div class="act-amt t3">$500</div></div>
+      <div class="act-row"><div class="act-time">Apr 3 08:22</div><div class="act-badge a-lost">LOST</div><div class="act-mkt">Real Madrid vs Bayern</div><div class="act-amt neg">-$348</div></div>
+      <div class="act-row"><div class="act-time">Apr 2 16:45</div><div class="act-badge a-buy">BUY</div><div class="act-mkt">Man City vs Real Madrid</div><div class="act-amt t3">$1,426</div></div>
+      <div class="act-row"><div class="act-time">Apr 1 10:05</div><div class="act-badge a-buy">BUY</div><div class="act-mkt">RM wins 1st leg vs Man City</div><div class="act-amt t3">$2,310</div></div>
+      <div class="act-row"><div class="act-time">Mar 29 09:30</div><div class="act-badge a-won">WON</div><div class="act-mkt">Uruguay vs Cabo Verde</div><div class="act-amt pos">+$3,250</div></div>
+      <div class="act-row"><div class="act-time">Mar 28 14:15</div><div class="act-badge a-sell">SELL</div><div class="act-mkt">Carlos Alcaraz Wimbledon partial</div><div class="act-amt pos">+$8,400</div></div>
+    </div>
+    <div class="sect-foot">8 events shown</div>
+  </div>
+
+  <div style="height:20px"></div>
+  <div style="height:20px"></div>
+
+</div><!-- /scroll -->
+
+<!-- PUBLIC PROFILE FULL OVERLAY -->
+<div class="pub-overlay" id="pub-overlay">
+  <div class="pub-ov-head">
+    <div class="pub-ov-back" onclick="mobClosePublic()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </div>
+    <span class="pub-ov-url">dg3.trade/u/DC</span>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div onclick="el('bso').classList.add('open');var s=el('bs-pshr');s.classList.add('open');s.style.zIndex='500';" style="width:28px;height:28px;border:1px solid var(--glowb);border-radius:6px;background:rgba(205,189,112,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gold)">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3" r="1.5"/><circle cx="12" cy="13" r="1.5"/><circle cx="3" cy="8" r="1.5"/><path d="M4.5 7.1L10.5 4M4.5 8.9l6 3.1"/></svg>
+      </div>
+      <div id="pub-ov-badge" style="font-size:9px;font-weight:700;color:#4CAF7D;background:rgba(76,175,125,.1);border:1px solid rgba(76,175,125,.25);padding:2px 7px;border-radius:4px">LISTED</div>
+    </div>
+  </div>
+  <div class="pub-ov-scroll">
+    <!-- profile hero -- matches web pub-hero -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1a2e2e,#142040);border:1.5px solid var(--glowb);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--gold);flex-shrink:0">DC</div>
+      <div>
+        <div style="font-size:16px;font-weight:800;color:var(--t1);line-height:1">DC</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px;font-family:var(--mono)">0x48f3...bd4c</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:3px">Active since Apr 2025 · 47 predictions</div>
+      </div>
+    </div>
+
+    <!-- 4-stat strip -- matches web pub-stats-strip exactly -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:14px">
+      <div style="background:var(--s2);padding:10px 12px">
+        <div style="font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:4px">Win Rate</div>
+        <div style="font-size:18px;font-weight:800;color:#4CAF7D;line-height:1;font-family:var(--mono)">54.8%</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:3px">23 won of 42 settled</div>
+      </div>
+      <div style="background:var(--s2);padding:10px 12px">
+        <div style="font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:4px">Avg CLV</div>
+        <div style="font-size:18px;font-weight:800;color:var(--gold);line-height:1;font-family:var(--mono)">+3.2¢</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:3px">42 settled bets</div>
+      </div>
+      <div style="background:var(--s2);padding:10px 12px">
+        <div style="font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:4px">Total P&amp;L (Realized)</div>
+        <div style="font-size:18px;font-weight:800;color:#4CAF7D;line-height:1;font-family:var(--mono)">+$6,420</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:3px">42 settled · +28.4% ROI</div>
+      </div>
+      <div style="background:var(--s2);padding:10px 12px">
+        <div style="font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:4px">Volume Traded</div>
+        <div style="font-size:18px;font-weight:800;color:var(--t1);line-height:1;font-family:var(--mono)">$142k</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:3px">across 42 total trades</div>
+      </div>
+    </div>
+
+    <!-- 3 tabs -- matches web: Open positions / Closed positions / Activity -->
+    <div style="display:flex;border-bottom:1px solid var(--line);margin-bottom:10px">
+      <div class="pub-tab on" id="pubt-pos" onclick="switchPubOvTab('pos',this)" style="font-size:10px;font-weight:700;color:var(--pos);padding:8px 0;border-bottom:2px solid var(--pos);margin-right:16px;cursor:pointer;white-space:nowrap">Open positions</div>
+      <div class="pub-tab" id="pubt-closed" onclick="switchPubOvTab('closed',this)" style="font-size:10px;font-weight:700;color:var(--t3);padding:8px 0;border-bottom:2px solid transparent;margin-right:16px;cursor:pointer;white-space:nowrap">Closed positions</div>
+      <div class="pub-tab" id="pubt-act" onclick="switchPubOvTab('act',this)" style="font-size:10px;font-weight:700;color:var(--t3);padding:8px 0;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Activity</div>
+    </div>
+
+    <!-- Open positions panel -->
+    <div id="pubov-pos">
+      <div style="display:flex;flex-direction:column;gap:1px">
+        <div style="background:var(--s2);border-radius:8px;padding:10px 12px;margin-bottom:6px;border:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+            <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1);line-height:1.3">Carlos Alcaraz wins Wimbledon 2026</div><div style="font-size:9px;color:var(--t3);margin-top:3px">ATP Wimbledon · YES · 500k shares</div></div>
+            <div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$25,000</div><div style="font-size:9px;color:#4CAF7D">+17.9%</div></div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:6px">
+            <div><div style="font-size:8px;color:var(--t3)">Avg Entry</div><div style="font-size:11px;font-weight:700;color:var(--t1)">0.28</div></div>
+            <div><div style="font-size:8px;color:var(--t3)">Mkt Price</div><div style="font-size:11px;font-weight:700;color:#4CAF7D">0.33 ↑</div></div>
+            <div><div style="font-size:8px;color:var(--t3)">Cost</div><div style="font-size:11px;font-weight:700;color:var(--t1)">$140,000</div></div>
+          </div>
+        </div>
+        <div style="background:var(--s2);border-radius:8px;padding:10px 12px;margin-bottom:6px;border:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+            <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1);line-height:1.3">RM wins 1st leg vs Man City</div><div style="font-size:9px;color:var(--t3);margin-top:3px">FIFA WC 2026 · YES · 8,620 shares</div></div>
+            <div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$420</div><div style="font-size:9px;color:#4CAF7D">+8.4%</div></div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:6px">
+            <div><div style="font-size:8px;color:var(--t3)">Avg Entry</div><div style="font-size:11px;font-weight:700;color:var(--t1)">0.58</div></div>
+            <div><div style="font-size:8px;color:var(--t3)">Mkt Price</div><div style="font-size:11px;font-weight:700;color:#4CAF7D">0.64 ↑</div></div>
+            <div><div style="font-size:8px;color:var(--t3)">Cost</div><div style="font-size:11px;font-weight:700;color:var(--t1)">$5,000</div></div>
+          </div>
+        </div>
+        <div style="background:var(--s2);border-radius:8px;padding:10px 12px;margin-bottom:6px;border:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+            <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1);line-height:1.3">Boston Celtics vs Miami Heat G4 · Total Points O/U 214.5</div><div style="font-size:9px;color:var(--t3);margin-top:3px">NBA Playoffs · O 214.5 · 48,077 shares</div></div>
+            <div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$4,327</div><div style="font-size:9px;color:#4CAF7D">+17.3%</div></div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:6px">
+            <div><div style="font-size:8px;color:var(--t3)">Avg Entry</div><div style="font-size:11px;font-weight:700;color:var(--t1)">0.52</div></div>
+            <div><div style="font-size:8px;color:var(--t3)">Mkt Price</div><div style="font-size:11px;font-weight:700;color:#4CAF7D">0.61 ↑</div></div>
+            <div><div style="font-size:8px;color:var(--t3)">Cost</div><div style="font-size:11px;font-weight:700;color:var(--t1)">$25,000</div></div>
+          </div>
+        </div>
+        <div style="background:var(--s2);border-radius:8px;padding:10px 12px;margin-bottom:6px;border:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+            <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1);line-height:1.3">Group C winner · WC 2026</div><div style="font-size:9px;color:var(--t3);margin-top:3px">FIFA WC 2026 · Argentina YES · 2,459 shares</div></div>
+            <div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#E05C5C">-$147</div><div style="font-size:9px;color:#E05C5C">-9.8%</div></div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:6px">
+            <div><div style="font-size:8px;color:var(--t3)">Avg Entry</div><div style="font-size:11px;font-weight:700;color:var(--t1)">0.61</div></div>
+            <div><div style="font-size:8px;color:var(--t3)">Mkt Price</div><div style="font-size:11px;font-weight:700;color:#E05C5C">0.55 ↓</div></div>
+            <div><div style="font-size:8px;color:var(--t3)">Cost</div><div style="font-size:11px;font-weight:700;color:var(--t1)">$1,500</div></div>
+          </div>
+        </div>
+      </div><!-- /flex-column -->
+      <!-- extra positions, hidden by default -->
+      <div id="pubov-pos-extra" style="display:none">
+          <div style="background:var(--s2);border-radius:8px;padding:10px 12px;margin-bottom:6px;border:1px solid var(--line)">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+              <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1);line-height:1.3">Philadelphia Phillies vs Atlanta Braves · NLCS 2026</div><div style="font-size:9px;color:var(--t3);margin-top:3px">MLB Playoffs · YES · 5,263 shares</div></div>
+              <div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$315</div><div style="font-size:9px;color:#4CAF7D">+15.8%</div></div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:6px">
+              <div><div style="font-size:8px;color:var(--t3)">Avg Entry</div><div style="font-size:11px;font-weight:700;color:var(--t1)">0.38</div></div>
+              <div><div style="font-size:8px;color:var(--t3)">Mkt Price</div><div style="font-size:11px;font-weight:700;color:#4CAF7D">0.44 ↑</div></div>
+              <div><div style="font-size:8px;color:var(--t3)">Cost</div><div style="font-size:11px;font-weight:700;color:var(--t1)">$2,000</div></div>
+            </div>
+          </div>
+          <div style="background:var(--s2);border-radius:8px;padding:10px 12px;margin-bottom:6px;border:1px solid var(--line)">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+              <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1);line-height:1.3">Will Real Madrid Win the UCL 2025/26 Final?</div><div style="font-size:9px;color:var(--t3);margin-top:3px">UCL 25/26 · YES · 6,154 shares</div></div>
+              <div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$369</div><div style="font-size:9px;color:#4CAF7D">+11.5%</div></div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:6px">
+              <div><div style="font-size:8px;color:var(--t3)">Avg Entry</div><div style="font-size:11px;font-weight:700;color:var(--t1)">0.52</div></div>
+              <div><div style="font-size:8px;color:var(--t3)">Mkt Price</div><div style="font-size:11px;font-weight:700;color:#4CAF7D">0.58 ↑</div></div>
+              <div><div style="font-size:8px;color:var(--t3)">Cost</div><div style="font-size:11px;font-weight:700;color:var(--t1)">$3,200</div></div>
+            </div>
+          </div>
+        </div>
+        <div id="pubov-pos-count" style="padding:6px 4px 2px;font-size:9px;color:var(--t3)">Showing 4 of 12 open positions · <span onclick="document.getElementById('pubov-pos-extra').style.display='block';document.getElementById('pubov-pos-count').innerHTML='Showing all 12 open positions';" style="color:var(--gold);cursor:pointer;font-weight:600">Show more ↓</span></div>
+    </div>
+
+    <!-- Closed positions panel -->
+    <div id="pubov-closed" style="display:none">
+      <div style="background:var(--s2);border-radius:8px;border:1px solid var(--line);overflow:hidden">
+        <div style="padding:9px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px"><div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1)">NBA East · Celtics win series</div><div style="font-size:9px;color:var(--t3);margin-top:1px">Apr 7 · YES · 200k shares</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$116,000</div><div style="font-size:9px;color:var(--t3)">+19.0¢ CLV</div></div></div>
+        <div style="padding:9px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px"><div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1)">Novak Djokovic wins Roland Garros</div><div style="font-size:9px;color:var(--t3);margin-top:1px">Apr 5 · YES · 3,409 shares</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$7,244</div><div style="font-size:9px;color:var(--t3)">+24.1¢ CLV</div></div></div>
+        <div style="padding:9px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px"><div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1)">Celtics win NBA Finals 2026</div><div style="font-size:9px;color:var(--t3);margin-top:1px">Mar 29 · YES · 5,263 shares</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$3,250</div><div style="font-size:9px;color:var(--t3)">+16.2¢ CLV</div></div></div>
+        <div style="padding:9px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px"><div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1)">Brazil vs Argentina · Match Winner</div><div style="font-size:9px;color:var(--t3);margin-top:1px">Mar 25 · Argentina YES</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$982</div><div style="font-size:9px;color:var(--t3)">+8.1¢ CLV</div></div></div>
+        <div style="padding:9px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px"><div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1)">France beats Brazil · WC 2026</div><div style="font-size:9px;color:var(--t3);margin-top:1px">Mar 22 · NO · 2,182 shares</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#E05C5C">-$9,520</div><div style="font-size:9px;color:var(--t3)">-1.9¢ CLV</div></div></div>
+        <div style="padding:9px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px"><div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1)">Man City wins UCL 2026 Final</div><div style="font-size:9px;color:var(--t3);margin-top:1px">Apr 5 · YES · 3,409 shares</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$1,170</div><div style="font-size:9px;color:var(--t3)">+7.8¢ CLV</div></div></div>
+        <!-- extra rows hidden, revealed inline on show more -->
+        <div id="pubov-extra" style="display:none">
+          <div style="padding:9px 12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px"><div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1)">Real Madrid beats Bayern</div><div style="font-size:9px;color:var(--t3);margin-top:1px">Apr 3 · YES · 561 shares</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#E05C5C">-$348</div><div style="font-size:9px;color:var(--t3)">-2.8¢ CLV</div></div></div>
+          <div style="padding:9px 12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px"><div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1)">Celtics vs Heat G4 · O/U 214.5</div><div style="font-size:9px;color:var(--t3);margin-top:1px">Mar 14 · O 214.5</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$922</div><div style="font-size:9px;color:var(--t3)">+5.6¢ CLV</div></div></div>
+          <div style="padding:9px 12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px"><div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1)">Liverpool win Premier League 2026</div><div style="font-size:9px;color:var(--t3);margin-top:1px">Feb 20 · YES</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:800;color:#4CAF7D">+$6,300</div><div style="font-size:9px;color:var(--t3)">+21.0¢ CLV</div></div></div>
+        </div>
+        <!-- show more as a row inside the card -->
+        <div id="pubov-more-btn" onclick="pubovShowMore()" style="padding:10px 12px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;font-size:10px;color:var(--t3)">Show more <span style="color:var(--gold);font-weight:700">↓</span></div>
+      </div>
+    </div>
+
+    <!-- Activity panel -->
+    <div id="pubov-act" style="display:none">
+      <div style="background:var(--s2);border-radius:8px;border:1px solid var(--line);overflow:hidden">
+        <div class="act-row"><div class="act-time">Apr 7 11:42</div><div class="act-badge a-won">WON</div><div class="act-mkt">NBA East · Celtics</div><div class="act-amt pos">+$116,000</div></div>
+        <div class="act-row"><div class="act-time">Apr 5 09:15</div><div class="act-badge a-won">WON</div><div class="act-mkt">Man City UCL Final</div><div class="act-amt pos">+$1,170</div></div>
+        <div class="act-row"><div class="act-time">Apr 4 14:30</div><div class="act-badge a-buy">BUY</div><div class="act-mkt">T1 wins LoL Worlds</div><div class="act-amt t3">$500</div></div>
+        <div class="act-row"><div class="act-time">Apr 3 08:22</div><div class="act-badge a-lost">LOST</div><div class="act-mkt">Real Madrid vs Bayern</div><div class="act-amt neg">-$348</div></div>
+        <div class="act-row"><div class="act-time">Apr 2 16:45</div><div class="act-badge a-buy">BUY</div><div class="act-mkt">Man City vs Real Madrid</div><div class="act-amt t3">$1,426</div></div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px 0 4px">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 18" width="44" height="13" style="display:block;opacity:.4"><text y="14" font-family="'JetBrains Mono',monospace" font-size="16" font-weight="700"><tspan fill="#CDBD70">&gt;|</tspan><tspan fill="#F5F2E8">DG</tspan><tspan fill="#CDBD70" font-weight="800">3</tspan></text></svg>
+      <span style="font-size:9px;color:var(--t3)">dg3.trade/u/DC</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <div class="bn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><div class="bn-lbl">Terminal</div></div>
+  <div class="bn on"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="10" width="4" height="10" rx="1" fill="currentColor" opacity=".8"/><rect x="9" y="6" width="4" height="14" rx="1" fill="currentColor"/><rect x="16" y="2" width="4" height="18" rx="1" fill="currentColor" opacity=".8"/></svg><div class="bn-lbl">Portfolio</div></div>
+  <div class="bn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><div class="bn-lbl">Search</div></div>
+  <div class="bn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><div class="bn-lbl">Profile</div></div>
+</div>
+
+<!-- OVERLAY -->
+<div class="bso" id="bso" onclick="if(event.target===this)closeSheet()"></div>
+
+<!-- POSITION DETAIL -->
+<div class="bs" id="bs-pos">
+  <div class="bs-hdl" onclick="closeSheet()"><div class="bs-hdl-bar"></div></div>
+  <div class="bs-head"><div class="bs-hdr"><div><div class="bs-title" id="bsp-t">RM wins 1st leg</div><div class="bs-sub" id="bsp-s">FIFA WC 2026</div></div><div style="display:flex;gap:8px;align-items:center"><div onclick="openShareFromPos()" style="width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid var(--glowb);border-radius:6px;color:var(--gold);cursor:pointer;background:var(--glow)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="3" r="1.5"/><circle cx="12" cy="13" r="1.5"/><circle cx="3" cy="8" r="1.5"/><path d="M4.5 7.1L10.5 4M4.5 8.9l6 3.1"/></svg></div><div class="bs-x" onclick="closeSheet()">✕</div></div></div></div>
+  <div class="bs-body">
+    <div class="bs-hero"><div class="bs-hero-lbl">Market price</div><div class="bs-hero-v pos" id="bsp-price">0.64</div><div class="bs-hero-s pos" id="bsp-ch">+0.06 from entry</div></div>
+    <div class="data-row"><span class="data-lbl">Side</span><span class="data-val" id="bsp-side">YES</span></div>
+    <div class="data-row"><span class="data-lbl">Avg entry</span><span class="data-val" id="bsp-entry">0.58</span></div>
+    <div class="data-row"><span class="data-lbl">Shares</span><span class="data-val" id="bsp-shares">8,620</span></div>
+    <div class="data-row"><span class="data-lbl">Cost</span><span class="data-val" id="bsp-cost">$5,000</span></div>
+    <div class="data-row"><span class="data-lbl">Unrealized P&amp;L</span><span class="data-val pos" id="bsp-pnl">+$420 (+8.4%)</span></div>
+    <div class="data-row"><span class="data-lbl">CLV</span><span class="data-val pos" id="bsp-clv">+6.8¢</span></div>
+    <div class="data-row" style="border-bottom:none"><span class="data-lbl">Fills</span><span class="data-val" id="bsp-fills">2 orders</span></div>
+    <div class="bs-btn btn-red" onclick="closeSheet();setTimeout(()=>openSheet('close',_cp),100)">Close position</div>
+    <div class="bs-btn btn-ghost" style="font-size:11px">View on web · dg3.trade/terminal</div>
+  </div>
+</div>
+
+<!-- CLOSE POSITION -->
+<div class="bs" id="bs-close">
+  <div class="bs-hdl" onclick="closeSheet()"><div class="bs-hdl-bar"></div></div>
+  <div class="bs-head">
+    <div class="bs-hdr">
+      <div>
+        <div class="bs-title">Close position</div>
+        <div class="bs-sub" id="bsc-mkt">RM wins 1st leg</div>
+        <div style="margin-top:6px;display:flex;align-items:center;gap:5px"><span class="oc-pill oc-y" id="bsc-side">YES</span></div>
+      </div>
+      <div class="bs-x" onclick="closeSheet()">✕</div>
+    </div>
+  </div>
+  <div class="bs-body">
+    <!-- Full / Partial tab -- exact web .tsw/.tsi.r pattern -->
+    <div class="tsw">
+      <div class="tsi r" id="bsc-tab-full" onclick="switchCloseTabM('full')">Full close</div>
+      <div class="tsi" id="bsc-tab-partial" onclick="switchCloseTabM('partial')">Partial close</div>
+    </div>
+    <!-- Market / Limit -- exact web .otype/.oti.on pattern -->
+    <div class="otype">
+      <div class="oti on" id="bsc-mkt-btn" onclick="switchOrderTypeM('market')">Market</div>
+      <div class="oti" id="bsc-lim-btn" onclick="switchOrderTypeM('limit')">Limit</div>
+    </div>
+
+    <!-- Full close panels -->
+    <div id="bsc-full">
+      <div id="bsc-full-mkt">
+        <div class="data-row"><span class="data-lbl">Avg entry</span><span class="data-val" id="cm-entry">0.58</span></div>
+        <div class="data-row"><span class="data-lbl">Market price</span><span class="data-val pos" id="cm-mkt">0.64</span></div>
+        <div class="data-row"><span class="data-lbl">Shares</span><span class="data-val" id="cm-shares">8,620</span></div>
+        <div class="data-row"><span class="data-lbl">Cost basis</span><span class="data-val" id="cm-cost">$5,000</span></div>
+        <div class="data-row"><span class="data-lbl">Est. proceeds</span><span class="data-val pos" id="cm-proc">$5,517</span></div>
+        <div class="data-row" style="border:none;padding-top:10px"><span class="data-lbl">P&amp;L if closed</span><span style="font-size:16px;font-weight:800" id="cm-pnl" class="pos">+$517 (+10.3%)</span></div>
+        <div class="btn-d" onclick="onMktClose()">Confirm full close at market</div>
+        <div class="btn-g" onclick="closeSheet()">Cancel</div>
+        <div class="disc">Market order · fills immediately at best available price · minor slippage may apply</div>
+      </div>
+      <div id="bsc-full-lim" style="display:none">
+        <div class="lw">
+          <div class="ll">Limit close price</div>
+          <div class="lr">
+            <div class="ladj" onclick="adjLimM(-0.01)">-</div>
+            <input class="linp" id="cm-lim-inp" type="number" step="0.01" min="0.01" max="1" value="0.70" oninput="updateLimPreviewM()">
+            <div class="ladj" onclick="adjLimM(0.01)">+</div>
+          </div>
+          <div style="font-size:9px;color:var(--t3);margin-top:4px">Market price: <span class="pos" id="cm-lim-mkt">0.64</span></div>
+        </div>
+        <div class="lest">
+          <div class="lestl">If filled at <span class="gold" id="cm-lim-at">0.70</span></div>
+          <div class="ler"><span>Shares</span><span id="cm-lim-sh">8,620</span></div>
+          <div class="ler"><span>Cost basis</span><span id="cm-lim-cost">$5,000</span></div>
+          <div class="ler"><span>Proceeds</span><span id="cm-lim-proc" class="pos">$6,034</span></div>
+          <div class="ler"><span>P&L</span><span id="cm-lim-pnl" class="pos">+$1,034 (+20.7%)</span></div>
+        </div>
+        <div class="btn-lim" id="cm-lim-btn-full" onclick="onLimClose()">Place limit close at 0.70</div>
+        <div class="btn-g" onclick="closeSheet()">Cancel</div>
+        <div class="disc">Limit order · placed on CLOB · fills only when market price reaches your limit</div>
+      </div>
+    </div>
+
+    <!-- Partial close panels -->
+    <div id="bsc-partial" style="display:none">
+      <div class="sli-lbl"><span>Close how much?</span><span class="gold fw7" id="cm-pct-lbl">50% · 4,310 shares</span></div>
+        <input type="range" class="sli" id="cm-slider" min="1" max="100" value="50" oninput="updatePartialM(this.value)">
+        <div class="qbtns">
+          <div class="qb" onclick="setPctM(25)">25%</div>
+          <div class="qb on" id="cmq50" onclick="setPctM(50)">50%</div>
+          <div class="qb" id="cmq75" onclick="setPctM(75)">75%</div>
+          <div class="qb" id="cmq100" onclick="setPctM(100)">100%</div>
+        </div>
+      <div id="bsc-partial-mkt">
+        <div class="t3g">
+          <div class="t3b"><div class="t3l">Closing</div><div class="t3v" id="cm-t-close">$2,500</div></div>
+          <div class="t3b"><div class="t3l">Proceeds</div><div class="t3v pos" id="cm-t-proc">$2,758</div></div>
+          <div class="t3b"><div class="t3l">P&L</div><div class="t3v pos" id="cm-t-pnl">+$258</div></div>
+        </div>
+        <div class="rem">Remaining: <span id="cm-remain">$2,500 · 4,310 shares</span></div>
+        <div class="btn-d" id="cm-conf-partial" onclick="onPartialClose()">Confirm close 50% at market</div>
+        <div class="btn-g" onclick="closeSheet()">Cancel</div>
+        <div class="disc">Market order · fills immediately at best available price · minor slippage may apply</div>
+      </div>
+      <div id="bsc-partial-lim" style="display:none">
+        <div class="lw" style="margin-bottom:8px">
+          <div class="ll">Limit close price</div>
+          <div class="lr">
+            <div class="ladj" onclick="adjLimMP(-0.01)">-</div>
+            <input class="linp" id="cm-lim-p-inp" type="number" step="0.01" min="0.01" max="1" value="0.70" oninput="updatePartialLimM()">
+            <div class="ladj" onclick="adjLimMP(0.01)">+</div>
+          </div>
+        </div>
+        <div class="t3g">
+          <div class="t3b"><div class="t3l">Closing</div><div class="t3v" id="cm-lt-close">$2,500</div></div>
+          <div class="t3b"><div class="t3l">If filled</div><div class="t3v pos" id="cm-lt-proc">$3,017</div></div>
+          <div class="t3b"><div class="t3l">P&L</div><div class="t3v pos" id="cm-lt-pnl">+$517</div></div>
+        </div>
+        <div class="rem">Remaining: <span id="cm-lt-remain">$2,500 · 4,310 shares</span></div>
+        <div class="btn-lim" id="cm-conf-partial-lim" onclick="onLimClose()">Place limit close 50% at 0.70</div>
+        <div class="btn-g" onclick="closeSheet()">Cancel</div>
+        <div class="disc">Limit order · placed on CLOB · fills only when market price reaches your limit</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRADE DETAIL -->
+<div class="bs" id="bs-trade">
+  <div class="bs-hdl" onclick="closeSheet()"><div class="bs-hdl-bar"></div></div>
+  <div class="bs-head"><div class="bs-hdr"><div><div class="bs-title" id="bst-t">NBA East · Celtics</div><div class="bs-sub" id="bst-s">Settled Apr 7, 2026</div></div><div style="display:flex;gap:8px;align-items:center"><div id="bst-badge" class="m-badge bw">WON</div><div onclick="openShareFromTrade()" style="width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid var(--glowb);border-radius:6px;color:var(--gold);cursor:pointer;background:var(--glow)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="3" r="1.5"/><circle cx="12" cy="13" r="1.5"/><circle cx="3" cy="8" r="1.5"/><path d="M4.5 7.1L10.5 4M4.5 8.9l6 3.1"/></svg></div><div class="bs-x" onclick="closeSheet()">✕</div></div></div></div>
+  <div class="bs-body">
+    <div class="bs-hero"><div class="bs-hero-lbl">Net P&amp;L</div><div class="bs-hero-v pos" id="bst-pnl">+$116,000</div><div class="bs-hero-s pos" id="bst-ret">+138.1% return</div></div>
+    <div class="data-row"><span class="data-lbl">Side</span><span class="data-val" id="bst-side">YES</span></div>
+    <div class="data-row"><span class="data-lbl">Avg entry</span><span class="data-val" id="bst-entry">0.42</span></div>
+    <div class="data-row"><span class="data-lbl">Avg exit</span><span class="data-val" id="bst-exit">1.00</span></div>
+    <div class="data-row"><span class="data-lbl">Shares</span><span class="data-val" id="bst-shares">200,000</span></div>
+    <div class="data-row"><span class="data-lbl">Cost</span><span class="data-val" id="bst-cost">$84,000</span></div>
+    <div class="data-row" style="border-bottom:none"><span class="data-lbl">CLV</span><span class="data-val pos" id="bst-clv">+19.0¢</span></div>
+  </div>
+</div>
+
+<!-- CANCEL ORDER -->
+<div class="bs" id="bs-cancel">
+  <div class="bs-hdl" onclick="closeSheet()"><div class="bs-hdl-bar"></div></div>
+  <div class="bs-head">
+    <div class="bs-hdr">
+      <div>
+        <div class="bs-title" id="bsco-title">Cancel order</div>
+        <div class="bs-sub" id="bsco-m">Man City win UEFA Final</div>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:5px">
+          <span id="bsco-tag"></span>
+          <span id="bsco-oc"></span>
+          <span style="font-size:9px;color:var(--t3)" id="bsco-type">BUY · LIMIT · GTC</span>
+        </div>
+      </div>
+      <div class="bs-x" onclick="closeSheet()">✕</div>
+    </div>
+  </div>
+  <div class="bs-body">
+    <div class="data-row"><span class="data-lbl">Limit price</span><span class="data-val" id="bsco-lim">0.48</span></div>
+    <div class="data-row"><span class="data-lbl">Shares</span><span class="data-val" id="bsco-sh">5,000</span></div>
+    <div class="data-row"><span class="data-lbl">Total value</span><span class="data-val" id="bsco-tot">$2,400</span></div>
+    <div class="data-row"><span class="data-lbl">Placed</span><span class="data-val" style="color:var(--t3)" id="bsco-pl">2h ago</span></div>
+    <!-- partial fill section -->
+    <div id="bsco-pfill" style="display:none">
+      <div style="height:1px;background:var(--line);margin:10px 0"></div>
+      <div style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Fill status</div>
+      <div style="background:var(--s2);border-radius:8px;padding:10px 12px;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:var(--t3)">Filled so far</span><span class="pos fw8" id="bsco-fd">$864 · 4,800 shares (60%)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:var(--t3)">To be cancelled</span><span class="neg fw8" id="bsco-rem">$576 · 3,200 shares (40%)</span></div>
+      </div>
+      <div class="bs-warn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="bsco-warn">Filled shares will remain as an open position. Only unfilled shares will be cancelled.</span>
+      </div>
+    </div>
+    <div style="font-size:10px;color:var(--t4);margin:8px 0 12px" id="bsco-footnote">Order will be fully cancelled. No funds have been reserved.</div>
+    <div class="bs-btn btn-red" id="bsco-btn" onclick="doCancel()">Cancel order</div>
+    <div class="bs-btn btn-ghost" onclick="closeSheet()">Keep order</div>
+  </div>
+</div>
+
+<!-- MODIFY ORDER -->
+<div class="bs" id="bs-modify">
+  <div class="bs-hdl" onclick="closeSheet()"><div class="bs-hdl-bar"></div></div>
+  <div class="bs-head">
+    <div class="bs-hdr">
+      <div>
+        <div class="bs-title" id="bsmo-title">Modify order</div>
+        <div class="bs-sub" id="bsmo-m">Man City win UEFA Final</div>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:5px">
+          <span id="bsmo-tag"></span>
+          <span id="bsmo-oc"></span>
+          <span style="font-size:9px;color:var(--t3)" id="bsmo-type">BUY · LIMIT · GTC</span>
+        </div>
+      </div>
+      <div class="bs-x" onclick="closeSheet()">✕</div>
+    </div>
+  </div>
+  <div class="bs-body">
+    <div style="margin-bottom:12px">
+      <div class="mo-field-lbl"><span>Limit price</span><span id="bsmo-orig-price"></span></div>
+      <input type="number" step="0.01" min="0.01" max="0.99" class="mo-input" id="bsmo-price-inp" oninput="updateModifyPreviewM()">
+    </div>
+    <div style="margin-bottom:12px">
+      <div class="mo-field-lbl"><span id="bsmo-field-shares-lbl">Shares</span><span id="bsmo-orig-shares"></span></div>
+      <input type="number" step="1" min="1" class="mo-input" id="bsmo-shares-inp" oninput="updateModifyPreviewM()">
+    </div>
+    <div style="height:1px;background:var(--line);margin:10px 0"></div>
+    <div class="data-row"><span class="data-lbl">New total value</span><span class="data-val gold" id="bsmo-new-total">$0</span></div>
+    <div class="data-row" style="border-bottom:none"><span class="data-lbl" id="bsmo-delta-lbl">Balance impact</span><span class="data-val" id="bsmo-delta-val">$0</span></div>
+    <div class="bs-warn">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="bsmo-note">Modifying replaces the existing order. Balance reserved for the original order is released and the new amount is reserved instead.</span>
+    </div>
+    <div class="bs-btn btn-gold" id="bsmo-save" onclick="doModify()">Save changes</div>
+    <div class="bs-btn btn-ghost" onclick="closeSheet()">Discard</div>
+  </div>
+</div>
+
+<!-- SHARE SHEET -->
+<div class="bs" id="bs-share">
+  <div class="bs-hdl" onclick="closeSheet()"><div class="bs-hdl-bar"></div></div>
+  <div class="bs-head"><div class="bs-hdr"><span style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em" id="bss-lbl">Share trade</span><div class="bs-x" onclick="closeSheet()">✕</div></div></div>
+  <div class="bs-body" style="padding-top:10px">
+    <div class="scard"><div class="scard-body"><div class="scard-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 18" width="60" height="18" style="display:block;overflow:visible"><text y="14" font-family="'JetBrains Mono',monospace" font-size="16" font-weight="700" text-rendering="geometricPrecision"><tspan fill="#CDBD70">&gt;|</tspan><tspan fill="#F5F2E8">DG</tspan><tspan fill="#CDBD70" font-weight="800">3</tspan></text></svg></div><div class="scard-meta"><div id="bss-badge" class="m-badge bw">WON</div><span id="bss-meta" class="t3">Settled Apr 7, 2026</span></div><div class="scard-name" id="bss-mkt">NBA East · Celtics win series</div><div class="scard-stats"><div class="scard-stat"><div class="ss-lbl" id="bss-s1l">P&amp;L</div><div class="ss-val pos" id="bss-s1v">+$116k</div><div class="ss-sub" id="bss-s1s">+138%</div></div><div class="scard-stat"><div class="ss-lbl" id="bss-s2l">Entry→Exit</div><div class="ss-val" id="bss-s2v" style="font-size:12px">0.42→1.00</div><div class="ss-sub" id="bss-s2s">200k sh</div></div><div class="scard-stat"><div class="ss-lbl" id="bss-s3l">CLV</div><div class="ss-val pos" id="bss-s3v">+19.0¢</div><div class="ss-sub" id="bss-s3s">at entry</div></div></div></div><div class="scard-foot"><span>dg3.trade/terminal</span></div></div>
+    <div class="share-btn sbn-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> Share on X</div>
+    <div class="share-btn sbn-img"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> Copy image</div>
+    <div class="share-btn sbn-lnk" onclick="this.textContent='Copied!';setTimeout(()=>{this.innerHTML='Copy link'},1800)">Copy link</div>
+  </div>
+</div>
+
+<!-- PROFILE SHARE -->
+<div class="bs" id="bs-pshr">
+  <div class="bs-hdl" onclick="closeSheet()"><div class="bs-hdl-bar"></div></div>
+  <div class="bs-head"><div class="bs-hdr"><span style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em">Share profile</span><div class="bs-x" onclick="closeSheet()">✕</div></div></div>
+  <div class="bs-body" style="padding-top:10px">
+    <!-- SHARE CARD -->
+    <div class="scard"><div class="scard-body"><div class="scard-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 18" width="60" height="18" style="display:block;overflow:visible"><text y="14" font-family="'JetBrains Mono',monospace" font-size="16" font-weight="700" text-rendering="geometricPrecision"><tspan fill="#CDBD70">&gt;|</tspan><tspan fill="#F5F2E8">DG</tspan><tspan fill="#CDBD70" font-weight="800">3</tspan></text></svg></div><div style="display:flex;align-items:center;gap:10px;margin:8px 0 6px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1a2e2e,#142040);border:1.5px solid var(--glowb);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--gold)">DC</div><div><div style="font-size:15px;font-weight:800;color:var(--t1)">DC</div><div style="font-size:10px;color:var(--t3);margin-top:1px">0x48f3...bd4c</div></div></div><div style="font-size:10px;color:var(--t3);margin-bottom:8px">Active since Apr 2025 · 47 predictions</div><div class="scard-stats"><div class="scard-stat"><div class="ss-lbl">Win rate</div><div class="ss-val pos">54.8%</div><div class="ss-sub">42 trades</div></div><div class="scard-stat"><div class="ss-lbl">Avg CLV</div><div class="ss-val gold">+3.2¢</div><div class="ss-sub">at entry</div></div><div class="scard-stat"><div class="ss-lbl">P&amp;L</div><div class="ss-val pos">+$6,420</div><div class="ss-sub">$142k vol.</div></div></div></div><div class="scard-foot"><span>dg3.trade/terminal</span></div></div>
+    <div class="share-btn sbn-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> Share on X</div>
+    <div class="share-btn sbn-lnk">Copy link</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><div class="toast-title" id="toast-t">Done</div><div class="toast-sub" id="toast-s"></div></div>
+
+<script>
+const el=id=>document.getElementById(id);
+let _cp=0,_ct=0,_closeType='market',_closeSize='full',_cc=0,_cm=0;
+
+const POS=[
+  {id:0,market:'RM wins 1st leg vs Man City',sub:'FIFA WC 2026',side:'YES',price:'0.64',ch:'+0.06',entry:'0.58',shares:'8,620',sharesN:8620,cost:'$5,000',costN:5000,priceN:.64,pnl:'+$420 (+8.4%)',clv:'+6.8¢',pnlPos:true,clvPos:true,fills:'2 orders'},
+  {id:1,market:'Real Madrid wins UCL 2026 Final',sub:'UCL 25/26',side:'YES',price:'0.58',ch:'+0.06',entry:'0.52',shares:'6,154',sharesN:6154,cost:'$3,200',costN:3200,priceN:.58,pnl:'+$369 (+11.5%)',clv:'+5.4¢',pnlPos:true,clvPos:true,fills:'1 order'},
+  {id:2,market:'T1 wins LoL Worlds 2026',sub:'Esports',side:'YES',price:'0.37',ch:'-0.05',entry:'0.42',shares:'1,200',sharesN:1200,cost:'$500',costN:500,priceN:.37,pnl:'-$60 (-11.9%)',clv:'-3.2¢',pnlPos:false,clvPos:false,fills:'1 order'},
+  {id:3,market:'Philadelphia Phillies vs Atlanta Braves · NLCS',sub:'MLB Playoffs',side:'PHI YES',price:'0.44',ch:'+0.06',entry:'0.38',shares:'5,263',sharesN:5263,cost:'$2,000',costN:2000,priceN:.44,pnl:'+$315 (+15.8%)',clv:'+5.2¢',pnlPos:true,clvPos:true,fills:'1 order'},
+  {id:4,market:'Celtics vs Heat G4 · O/U 214.5',sub:'NBA Playoffs',side:'O 214.5',price:'0.61',ch:'+0.09',entry:'0.52',shares:'48,077',sharesN:48077,cost:'$25,000',costN:25000,priceN:.61,pnl:'+$4,327 (+17.3%)',clv:'+7.9¢',pnlPos:true,clvPos:true,fills:'1 order'},
+  {id:5,market:'Group C winner · WC 2026',sub:'FIFA WC 2026',side:'ARG YES',price:'0.55',ch:'-0.06',entry:'0.61',shares:'2,459',sharesN:2459,cost:'$1,500',costN:1500,priceN:.55,pnl:'-$147 (-9.8%)',clv:'-5.1¢',pnlPos:false,clvPos:false,fills:'1 order'},
+  {id:6,market:'Uruguay vs Cabo Verde · Result',sub:'FIFA WC 2026',side:'Draw NO',price:'0.28',ch:'+0.06',entry:'0.22',shares:'9,090',sharesN:9090,cost:'$2,000',costN:2000,priceN:.28,pnl:'+$545 (+27.3%)',clv:'+6.8¢',pnlPos:true,clvPos:true,fills:'1 order'},
+  {id:7,market:'Celtics vs Knicks · Total pts',sub:'NBA Playoffs',side:'U 218.5',price:'0.42',ch:'-0.06',entry:'0.48',shares:'500',sharesN:500,cost:'$240',costN:240,priceN:.42,pnl:'-$30 (-12.5%)',clv:'-3.1¢',pnlPos:false,clvPos:false,fills:'1 order'},
+  {id:8,market:'Carlos Alcaraz wins Wimbledon 2026',sub:'ATP Wimbledon',side:'YES',price:'0.33',ch:'+0.05',entry:'0.28',shares:'500,000',sharesN:500000,cost:'$140,000',costN:140000,priceN:.33,pnl:'+$25,000 (+17.9%)',clv:'+4.8¢',pnlPos:true,clvPos:true,fills:'2 orders'},
+];
+const ORDERS=[
+  {market:'Man City win UEFA Final',lim:'0.48',mkt:'0.44',shares:'5,000',total:'$2,400',placed:'2h ago',filled:false,isSell:false,tagHtml:'<span class="tag tag-wc">FIFA WC 2026</span>',ocHtml:'<span class="oc-pill oc-y">YES</span>'},
+  {market:'RM wins UCL 2026 · Top scorer',lim:'0.18',mkt:'0.21',shares:'8,000',total:'$1,440',placed:'1h ago',filled:true,isSell:false,filledAmt:'$864',filledShares:'4,800',filledPct:'60',remainVal:'$576',remainShares:'3,200',tagHtml:'<span class="tag tag-ucl">UCL 25/26</span>',ocHtml:'<span class="oc-pill oc-nm">Vinicius</span>'},
+  {market:'Lakers vs Thunder · O/U 218.5',lim:'0.54',mkt:'0.51',shares:'3,500',total:'$1,890',placed:'30m ago',filled:false,isSell:false,tagHtml:'<span class="tag tag-nba">NBA Playoffs</span>',ocHtml:'<span class="oc-pill oc-ov">O 218.5</span>'},
+  {market:'Carlos Alcaraz wins Wimbledon 2026',lim:'0.36',mkt:'0.33',shares:'100,000',total:'$36,000',placed:'45m ago',filled:true,isSell:true,filledAmt:'$14,400',filledShares:'40,000',filledPct:'40',remainVal:'$21,600',remainShares:'60,000',tagHtml:'<span class="tag tag-tennis">ATP Wimbledon</span>',ocHtml:'<span class="oc-pill oc-y">YES</span>'},
+  {market:'Real Madrid wins UCL 2026 Final',lim:'0.64',mkt:'0.61',shares:'3,000',total:'$1,920',placed:'1h ago',filled:false,isSell:true,tagHtml:'<span class="tag tag-ucl">UCL 25/26</span>',ocHtml:'<span class="oc-pill oc-y">YES</span>'},
+];
+const TRADES=[
+  {market:'NBA East · Celtics win series',sub:'Settled Apr 7, 2026',out:'WON',side:'YES',entry:'0.42',exit:'1.00',shares:'200,000',cost:'$84,000',clv:'+19.0¢',pnl:'+$116,000',ret:'+138.1% return',pos:true,clvPos:true},
+  {market:'Man City wins UCL 2026 Final',sub:'Settled Apr 5, 2026',out:'WON',side:'YES',entry:'0.44',exit:'1.00',shares:'3,409',cost:'$1,500',clv:'+7.8¢',pnl:'+$1,170',ret:'+78.0% return',pos:true,clvPos:true},
+  {market:'Real Madrid beats Bayern home leg',sub:'Settled Apr 3, 2026',out:'LOST',side:'YES',entry:'0.62',exit:'0.00',shares:'561',cost:'$348',clv:'-2.8¢',pnl:'-$348',ret:'-100.0% return',pos:false,clvPos:false},
+  {market:'Celtics win NBA Finals 2026',sub:'Settled Mar 29, 2026',out:'WON',side:'YES',entry:'0.38',exit:'1.00',shares:'5,263',cost:'$2,000',clv:'+16.2¢',pnl:'+$3,250',ret:'+162.5% return',pos:true,clvPos:true},
+  {market:'Brazil vs Argentina · Match Winner',sub:'Settled Mar 25, 2026',out:'WON',side:'Argentina YES',entry:'0.55',exit:'1.00',shares:'2,182',cost:'$1,200',clv:'+8.1¢',pnl:'+$982',ret:'+81.8% return',pos:true,clvPos:true},
+  {market:'France beats Brazil · WC 2026',sub:'Settled Mar 22, 2026',out:'LOST',side:'NO',entry:'0.34',exit:'0.00',shares:'28,000',cost:'$9,520',clv:'-1.9¢',pnl:'-$9,520',ret:'-100.0% return',pos:false,clvPos:false},
+  {market:'Novak Djokovic wins Roland Garros',sub:'Settled Mar 18, 2026',out:'WON',side:'YES',entry:'0.28',exit:'1.00',shares:'10,714',cost:'$3,000',clv:'+24.1¢',pnl:'+$7,244',ret:'+241.5% return',pos:true,clvPos:true},
+  {market:'Celtics vs Heat G4 · Total O/U 214.5',sub:'Settled Mar 14, 2026',out:'WON',side:'O 214.5',entry:'0.52',exit:'1.00',shares:'1,923',cost:'$1,000',clv:'+5.6¢',pnl:'+$922',ret:'+92.2% return',pos:true,clvPos:true},
+];
+
+function switchBook(t,btn){
+  document.querySelectorAll('.btab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.bpanel').forEach(p=>p.classList.remove('on'));
+  el('bk-'+t).classList.add('on');
+}
+
+function openSheet(type,idx){
+  el('bso').classList.add('open');
+  if(type==='pos'){
+    _cp=idx||0;var p=POS[_cp]||POS[0];
+    el('bsp-t').textContent=p.market; el('bsp-s').textContent=p.sub;
+    el('bsp-price').textContent=p.price; el('bsp-price').className='bs-hero-v '+(p.pnlPos?'pos':'neg');
+    el('bsp-ch').textContent=(p.pnlPos?'+':'')+p.ch+' from entry'; el('bsp-ch').className='bs-hero-s '+(p.pnlPos?'pos':'neg');
+    el('bsp-side').textContent=p.side; el('bsp-entry').textContent=p.entry;
+    el('bsp-shares').textContent=p.shares; el('bsp-cost').textContent=p.cost;
+    el('bsp-pnl').textContent=p.pnl; el('bsp-pnl').className='data-val '+(p.pnlPos?'pos':'neg');
+    el('bsp-clv').textContent=p.clv; el('bsp-clv').className='data-val '+(p.clvPos?'pos':'neg');
+    el('bsp-fills').textContent=p.fills; el('bs-pos').classList.add('open');
+  } else if(type==='close'){
+    _cp=idx||0;var p=POS[_cp]||POS[0];
+    el('bsc-mkt').textContent=p.market; el('cm-entry').textContent=p.entry;
+    el('cm-mkt').textContent=p.price; el('cm-shares').textContent=p.shares;
+    var proc=Math.round(p.priceN*p.sharesN);
+    el('cm-proc').textContent='$'+proc.toLocaleString();
+    el('cm-pnl').textContent=(proc-p.costN>=0?'+':'')+'$'+(proc-p.costN).toLocaleString();
+    el('cm-pnl').style.color=p.pnlPos?'var(--pos)':'var(--neg)';
+    _closeType='market';_closeSize='full';
+    document.querySelectorAll('#tt-type .tog-item').forEach((x,i)=>x.classList.toggle('on',i===0));
+    document.querySelectorAll('#tt-size .tog-item').forEach((x,i)=>x.classList.toggle('on',i===0));
+    document.querySelectorAll('.close-panel').forEach(p=>p.classList.remove('on'));
+    switchCloseTabM('full'); switchOrderTypeM('market'); el('bs-close').classList.add('open');
+  } else if(type==='trade'){
+    _ct=idx||0;var t=TRADES[_ct]||TRADES[0];
+    el('bst-t').textContent=t.market; el('bst-s').textContent=t.sub;
+    el('bst-badge').textContent=t.out; el('bst-badge').className='m-badge '+(t.out==='WON'?'bw':'bl');
+    el('bst-pnl').textContent=t.pnl; el('bst-pnl').className='bs-hero-v '+(t.pos?'pos':'neg');
+    el('bst-ret').textContent=t.ret; el('bst-ret').className='bs-hero-s '+(t.pos?'pos':'neg');
+    el('bst-side').textContent=t.side; el('bst-entry').textContent=t.entry;
+    el('bst-exit').textContent=t.exit; el('bst-shares').textContent=t.shares;
+    el('bst-cost').textContent=t.cost; el('bst-clv').textContent=t.clv;
+    el('bst-clv').className='data-val '+(t.clvPos?'pos':'neg'); el('bs-trade').classList.add('open');
+  } else if(type==='cancel'){
+    _cc=idx||0;var o=ORDERS[_cc]||ORDERS[0];
+    el('bsco-title').textContent=o.filled?(o.isSell?'Cancel remaining sell order':'Cancel remaining order'):(o.isSell?'Cancel sell order':'Cancel order');
+    el('bsco-m').textContent=o.market;
+    el('bsco-lim').textContent=o.lim;
+    el('bsco-sh').textContent=o.shares;
+    el('bsco-tot').textContent=o.total;
+    el('bsco-pl').textContent=o.placed;
+    el('bsco-type').innerHTML='<span class="'+(o.isSell?'dir-sell':'dir-buy')+'">'+(o.isSell?'SELL':'BUY')+'</span> · LIMIT · GTC';
+    el('bsco-tag').innerHTML=o.tagHtml||'';
+    el('bsco-oc').innerHTML=o.ocHtml||'';
+    el('bsco-pfill').style.display=o.filled?'':'none';
+    if(o.filled){
+      el('bsco-fd').textContent=o.filledAmt+' · '+o.filledShares+' shares ('+o.filledPct+'%)';
+      el('bsco-rem').textContent=o.remainVal+' · '+o.remainShares+' shares ('+(100-parseInt(o.filledPct))+'%)';
+      var sellCtx=o.isSell?'Sold shares ('+o.filledShares+') have already been removed from your position. ':'Filled shares ('+o.filledShares+') will remain as an open position. ';
+      el('bsco-warn').textContent=sellCtx+'Only the remaining '+o.remainShares+' unfilled shares will be cancelled.';
+      el('bsco-btn').textContent='Cancel remaining';
+      el('bsco-footnote').textContent=o.isSell?'Already sold shares have settled at '+o.lim+'. Remaining sell order will be removed.':'Filled portion becomes a position at '+o.lim+' avg entry.';
+    } else {
+      el('bsco-btn').textContent='Cancel order';
+      el('bsco-footnote').textContent='Order will be fully cancelled. No funds have been reserved.';
+    }
+    el('bs-cancel').classList.add('open');
+  } else if(type==='modify'){
+    _cm=idx||0;var o=ORDERS[_cm]||ORDERS[0];
+    el('bsmo-title').textContent=o.isSell?'Modify sell order':'Modify order';
+    el('bsmo-m').textContent=o.market;
+    el('bsmo-type').innerHTML='<span class="'+(o.isSell?'dir-sell':'dir-buy')+'">'+(o.isSell?'SELL':'BUY')+'</span> · LIMIT · GTC';
+    el('bsmo-tag').innerHTML=o.tagHtml||'';
+    el('bsmo-oc').innerHTML=o.ocHtml||'';
+    var baseShares=o.filled?o.remainShares:o.shares;
+    el('bsmo-orig-price').textContent='was '+o.lim;
+    el('bsmo-orig-shares').textContent='was '+baseShares;
+    el('bsmo-price-inp').value=o.lim;
+    el('bsmo-shares-inp').value=baseShares.replace(/,/g,'');
+    if(o.filled){
+      el('bsmo-field-shares-lbl').textContent='Shares (unfilled portion)';
+      el('bsmo-note').textContent='Filled shares ('+o.filledShares+') are unaffected. Only the unfilled portion of this order is modified.';
+    } else {
+      el('bsmo-field-shares-lbl').textContent='Shares';
+      el('bsmo-note').textContent='Modifying replaces the existing order. Balance reserved for the original order is released and the new amount is reserved instead.';
+    }
+    updateModifyPreviewM();
+    el('bs-modify').classList.add('open');
+  } else if(type==='profile-share'){
+    el('bso').classList.add('open');
+    el('bs-pshr').classList.add('open');
+  }
+}
+
+function updateModifyPreviewM(){
+  var o=ORDERS[_cm]||ORDERS[0];
+  var price=parseFloat(el('bsmo-price-inp').value)||0;
+  var shares=parseFloat(el('bsmo-shares-inp').value)||0;
+  var origTotal=parseFloat((o.filled?o.remainVal:o.total).replace(/[$,]/g,''))||0;
+  var newTotal=price*shares;
+  var delta=newTotal-origTotal;
+  el('bsmo-new-total').textContent='$'+Math.round(newTotal).toLocaleString();
+  var dv=el('bsmo-delta-val'),dl=el('bsmo-delta-lbl');
+  if(o.isSell){
+    dl.textContent='No balance impact';
+    dv.textContent='Sell order';
+    dv.className='data-val';
+  } else if(delta>0){
+    dl.textContent='Additional balance reserved';
+    dv.textContent='-$'+Math.round(delta).toLocaleString();
+    dv.className='data-val neg';
+  } else if(delta<0){
+    dl.textContent='Balance released';
+    dv.textContent='+$'+Math.round(Math.abs(delta)).toLocaleString();
+    dv.className='data-val pos';
+  } else {
+    dl.textContent='Balance impact';
+    dv.textContent='$0';
+    dv.className='data-val';
+  }
+}
+function doModify(){
+  var o=ORDERS[_cm]||ORDERS[0];
+  closeSheet();
+  showToast('Order updated',o.market);
+}
+
+function closeSheet(){
+  el('bso').classList.remove('open');
+  document.querySelectorAll('.bs').forEach(b=>{b.classList.remove('open');b.style.zIndex='';});
+}
+
+var mobListed=true;
+function mobToggleListed(){
+  mobListed=!mobListed;
+  var tog=el('vis-toggle');
+  var knob=el('vis-knob');
+  var lbl=el('vis-lbl');
+  var badge=el('pub-ov-badge');
+  var pill=el('pub-listed-pill');
+  if(tog) tog.style.background=mobListed?'#4CAF7D':'#333330';
+  if(knob) knob.style.left=mobListed?'16px':'2px';
+  if(lbl){ lbl.textContent=mobListed?'Listed':'Unlisted'; lbl.style.color=mobListed?'var(--t1)':'#E05C5C'; }
+  var bc=mobListed?'#4CAF7D':'#E05C5C', bg=mobListed?'rgba(76,175,125,.1)':'rgba(224,92,92,.1)', bb=mobListed?'rgba(76,175,125,.25)':'rgba(224,92,92,.25)', bt=mobListed?'LISTED':'UNLISTED';
+  if(badge){ badge.textContent=bt; badge.style.color=bc; badge.style.background=bg; badge.style.borderColor=bb; }
+}
+function mobOpenPublic(){
+  el('pub-overlay').classList.add('open');
+  // reset to open positions tab
+  switchPubOvTab('pos', el('pubt-pos'));
+}
+function mobClosePublic(){
+  el('pub-overlay').classList.remove('open');
+}
+function switchPubOvTab(t, btn){
+  ['pos','closed','act'].forEach(function(id){
+    var panel=el('pubov-'+id);
+    var tab=el('pubt-'+id);
+    if(panel) panel.style.display=(id===t)?'':'none';
+    if(tab){
+      tab.style.color=(id===t)?'var(--pos)':'var(--t3)';
+      tab.style.borderBottomColor=(id===t)?'var(--pos)':'transparent';
+    }
+  });
+}
+
+function openShareFromPos(){populateShare('pos');el('bso').classList.add('open');el('bs-share').classList.add('open');}
+function openShareFromTrade(){populateShare('trade');el('bso').classList.add('open');el('bs-share').classList.add('open');}
+
+function populateShare(type){
+  if(type==='trade'){
+    var t=TRADES[_ct]||TRADES[0];
+    el('bss-lbl').textContent='Share trade';
+    el('bss-badge').textContent=t.out; el('bss-badge').className='m-badge '+(t.out==='WON'?'bw':'bl');
+    el('bss-meta').textContent=t.sub; el('bss-mkt').textContent=t.market;
+    el('bss-s1v').textContent=t.pnl; el('bss-s1v').className='ss-val '+(t.pos?'pos':'neg');
+    el('bss-s1s').textContent=t.ret.replace(' return','');
+    el('bss-s2l').textContent='Entry→Exit'; el('bss-s2v').textContent=t.entry+'→'+t.exit;
+    el('bss-s2s').textContent=t.shares+' sh';
+    var cn=parseFloat((t.clv||'').replace(/[^\d.-]/g,''));
+    if(isNaN(cn)||cn<=0){el('bss-s3l').textContent='Side';el('bss-s3v').textContent=t.side;el('bss-s3v').className='ss-val';el('bss-s3s').textContent='';}
+    else{el('bss-s3l').textContent='CLV';el('bss-s3v').textContent=t.clv;el('bss-s3v').className='ss-val '+(t.clvPos?'pos':'neg');el('bss-s3s').textContent='at entry';}
+  } else {
+    var p=POS[_cp]||POS[0];
+    el('bss-lbl').textContent='Share position';
+    el('bss-badge').textContent='OPEN'; el('bss-badge').style.cssText='color:var(--gold);border:1px solid var(--glowb);padding:2px 8px;border-radius:4px;font-size:9px;font-weight:800';
+    el('bss-meta').textContent=p.sub; el('bss-mkt').textContent=p.market;
+    el('bss-s1v').textContent=p.pnl.split(' ')[0]; el('bss-s1v').className='ss-val '+(p.pnlPos?'pos':'neg');
+    el('bss-s1s').textContent=p.pnl.replace(/^[^ ]+ /,'').replace(/[()]/g,'');
+    el('bss-s2l').textContent='Entry→Now'; el('bss-s2v').textContent=p.entry+'→'+p.price;
+    el('bss-s2s').textContent=p.shares+' sh';
+    var cn=parseFloat((p.clv||'').replace(/[^\d.-]/g,''));
+    if(isNaN(cn)||cn<=0){el('bss-s3l').textContent='Side';el('bss-s3v').textContent=p.side;el('bss-s3v').className='ss-val';el('bss-s3s').textContent='';}
+    else{el('bss-s3l').textContent='CLV';el('bss-s3v').textContent=p.clv;el('bss-s3v').className='ss-val '+(p.clvPos?'pos':'neg');el('bss-s3s').textContent='at entry';}
+  }
+}
+
+function switchCloseTabM(t){
+  var isFull=(t==='full');
+  var tabFull=el('bsc-tab-full'),tabPartial=el('bsc-tab-partial');
+  tabFull.style.color=isFull?'var(--gold)':'var(--t3)';
+  tabFull.style.borderBottomColor=isFull?'var(--gold)':'transparent';
+  tabPartial.style.color=isFull?'var(--t3)':'var(--gold)';
+  tabPartial.style.borderBottomColor=isFull?'transparent':'var(--gold)';
+  el('bsc-full').style.display=isFull?'':'none';
+  el('bsc-partial').style.display=isFull?'none':'';
+}
+function switchOrderTypeM(t){
+  var isMkt=(t==='market');
+  var mb=el('bsc-mkt-btn'),lb=el('bsc-lim-btn');
+  mb.style.color=isMkt?'var(--gold)':'var(--t3)';
+  mb.style.background=isMkt?'rgba(205,189,112,.1)':'transparent';
+  mb.style.fontWeight=isMkt?'700':'600';
+  lb.style.color=isMkt?'var(--t3)':'var(--gold)';
+  lb.style.background=isMkt?'transparent':'rgba(205,189,112,.1)';
+  lb.style.fontWeight=isMkt?'600':'700';
+  el('bsc-full-mkt').style.display=isMkt?'':'none';
+  el('bsc-full-lim').style.display=isMkt?'none':'';
+  el('bsc-partial-mkt').style.display=isMkt?'':'none';
+  el('bsc-partial-lim').style.display=isMkt?'none':'';
+}
+function adjLimM(d){var inp=el('cm-lim-inp');inp.value=(parseFloat(inp.value)+d).toFixed(2);updateLimPreviewM();}
+function adjLimMP(d){var inp=el('cm-lim-p-inp');inp.value=(parseFloat(inp.value)+d).toFixed(2);updatePartialLimM();}
+function updateLimPreviewM(){
+  var v=parseFloat(el('cm-lim-inp').value)||0;
+  var p=POS[_cp]||POS[0];
+  var proc=Math.round(v*p.sharesN);
+  var pnl=proc-p.costN;
+  var pct=((pnl/p.costN)*100).toFixed(1);
+  el('cm-lim-at').textContent=v.toFixed(2);
+  el('cm-lim-sh').textContent=p.shares;
+  el('cm-lim-cost').textContent=p.cost;
+  el('cm-lim-proc').textContent=(pnl>=0?'+':'')+'$'+proc.toLocaleString();
+  el('cm-lim-proc').className='data-val '+(pnl>=0?'pos':'neg');
+  el('cm-lim-pnl').textContent=(pnl>=0?'+':'')+'$'+Math.abs(pnl).toLocaleString()+' ('+(pnl>=0?'+':'')+pct+'%)';
+  el('cm-lim-pnl').className='data-val '+(pnl>=0?'pos':'neg');
+  el('cm-lim-btn-full').textContent='Place limit close at '+v.toFixed(2);
+}
+function setPctM(pct){
+  ['50','75','100'].forEach(function(v){var b=el('cmq'+v);if(b)b.classList.remove('on');});
+  var b=el('cmq'+pct);if(b)b.classList.add('on');
+  el('cm-slider').value=pct;
+  updatePartialM(pct);
+}
+function updatePartialM(pct){
+  var p=POS[_cp]||POS[0];
+  var sh=Math.round(p.sharesN*(pct/100));
+  var cost=Math.round(p.costN*(pct/100));
+  var proc=Math.round(p.priceN*sh);
+  var pnl=proc-cost;
+  el('cm-pct-lbl').textContent=pct+'% · '+sh.toLocaleString()+' shares';
+  el('cm-t-close').textContent='$'+cost.toLocaleString();
+  el('cm-t-proc').textContent=(pnl>=0?'+':'')+'$'+proc.toLocaleString();
+  el('cm-t-proc').className='t3-val '+(pnl>=0?'pos':'neg');
+  el('cm-t-pnl').textContent=(pnl>=0?'+':'')+'$'+Math.abs(pnl).toLocaleString();
+  el('cm-t-pnl').className='t3-val '+(pnl>=0?'pos':'neg');
+  el('cm-remain').textContent='$'+(p.costN-cost).toLocaleString()+' · '+(p.sharesN-sh).toLocaleString()+' shares';
+  el('cm-conf-partial').textContent='Confirm close '+pct+'% at market';
+  updatePartialLimM();
+}
+function updatePartialLimM(){
+  var v=parseFloat(el('cm-lim-p-inp').value)||0;
+  var pct=parseInt(el('cm-slider').value)||50;
+  var p=POS[_cp]||POS[0];
+  var sh=Math.round(p.sharesN*(pct/100));
+  var cost=Math.round(p.costN*(pct/100));
+  var proc=Math.round(v*sh);
+  var pnl=proc-cost;
+  el('cm-lt-close').textContent='$'+cost.toLocaleString();
+  el('cm-lt-proc').textContent=(pnl>=0?'+':'')+'$'+proc.toLocaleString();
+  el('cm-lt-proc').className='t3-val '+(pnl>=0?'pos':'neg');
+  el('cm-lt-pnl').textContent=(pnl>=0?'+':'')+'$'+Math.abs(pnl).toLocaleString();
+  el('cm-lt-pnl').className='t3-val '+(pnl>=0?'pos':'neg');
+  el('cm-lt-remain').textContent='$'+(p.costN-cost).toLocaleString()+' · '+(p.sharesN-sh).toLocaleString()+' shares';
+  var btnEl=el('cm-conf-partial-lim');if(btnEl)btnEl.textContent='Place limit close '+pct+'% at '+v.toFixed(2);
+}
+function setCloseMode(mode){}
+function setCloseT(t,i){}
+function setCloseS(s,i){}
+function updateClosePanel(){}
+function limCalc(){updateLimPreviewM();}
+function limCalcP(){updatePartialLimM();}
+function sliderUpdate(){updatePartialM(parseInt(el('cm-slider').value)||50);}
+function sliderUpdateP(){updatePartialLimM();}
+function setSl(v,e){setPctM(v);}
+function setSlP(v,e){setPctM(v);}
+function onMktClose(){var p=POS[_cp]||POS[0];closeSheet();TRADES.unshift({market:p.market,sub:'Closed just now',out:p.pnlPos?'WON':'LOST',side:p.side,entry:p.entry,exit:p.price,shares:p.shares,cost:p.cost,clv:p.clv,pnl:p.pnl,ret:p.pnl,pos:p.pnlPos,clvPos:p.clvPos});_ct=0;setTimeout(()=>openSheet('trade',0),120);}
+function onLimClose(){closeSheet();showToast('Limit sell placed','Visible in Open Orders');}
+function onPartialClose(){closeSheet();showToast('Partial close placed',parseInt(el('sl-pct').value)+'% at market');}
+function doCancel(){var o=ORDERS[_cc]||ORDERS[0];closeSheet();showToast('Order cancelled',o.market);}
+function pubovShowMore(){
+  document.getElementById('pubov-extra').style.display='';
+  document.getElementById('pubov-more-btn').style.display='none';
+}
+function showAllPos(btn){
+  document.getElementById('pos-extra').style.display='';
+  document.getElementById('pos-show-more').style.display='none';
+}
+function mSearchPos(v){document.querySelectorAll('#bk-pos .pos-card').forEach(r=>{r.style.display=(!v||r.textContent.toLowerCase().includes(v.toLowerCase()))?'':'none';});}
+function mSearchTr(v){document.querySelectorAll('#tr-list .tr-card').forEach(r=>{r.style.display=(!v||r.textContent.toLowerCase().includes(v.toLowerCase()))?'':'none';});}
+function loadMoreTrades(btn){btn.style.display='none';document.getElementById('tr-extra').style.display='';}
+function showToast(t,s){var x=el('toast');el('toast-t').textContent=t;el('toast-s').textContent=s;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),3500);}
+document.addEventListener('DOMContentLoaded',function(){
+});
+</script>
+</div><!-- /screen -->
+</div><!-- /device -->
+</div><!-- /wrap -->
+</body>
+</html>
